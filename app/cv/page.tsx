@@ -3,6 +3,7 @@ import path from "path";
 import { Container } from "@/features/ui/components/container";
 import { markdownToHtml } from "@/lib/markdown";
 import { PrintButton } from "./print-button";
+import { AnimateIn } from "@/features/ui/components/animate-in";
 
 export default async function CVPage() {
     const filePath = path.join(process.cwd(), "content/cv/yusa-liu.md");
@@ -14,10 +15,12 @@ export default async function CVPage() {
             <div className="flex justify-end mb-8 print:hidden">
                 <PrintButton />
             </div>
-            <article
-                className="prose prose-neutral dark:prose-invert max-w-none"
-                dangerouslySetInnerHTML={{ __html: htmlContent }}
-            />
+            <AnimateIn variant="fade-in">
+                <article
+                    className="prose prose-neutral dark:prose-invert max-w-none"
+                    dangerouslySetInnerHTML={{ __html: htmlContent }}
+                />
+            </AnimateIn>
         </Container>
     );
 }

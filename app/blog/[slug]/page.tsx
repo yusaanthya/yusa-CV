@@ -3,6 +3,7 @@ import { BlogService } from "@/features/blog/services/post-service";
 import { Container } from "@/features/ui/components/container";
 import { formatDate } from "@/lib/utils";
 import { markdownToHtml } from "@/lib/markdown";
+import { AnimateIn } from "@/features/ui/components/animate-in";
 
 interface Props {
     params: {
@@ -29,23 +30,25 @@ export default async function BlogPostPage({ params }: Props) {
 
     return (
         <Container className="py-20">
-            <article className="prose prose-neutral dark:prose-invert max-w-none">
-                <header className="mb-10 not-prose">
-                    <time className="text-sm text-muted-foreground font-mono">
-                        {formatDate(post.date)}
-                    </time>
-                    <h1 className="text-3xl font-bold mt-2 tracking-tight">{post.title}</h1>
-                    <div className="flex gap-2 mt-4">
-                        {post.tags.map(tag => (
-                            <span key={tag} className="text-xs px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800">
-                                #{tag}
-                            </span>
-                        ))}
-                    </div>
-                </header>
+            <AnimateIn variant="fade-in">
+                <article className="prose prose-neutral dark:prose-invert max-w-none">
+                    <header className="mb-10 not-prose">
+                        <time className="text-sm text-muted-foreground font-mono">
+                            {formatDate(post.date)}
+                        </time>
+                        <h1 className="text-3xl font-bold mt-2 tracking-tight">{post.title}</h1>
+                        <div className="flex gap-2 mt-4">
+                            {post.tags.map(tag => (
+                                <span key={tag} className="text-xs px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-brand">
+                                    #{tag}
+                                </span>
+                            ))}
+                        </div>
+                    </header>
 
-                <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-            </article>
+                    <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+                </article>
+            </AnimateIn>
         </Container>
     );
 }
