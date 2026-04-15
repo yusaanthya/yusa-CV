@@ -1,24 +1,8 @@
 import { notFound } from "next/navigation";
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkGfm from "remark-gfm";
-import remarkRehype from "remark-rehype";
-import rehypeHighlight from "rehype-highlight";
-import rehypeStringify from "rehype-stringify";
 import { BlogService } from "@/features/blog/services/post-service";
 import { Container } from "@/features/ui/components/container";
 import { formatDate } from "@/lib/utils";
-
-async function markdownToHtml(content: string): Promise<string> {
-    const result = await unified()
-        .use(remarkParse)
-        .use(remarkGfm)
-        .use(remarkRehype)
-        .use(rehypeHighlight)
-        .use(rehypeStringify)
-        .process(content);
-    return String(result);
-}
+import { markdownToHtml } from "@/lib/markdown";
 
 interface Props {
     params: {

@@ -113,3 +113,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  header,
+  footer {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}

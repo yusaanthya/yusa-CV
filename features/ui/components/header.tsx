@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Container } from "./container";
 
 const NAV_ITEMS = [
-    { label: "About", href: "/" },
+    { label: "CV", href: "/cv" },
     { label: "Blog", href: "/blog" },
     { label: "Portfolio", href: "/portfolio" },
 ];
