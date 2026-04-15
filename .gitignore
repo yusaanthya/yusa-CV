@@ -43,3 +43,5 @@ next-env.d.ts
 
 # local references
 /references
+/reference/document_pdf.pdf
+/reference/YusaLiu_CV_2026_v2.md
