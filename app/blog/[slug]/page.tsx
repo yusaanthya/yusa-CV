@@ -1,7 +1,24 @@
 import { notFound } from "next/navigation";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkGfm from "remark-gfm";
+import remarkRehype from "remark-rehype";
+import rehypeHighlight from "rehype-highlight";
+import rehypeStringify from "rehype-stringify";
 import { BlogService } from "@/features/blog/services/post-service";
 import { Container } from "@/features/ui/components/container";
 import { formatDate } from "@/lib/utils";
+
+async function markdownToHtml(content: string): Promise<string> {
+    const result = await unified()
+        .use(remarkParse)
+        .use(remarkGfm)
+        .use(remarkRehype)
+        .use(rehypeHighlight)
+        .use(rehypeStringify)
+        .process(content);
+    return String(result);
+}
 
 interface Props {
     params: {
@@ -24,6 +41,8 @@ export default async function BlogPostPage({ params }: Props) {
         notFound();
     }
 
+    const htmlContent = await markdownToHtml(post.content);
+
     return (
         <Container className="py-20">
             <article className="prose prose-neutral dark:prose-invert max-w-none">
@@ -41,10 +60,7 @@ export default async function BlogPostPage({ params }: Props) {
                     </div>
                 </header>
 
-                {/* We would render markdown here. For now, just raw content or use a markdown component */}
-                <div className="whitespace-pre-wrap font-sans text-base leading-relaxed">
-                    {post.content}
-                </div>
+                <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
             </article>
         </Container>
     );
