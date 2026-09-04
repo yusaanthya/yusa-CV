@@ -1,28 +1,28 @@
 # Yusa Liu 劉于莎
-**Backend Software Engineer | Distributed Systems | SaaS / Fintech**
+**Backend Software Engineer | Go | Fintech Backend | Distributed Workflows**
 
-📍 Taiwan, Global Remote
-🐙 https://github.com/yusaanthya
+Taiwan, Global Remote
+GitHub: https://github.com/yusaanthya
 
 ---
 
 ## Summary
 
-Backend Software Engineer with 2+ years of production experience across SaaS/metaverse and fintech systems. Strongest in backend API design, distributed workflow reliability, Domain-Driven Design boundaries, event-driven architecture, and pragmatic delivery in large existing codebases. Recent work includes corporate redemption order flows with DDD aggregate state transitions, transactional outbox, Pub/Sub-based asynchronous delivery, webhook audit logs, read-side DTO design, and production-oriented QA handoff.
+Backend Engineer with production experience in fintech and metaverse platforms, focused on Go services, domain modeling, transactional consistency, idempotent event-driven workflows, and end-to-end feature ownership. Known for turning ambiguous product requirements into executable API contracts, state machines, data models, tests, and cross-functional delivery plans.
 
 ---
 
 ## Experience
 
-### Backend Engineer
+### Backend Software Engineer
 **ZONE WALLET** | Mar 2026 – Present | Taipei, TW
 
-- Contributed to corporate redemption order workflows spanning Backstage list/detail/review APIs, DDD aggregate state transitions, review audit logs, transactional outbox domain events, Pub/Sub retry semantics, and partner webhook delivery boundaries.
-- Implemented redemption order read APIs and payment-page order information APIs by assembling focused read-side DTOs from existing order/payment-proof data without over-extending write-side domain aggregates.
-- Designed and implemented corporate fiat/crypto refund history APIs with pagination, one-year time range validation, status binding, Fireblocks refund filters, and focused unit tests.
-- Removed an N+1-style response assembly path in refund history APIs by prefetching token/chain data into maps before formatting records.
-- Improved operational data APIs for CIB and Backstage workflows with graceful fallback behavior when dependent market/order-book data was unavailable, separating empty dependency data from true system errors.
-- Produced QA handoff and self-test documentation covering request examples, SQL verification, state transitions, domain event persistence, event relay publication, and asynchronous webhook delivery checks in TST.
+- Extended corporate stablecoin redemption review and refund workflows within an existing DDD / transactional-outbox architecture, keeping order state, audit logs, and domain events atomic while downstream refunds, partner webhooks, and address release remained retryable and idempotent.
+- Implemented payee eligibility validation for corporate redemption deposits, integrating blacklist, freeze, and KYB checks in business-priority order and separating business-rule failures from infrastructure errors; identified an uncovered duplicate-deposit edge case, aligned its refund behavior with PM and technical stakeholders, and validated the behavior with 30 integration tests.
+- Drove the adopted Phase 1 design for fraud-return accounting settlement, reducing initial scope from a multi-system payout workflow to an idempotent post-bank command on existing asset tables while preserving ledger, trust reconciliation, and future crypto-liquidation boundaries.
+- Implemented redemption fee calculation with explicit rounding and formatting boundaries, preserving the accounting invariant `gross = fee + net` in storage while keeping API monetary outputs consistent across create and query paths.
+- Improved payment-page availability by moving slow external calendar lookups off the request path into a validated Redis last-known-good snapshot with bounded fail-open enrichment.
+- Modeled external transfer completion facts in their owning records rather than the redemption order aggregate, keeping order state stable while making operational display, filtering, and sorting consistent.
 - Stack: Go, Gin, gRPC, GCP (Cloud Run / Pub/Sub / Cloud Scheduler / Secret Manager), PostgreSQL, Redis, Fireblocks, Sumsub (KYC), Elliptic (AML)
 
 ---
@@ -30,14 +30,12 @@ Backend Software Engineer with 2+ years of production experience across SaaS/met
 ### Software Engineer
 **HTC VIVERSE** | Nov 2022 – Dec 2024 | Taipei, TW
 
-- Owned avatar core service (Go/Gin + MySQL) serving 5k+ monthly organic visits within a 100+ microservice ecosystem; maintained 6+ legacy services (Scala/Finatra + MongoDB) across 4 business divisions.
-- Led multi-region rollout (Global / CN / UAE) for avatar service through semantic versioning and OpenAPI spec; defined location-based routing requirements for DevOps-implemented NGINX policy with centralized RBAC auth.
-- Designed reusable event-driven architecture with AWS SNS/SQS + Lambda, enabling two business units to share the same event triggers and Go handler package, reducing duplicate code by ~800 LOC.
-- Led DDD boundary refinement for VIVERSE Closet 2.0 by retaining Avatar as a mutable aggregate while redefining Asset as immutable, expanding asset types 1 -> 3 with backward compatibility for future gifting and marketplace scenarios.
-- Defined idempotency strategy and scoped transaction boundaries under compressed timeline and vendor unavailability; preserved manual retry/revert paths so failures stayed visible and recoverable without full rollback automation.
-- Proposed and drove `asset_ownership` MySQL normalization table, enabling upcoming NFT marketplace and gifting features.
-- Extended repository layer with GORM plus targeted raw SQL for complex use-case-specific queries while preserving clean domain/persistence separation.
-- Delivered vendor integration and mobile animation editor; coordinated 7 internal and 2 vendor collaborators.
+- Led end-to-end backend design for VIVERSE avatar accessory creation and animation systems, turning UI mocks into service-boundary decisions, resource lifecycles, API contracts, DB schemas, AWS infrastructure needs, and FE / vendor work breakdowns while coordinating 7 cross-functional internal contributors and 2 vendor developers.
+- Evaluated new microservice vs. existing asset-service extension paths, choosing a compatibility-preserving design for new accessory and animation resource types while keeping existing avatar and legacy service contracts stable.
+- Refined Closet 2.0 domain boundaries by keeping Avatar as mutable editor state, treating Asset as immutable master data, and introducing normalized `asset_ownership` to separate inventory / marketplace / gifting ownership from avatar edits, helping ship Closet 2.0 in 8 months against an original 2-year plan.
+- Owned Go/Gin avatar core service and Scala/Finatra legacy integrations across Global / CN / UAE deployments, using OpenAPI specs and semantic versioning to preserve backward-compatible contracts in a 100+ microservice environment.
+- Designed a reusable SNS/SQS + Lambda event-handling package shared by two business units, reducing duplicated handler code by approximately 800 lines while standardizing event trigger behavior.
+- Prototyped backend avatar assembly and texture optimization using Kubernetes jobs, Node.js, and Basisu/KTX2, reducing texture storage by 30-70% and increasing supported texture resolution from 512x512 to 2K (16x the pixel count) while preserving existing service compatibility.
 - Stack: Go/Gin, Node.js, Scala/Finatra, MySQL, MongoDB, Redis, AWS (Lambda / SNS / SQS / S3), Docker, Kubernetes
 
 ---
@@ -75,10 +73,7 @@ Backend Software Engineer with 2+ years of production experience across SaaS/met
 ## Selected Achievements
 
 - VIVERSE Avatar Closet 2.0 showcased at **MWC 2024**.
-- Led 6-developer team to ship a full-stack MVP in 2 months during III Engineering Bootcamp (2022).
-- Self-studied Harvard CS50 in parallel with bootcamp to strengthen CS fundamentals.
-- Sole Taiwanese reviewer for AAA titles including FFXII at Testronic Ltd. (London, on-site).
-- EGX Rezzed 2019 — indie game prototype with international team (PT, AU, UK).
+- Diablo II: Resurrected launch campaign drove 400,000+ launch-day engagements before transitioning into software engineering.
 
 ---
 
