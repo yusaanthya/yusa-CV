@@ -47,27 +47,30 @@ below, hiding the flat edge of the source image.
 ## Home: hero and projects
 
 Hero: an outlined "Yusa / Liu" fills the left side like a backdrop (the hollow
-treatment echoes the outlined percentage on the e-book shelf). The portrait
-overlaps it from the right and a framed card with the intro and actions sits
-over the name's lower half; the three are separate grid items so each takes its
-own layer. Sora's overlapping contours show seams under a plain stroke, so the
-name uses a 3px stroke under a background-coloured fill (`paint-order: stroke
-fill`); `prefers-contrast: more` falls back to solid type.
+treatment echoes the outlined percentage on the e-book shelf) and the portrait
+overlaps it from the right. Below the name, the intro is plain text under a
+diamond rule; there are no hero buttons (the header nav covers wayfinding).
+Sora's overlapping contours show seams under a plain stroke, so the name uses a
+3px stroke under a background-coloured fill (`paint-order: stroke fill`);
+`prefers-contrast: more` falls back to solid type.
 
 Projects (`/#projects`, replacing the missing `/portfolio` page): full-bleed
-panels with the key art as background, a brand-tone `mix-blend-multiply` wash
-sampled from each image (`tint` in `features/projects/projects.ts`) instead of a
-grey scrim, and a framed text panel with an always-visible summary.
+panels with the key art as background, a wash in the page background colour
+(follows light/dark) that blends the art into the site instead of a grey scrim,
+and a framed text panel with an always-visible summary.
 
 Motion, modelled on mediatonicgames.com:
 
 - `ScrollLag` (`features/ui/components/scroll-lag.tsx`): scroll *velocity*
   drives a spring offset, so layers trail the page and settle with one soft
-  bounce. Layers: name 0.5, intro 1.5, buttons +1, portrait 2, project panel 1
-  with its button +1. Disabled under reduced motion.
+  bounce (stiffness 127, damping 12.6, mass 0.6: ~30% slower than the first
+  pass, settling in ~600ms). Layers: name 0.5; intro and portrait share layer 2
+  so they move as one group; project panel 1 with its button +1. Disabled under
+  reduced motion.
 - Key-art parallax: position-linked, ±16% of the panel height.
 - `.btn-rollover`: pill outline whose skewed fill sweeps in from the left and
-  out to the right, using two transition layers so the exit also animates.
+  out to the right (520ms), using two transition layers so the exit also
+  animates. The home load fade runs 780ms.
 
 Copy in `features/projects/projects.ts` is derived from the canonical CV and
 bullet bank in `career-prep`; keep its claims in sync with them.

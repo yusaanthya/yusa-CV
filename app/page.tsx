@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Container } from "@/features/ui/components/container";
 import { ProjectPanel } from "@/features/projects/components/project-panel";
 import { ScrollLag } from "@/features/ui/components/scroll-lag";
@@ -8,9 +7,9 @@ import { PROJECTS } from "@/features/projects/projects";
 export default function Home() {
   return (
     <>
-      {/* Title-screen hero: an outlined name fills the left side like a backdrop, the portrait
-          overlaps it from the right, and a framed card sits over the name's lower half.
-          Three separate grid items so each can take its own layer (name < portrait < card). */}
+      {/* Title-screen hero: an outlined name fills the left side like a backdrop and the
+          portrait overlaps it from the right. Separate grid items so the name can sit on its
+          own slow scroll layer behind the portrait. */}
       <Container className="relative grid min-h-[calc(100svh-4rem)] content-center py-10 md:grid-cols-[1.25fr_0.75fr] md:grid-rows-[auto_auto] md:py-16">
         <div className="intro-fade relative z-0 -mt-10 md:col-start-1 md:row-start-1 md:mt-0">
           <ScrollLag layer={0.5}>
@@ -58,33 +57,20 @@ export default function Home() {
           </ScrollLag>
         </div>
 
+        {/* Intro shares the portrait's scroll layer so the two move as one group. */}
         <div
-          className="intro-fade relative z-20 -mt-4 sm:-mt-8 md:col-start-1 md:row-start-2 md:-mt-10"
+          className="intro-fade relative z-20 mt-6 md:col-start-1 md:row-start-2 md:mt-8"
           style={{ "--d": "220ms" } as React.CSSProperties}
         >
-          <ScrollLag layer={1.5}>
-            <div className="max-w-[34rem] border border-line bg-paper p-6 sm:p-8">
-              <p className="text-xl font-medium">Backend engineer, trained as a game designer.</p>
-              <p className="mt-3 leading-relaxed text-mute">
-                I build event-driven backend systems for fintech and games, with
-                clear boundaries and failures you can see and recover from. Before
-                that, I studied game design in London and shipped an indie prototype
-                at EGX Rezzed.
-              </p>
-              <ScrollLag layer={1} className="mt-8">
-                <div className="flex flex-wrap gap-3">
-                  <Link href="/cv" className="btn btn-primary">
-                    Read the CV
-                  </Link>
-                  <Link href="/blog" className="btn btn-secondary">
-                    Browse the blog
-                  </Link>
-                  <Link href="#projects" className="btn btn-secondary">
-                    See projects
-                  </Link>
-                </div>
-              </ScrollLag>
-            </div>
+          <ScrollLag layer={2}>
+            <div aria-hidden className="rule w-40 text-accent" />
+            <p className="mt-8 text-xl font-medium">Backend engineer, trained as a game designer.</p>
+            <p className="mt-3 max-w-[34rem] leading-relaxed text-mute">
+              I build event-driven backend systems for fintech and games, with
+              clear boundaries and failures you can see and recover from. Before
+              that, I studied game design in London and shipped an indie prototype
+              at EGX Rezzed.
+            </p>
           </ScrollLag>
         </div>
       </Container>

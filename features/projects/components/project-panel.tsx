@@ -19,7 +19,6 @@ export function ProjectPanel({ project }: ProjectPanelProps) {
     const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
     // The key art drifts slower than the page; it stays put under reduced motion.
     const y = useTransform(scrollYProgress, [0, 1], shouldReduce ? ["0%", "0%"] : ["-16%", "16%"]);
-    const { tint } = project;
 
     return (
         <article
@@ -37,13 +36,14 @@ export function ProjectPanel({ project }: ProjectPanelProps) {
                     style={{ objectPosition: project.imagePosition }}
                 />
             </motion.div>
-            {/* A brand-coloured multiply wash instead of a grey scrim: it mutes the key art's
-                own lettering behind the panel while keeping the colour saturated. */}
+            {/* A wash in the page background colour blends the key art into the site and
+                mutes its own lettering behind the text panel. Follows light/dark. */}
             <div
                 aria-hidden
-                className="absolute inset-0 mix-blend-multiply"
+                className="absolute inset-0"
                 style={{
-                    background: `linear-gradient(to right, ${tint} 0%, ${tint}cc 24%, transparent 62%), linear-gradient(to top, ${tint}b3 0%, transparent 48%)`,
+                    background:
+                        "linear-gradient(to right, rgb(var(--paper) / 0.92) 0%, rgb(var(--paper) / 0.6) 26%, transparent 64%), linear-gradient(to top, rgb(var(--paper) / 0.7) 0%, transparent 45%)",
                 }}
             />
 

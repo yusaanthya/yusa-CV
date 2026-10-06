@@ -16,9 +16,10 @@ export function ScrollLag({ children, layer = 1, className }: ScrollLagProps) {
     const { scrollY } = useScroll();
     const velocity = useVelocity(scrollY);
     // Scroll velocity, not position, drives the offset: content trails while the page
-    // moves and springs back once it stops. Damping ratio ≈ 0.72 gives one soft bounce.
+    // moves and springs back once it stops. Damping ratio ≈ 0.72 gives one soft bounce;
+    // stiffness is tuned ~30% slower than a snappy UI spring for a floatier feel.
     const target = useTransform(velocity, [-2500, 0, 2500], [-MAX_SHIFT_PX * layer, 0, MAX_SHIFT_PX * layer]);
-    const y = useSpring(target, { stiffness: 260, damping: 18, mass: 0.6 });
+    const y = useSpring(target, { stiffness: 127, damping: 12.6, mass: 0.6 });
 
     if (shouldReduce) {
         return <div className={className}>{children}</div>;
