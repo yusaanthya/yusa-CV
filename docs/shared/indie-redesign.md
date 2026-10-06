@@ -34,6 +34,10 @@ All text pairs are ≥ 5:1.
 Type: Dela Gothic One (display), Bricolage Grotesque (body, 17px base per HIG),
 CJK falls back to PingFang TC / Noto Sans TC.
 
+Dela Gothic One is self-hosted (`app/fonts/`, latin subset, SIL OFL) through
+`next/font/local`. Through `next/font/google`, its large CJK font CSS produced a
+different class hash on server and client, so the display font never applied.
+
 ## Signature device
 
 One bold element: the **game-menu cursor** (`.menu-cursor`), a skewed marker

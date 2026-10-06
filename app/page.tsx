@@ -9,7 +9,7 @@ const MENU = [
 
 export default function Home() {
   return (
-    <section className="halftone relative overflow-hidden border-b-2 border-ink/10">
+    <section className="halftone relative min-h-[calc(100svh-4rem)] overflow-hidden">
       <Container className="relative py-20 sm:py-28">
         {/* The name always sits on the marker slab so it reads in both themes. */}
         <div className="relative inline-block px-4 py-3 sm:px-6">
@@ -54,11 +54,11 @@ export default function Home() {
               >
                 <Link
                   href={item.href}
-                  className="menu-cursor group inline-flex min-h-14 items-center gap-3 pr-2 font-display text-2xl sm:text-3xl"
+                  className="menu-cursor group inline-flex min-h-14 items-center pr-2 font-display text-2xl sm:text-3xl"
                 >
                   <span
                     aria-hidden
-                    className="text-pop opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                    className="absolute -left-7 text-base text-pop opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
                   >
                     ▶
                   </span>

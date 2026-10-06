@@ -120,7 +120,7 @@
     --tw-prose-captions: rgb(var(--mute));
     --tw-prose-code: rgb(var(--ink));
     --tw-prose-pre-code: #e6e4f5;
-    --tw-prose-pre-bg: #1a1838;
+    --tw-prose-pre-bg: #100e26;
     --tw-prose-th-borders: rgb(var(--haze));
     --tw-prose-td-borders: rgb(var(--haze));
     font-size: 1.0625rem;
@@ -146,6 +146,10 @@
     transform: skewX(-8deg);
   }
 
+  .prose-game hr + h2 {
+    margin-top: 0;
+  }
+
   .prose-game h3 {
     font-size: 1.4rem;
     margin-top: 1.8em;
@@ -156,7 +160,7 @@
     margin: 2.5em 0;
   }
 
-  .prose-game ul > li::marker {
+  .prose-game :where(ul):not(:where(.not-prose *)) > li::marker {
     content: "◆  ";
     font-size: 0.7em;
   }
@@ -181,6 +185,7 @@
   }
 
   .prose-game pre {
+    border: 2px solid rgb(var(--haze));
     border-radius: 14px;
   }
 
