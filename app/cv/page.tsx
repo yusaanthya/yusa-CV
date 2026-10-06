@@ -3,7 +3,6 @@ import path from "path";
 import { Container } from "@/features/ui/components/container";
 import { markdownToHtml } from "@/lib/markdown";
 import { PrintButton } from "./print-button";
-import { AnimateIn } from "@/features/ui/components/animate-in";
 
 export default async function CVPage() {
     const filePath = path.join(process.cwd(), "content/cv/yusa-liu.md");
@@ -11,16 +10,14 @@ export default async function CVPage() {
     const htmlContent = await markdownToHtml(raw);
 
     return (
-        <Container className="py-20">
-            <div className="flex justify-end mb-8 print:hidden">
+        <Container className="py-16 sm:py-20">
+            <div className="mb-8 flex justify-end print:hidden">
                 <PrintButton />
             </div>
-            <AnimateIn variant="fade-in">
-                <article
-                    className="prose prose-neutral dark:prose-invert max-w-none"
-                    dangerouslySetInnerHTML={{ __html: htmlContent }}
-                />
-            </AnimateIn>
+            <article
+                className="prose prose-game max-w-none"
+                dangerouslySetInnerHTML={{ __html: htmlContent }}
+            />
         </Container>
     );
 }

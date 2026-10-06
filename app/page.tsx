@@ -1,43 +1,74 @@
 import Link from "next/link";
 import { Container } from "@/features/ui/components/container";
-import { AnimateIn } from "@/features/ui/components/animate-in";
+
+const MENU = [
+  { label: "Read the CV", href: "/cv" },
+  { label: "Browse the blog", href: "/blog" },
+  { label: "View portfolio", href: "/portfolio" },
+];
 
 export default function Home() {
   return (
-    <Container className="py-32">
-      <section className="max-w-2xl">
-        <AnimateIn variant="fade-up">
-          <h1 className="text-5xl font-extrabold tracking-tight mb-6">
-            Hi, I'm Yusa Liu.
+    <section className="halftone relative overflow-hidden border-b-2 border-ink/10">
+      <Container className="relative py-20 sm:py-28">
+        {/* The name always sits on the marker slab so it reads in both themes. */}
+        <div className="relative inline-block px-4 py-3 sm:px-6">
+          <div
+            aria-hidden
+            className="intro-slab absolute inset-0 -skew-x-12 bg-marker"
+          />
+          <h1
+            className="intro-rise relative font-display leading-[0.9] text-on-accent [text-shadow:0.06em_0.06em_0_rgb(var(--pop))]"
+            style={{ fontSize: "clamp(4.5rem, 17vw, 10rem)" }}
+          >
+            Yusa
             <br />
-            <span className="text-muted-foreground">Backend Engineer.</span>
+            Liu
           </h1>
-        </AnimateIn>
+        </div>
 
-        <AnimateIn variant="fade-up" delay={0.1}>
-          <p className="text-xl text-muted-foreground leading-relaxed mb-10">
-            I build robust, scalable backend systems.
-            Focusing on strict boundaries, clean architecture, and performance.
-          </p>
-        </AnimateIn>
+        <p
+          className="intro-rise relative mt-6 w-fit -rotate-3 rounded-full bg-ink px-4 py-1.5 text-sm text-paper"
+          style={{ "--d": "120ms" } as React.CSSProperties}
+        >
+          Backend engineer, trained as a game designer
+        </p>
 
-        <AnimateIn variant="fade-up" delay={0.2}>
-          <div className="flex gap-4">
-            <Link
-              href="/blog"
-              className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90"
-            >
-              Read Blog
-            </Link>
-            <Link
-              href="/portfolio"
-              className="inline-flex h-10 items-center justify-center rounded-md border border-brand text-brand px-8 text-sm font-medium shadow-sm transition-colors hover:bg-brand hover:text-white"
-            >
-              View Portfolio
-            </Link>
-          </div>
-        </AnimateIn>
-      </section>
-    </Container>
+        <p
+          className="intro-rise relative mt-8 max-w-xl text-lg leading-relaxed text-mute"
+          style={{ "--d": "200ms" } as React.CSSProperties}
+        >
+          I build event-driven backend systems for fintech and games, with
+          clear boundaries and failures you can see and recover from. Before
+          that, I studied game design in London and shipped an indie prototype
+          at EGX Rezzed.
+        </p>
+
+        <nav aria-label="Start" className="relative mt-12">
+          <ul className="flex flex-col items-start gap-1">
+            {MENU.map((item, index) => (
+              <li
+                key={item.href}
+                className="intro-rise"
+                style={{ "--d": `${300 + index * 70}ms` } as React.CSSProperties}
+              >
+                <Link
+                  href={item.href}
+                  className="menu-cursor group inline-flex min-h-14 items-center gap-3 pr-2 font-display text-2xl sm:text-3xl"
+                >
+                  <span
+                    aria-hidden
+                    className="text-pop opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                  >
+                    ▶
+                  </span>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </Container>
+    </section>
   );
 }

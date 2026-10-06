@@ -1,118 +1,202 @@
+@import 'highlight.js/styles/github-dark.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import 'highlight.js/styles/github.css';
-
-.dark .hljs {
-  background: #0d1117;
-  color: #c9d1d9;
-}
-
-.dark .hljs-doctag,
-.dark .hljs-keyword,
-.dark .hljs-meta .hljs-keyword,
-.dark .hljs-template-tag,
-.dark .hljs-template-variable,
-.dark .hljs-type,
-.dark .hljs-variable.language_ { color: #ff7b72; }
-
-.dark .hljs-title,
-.dark .hljs-title.class_,
-.dark .hljs-title.class_.inherited__,
-.dark .hljs-title.function_ { color: #d2a8ff; }
-
-.dark .hljs-attr,
-.dark .hljs-attribute,
-.dark .hljs-literal,
-.dark .hljs-meta,
-.dark .hljs-number,
-.dark .hljs-operator,
-.dark .hljs-selector-attr,
-.dark .hljs-selector-class,
-.dark .hljs-selector-id,
-.dark .hljs-variable { color: #79c0ff; }
-
-.dark .hljs-meta .hljs-string,
-.dark .hljs-regexp,
-.dark .hljs-string { color: #a5d6ff; }
-
-.dark .hljs-built_in,
-.dark .hljs-symbol { color: #ffa657; }
-
-.dark .hljs-code,
-.dark .hljs-comment,
-.dark .hljs-formula { color: #8b949e; }
-
-.dark .hljs-name,
-.dark .hljs-quote,
-.dark .hljs-selector-pseudo,
-.dark .hljs-selector-tag { color: #7ee787; }
-
-.dark .hljs-subst { color: #c9d1d9; }
-.dark .hljs-section { color: #1f6feb; font-weight: bold; }
-.dark .hljs-bullet { color: #f2cc60; }
-.dark .hljs-emphasis { color: #c9d1d9; font-style: italic; }
-.dark .hljs-strong { color: #c9d1d9; font-weight: bold; }
-.dark .hljs-addition { color: #aff5b4; background-color: #033a16; }
-.dark .hljs-deletion { color: #ffdcd7; background-color: #67060c; }
-
 @layer base {
   :root {
-    --background: 36 25% 96%;
-    --foreground: 20 10% 10%;
-    --card: 36 25% 96%;
-    --card-foreground: 20 10% 10%;
-    --popover: 36 25% 96%;
-    --popover-foreground: 20 10% 10%;
-    --primary: 20 10% 10%;
-    --primary-foreground: 36 25% 96%;
-    --secondary: 36 20% 90%;
-    --secondary-foreground: 20 10% 10%;
-    --muted: 36 20% 90%;
-    --muted-foreground: 20 8% 45%;
-    --accent: 36 20% 90%;
-    --accent-foreground: 20 10% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 36 15% 85%;
-    --input: 36 15% 85%;
-    --ring: 20 10% 10%;
-    --radius: 0.5rem;
-    --brand: 20 55% 58%;
+    --paper: 243 241 250;
+    --panel: 233 230 245;
+    --ink: 34 32 74;
+    --mute: 94 90 134;
+    --haze: 201 196 230;
+    --marker: 255 212 71;
+    --pop: 255 90 135;
+    --on-accent: 34 32 74;
+    --font-cjk: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    color-scheme: light;
   }
 
-  .dark {
-    --background: 20 8% 8%;
-    --foreground: 36 20% 95%;
-    --card: 20 8% 8%;
-    --card-foreground: 36 20% 95%;
-    --popover: 20 8% 8%;
-    --popover-foreground: 36 20% 95%;
-    --primary: 36 20% 95%;
-    --primary-foreground: 20 8% 8%;
-    --secondary: 20 6% 14%;
-    --secondary-foreground: 36 20% 95%;
-    --muted: 20 6% 14%;
-    --muted-foreground: 36 10% 60%;
-    --accent: 20 6% 14%;
-    --accent-foreground: 36 20% 95%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 20 6% 18%;
-    --input: 20 6% 18%;
-    --ring: 36 20% 80%;
-    --brand: 20 60% 65%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: 26 24 56;
+      --panel: 37 35 82;
+      --ink: 243 241 250;
+      --mute: 178 173 214;
+      --haze: 66 62 120;
+      color-scheme: dark;
+    }
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-paper text-ink font-sans text-base antialiased;
+  }
+
+  ::selection {
+    @apply bg-marker text-on-accent;
+  }
+
+  :focus-visible {
+    outline: 3px solid rgb(var(--ink));
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@layer components {
+  /* Game-menu cursor: a skewed marker slab that slides in behind the label. */
+  .menu-cursor {
+    @apply relative isolate;
+  }
+
+  .menu-cursor::before {
+    content: "";
+    position: absolute;
+    inset: 0.15em -0.45em;
+    z-index: -1;
+    background: rgb(var(--marker));
+    transform: skewX(-12deg) scaleX(0);
+    transform-origin: left center;
+    transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .menu-cursor:hover::before,
+  .menu-cursor:focus-visible::before,
+  a:hover > .menu-cursor::before,
+  a:focus-visible > .menu-cursor::before,
+  .menu-cursor[aria-current="page"]::before {
+    transform: skewX(-12deg) scaleX(1);
+  }
+
+  .menu-cursor:hover,
+  .menu-cursor:focus-visible,
+  a:hover > .menu-cursor,
+  a:focus-visible > .menu-cursor,
+  .menu-cursor[aria-current="page"] {
+    @apply text-on-accent;
+  }
+
+  .menu-cursor:focus-visible {
+    outline: none;
+  }
+
+  /* The home page's single load sequence: slab sweeps in, then content rises. */
+  .intro-slab {
+    transform-origin: left center;
+    animation: slab-in 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .intro-rise {
+    animation: rise-in 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes slab-in {
+    from { transform: skewX(-12deg) scaleX(0); }
+    to { transform: skewX(-12deg) scaleX(1); }
+  }
+
+  @keyframes rise-in {
+    from { opacity: 0; transform: translateY(14px); }
+  }
+
+  .halftone {
+    background-image: radial-gradient(rgb(var(--haze)) 1.3px, transparent 1.6px);
+    background-size: 14px 14px;
+  }
+
+  .prose-game {
+    --tw-prose-body: rgb(var(--ink));
+    --tw-prose-headings: rgb(var(--ink));
+    --tw-prose-lead: rgb(var(--mute));
+    --tw-prose-links: rgb(var(--ink));
+    --tw-prose-bold: rgb(var(--ink));
+    --tw-prose-counters: rgb(var(--mute));
+    --tw-prose-bullets: rgb(var(--pop));
+    --tw-prose-hr: rgb(var(--haze));
+    --tw-prose-quotes: rgb(var(--ink));
+    --tw-prose-quote-borders: rgb(var(--marker));
+    --tw-prose-captions: rgb(var(--mute));
+    --tw-prose-code: rgb(var(--ink));
+    --tw-prose-pre-code: #e6e4f5;
+    --tw-prose-pre-bg: #1a1838;
+    --tw-prose-th-borders: rgb(var(--haze));
+    --tw-prose-td-borders: rgb(var(--haze));
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  .prose-game :where(h1, h2, h3):not(:where(.not-prose *)) {
+    @apply font-display font-normal tracking-normal;
+  }
+
+  .prose-game h1 {
+    font-size: clamp(2.25rem, 6vw, 3.5rem);
+    line-height: 1.1;
+    margin-bottom: 0.5em;
+  }
+
+  /* Section headings read like tabs in a game's status screen. */
+  .prose-game h2 {
+    @apply inline-block bg-ink text-paper;
+    font-size: 1.3rem;
+    padding: 0.2em 0.8em;
+    margin-top: 2.2em;
+    transform: skewX(-8deg);
+  }
+
+  .prose-game h3 {
+    font-size: 1.4rem;
+    margin-top: 1.8em;
+  }
+
+  .prose-game hr {
+    border-top: 2px dashed rgb(var(--haze));
+    margin: 2.5em 0;
+  }
+
+  .prose-game ul > li::marker {
+    content: "◆  ";
+    font-size: 0.7em;
+  }
+
+  .prose-game a {
+    text-decoration-color: rgb(var(--pop));
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  .prose-game a:hover {
+    @apply bg-marker text-on-accent;
+  }
+
+  .prose-game :not(pre) > code {
+    @apply bg-panel rounded-md px-1.5 py-0.5 font-normal;
+  }
+
+  .prose-game :not(pre) > code::before,
+  .prose-game :not(pre) > code::after {
+    content: none;
+  }
+
+  .prose-game pre {
+    border-radius: 14px;
+  }
+
+  .prose-game pre code.hljs {
+    background: transparent;
+    padding: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
@@ -125,5 +209,20 @@
   body {
     background: white;
     color: black;
+  }
+
+  .prose-game {
+    --tw-prose-body: black;
+    --tw-prose-headings: black;
+    --tw-prose-bold: black;
+    --tw-prose-links: black;
+  }
+
+  .prose-game h2 {
+    background: none;
+    color: black;
+    transform: none;
+    padding: 0;
+    border-bottom: 2px solid black;
   }
 }

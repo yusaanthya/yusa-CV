@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { BlogService } from "@/features/blog/services/post-service";
 import { Container } from "@/features/ui/components/container";
+import { TagList } from "@/features/blog/components/tag-list";
 import { formatDate } from "@/lib/utils";
 import { markdownToHtml } from "@/lib/markdown";
-import { AnimateIn } from "@/features/ui/components/animate-in";
 
 interface Props {
     params: {
@@ -29,26 +29,20 @@ export default async function BlogPostPage({ params }: Props) {
     const htmlContent = await markdownToHtml(post.content);
 
     return (
-        <Container className="py-20">
-            <AnimateIn variant="fade-in">
-                <article className="prose prose-neutral dark:prose-invert max-w-none">
-                    <header className="mb-10 not-prose">
-                        <time className="text-sm text-muted-foreground font-mono">
-                            {formatDate(post.date)}
-                        </time>
-                        <h1 className="text-3xl font-bold mt-2 tracking-tight">{post.title}</h1>
-                        <div className="flex gap-2 mt-4">
-                            {post.tags.map(tag => (
-                                <span key={tag} className="text-xs px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-brand">
-                                    #{tag}
-                                </span>
-                            ))}
-                        </div>
-                    </header>
+        <Container className="py-16 sm:py-20">
+            <article className="prose prose-game max-w-none">
+                <header className="not-prose mb-12">
+                    <time dateTime={post.date} className="text-sm text-mute">
+                        {formatDate(post.date)}
+                    </time>
+                    <h1 className="mt-2 font-display text-4xl leading-tight sm:text-5xl">
+                        {post.title}
+                    </h1>
+                    <TagList tags={post.tags} className="mt-5" />
+                </header>
 
-                    <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-                </article>
-            </AnimateIn>
+                <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+            </article>
         </Container>
     );
 }

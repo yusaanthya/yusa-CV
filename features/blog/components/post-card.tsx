@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BlogPost } from "../types";
 import { formatDate, cn } from "@/lib/utils";
+import { TagList } from "./tag-list";
 
 interface PostCardProps {
     post: BlogPost;
@@ -9,31 +10,21 @@ interface PostCardProps {
 
 export function PostCard({ post, className }: PostCardProps) {
     return (
-        <Link
-            href={`/blog/${post.slug}`}
-            className={cn(
-                "group block p-6 -mx-6 rounded-2xl hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors",
-                className
-            )}
-        >
-            <div className="flex flex-col gap-2">
-                <span className="text-sm text-muted-foreground font-mono">
-                    {formatDate(post.date)}
-                </span>
-                <h3 className="text-xl font-bold group-hover:text-primary transition-colors">
-                    {post.title}
-                </h3>
-                <p className="text-muted-foreground line-clamp-2">
-                    {post.description}
-                </p>
-                <div className="flex gap-2 mt-2">
-                    {post.tags.map(tag => (
-                        <span key={tag} className="text-xs px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
-                            #{tag}
-                        </span>
-                    ))}
-                </div>
-            </div>
-        </Link>
+        <article className={cn("relative py-7", className)}>
+            <time dateTime={post.date} className="text-sm text-mute">
+                {formatDate(post.date)}
+            </time>
+            <h2 className="mt-1 font-display text-2xl leading-snug">
+                {/* The stretched link makes the whole entry a single tap target. */}
+                <Link
+                    href={`/blog/${post.slug}`}
+                    className="after:absolute after:inset-0 focus-visible:outline-none"
+                >
+                    <span className="menu-cursor">{post.title}</span>
+                </Link>
+            </h2>
+            <p className="mt-2 line-clamp-2 text-mute">{post.description}</p>
+            <TagList tags={post.tags} className="mt-4" />
+        </article>
     );
 }

@@ -9,47 +9,23 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                border: "hsl(var(--border))",
-                input: "hsl(var(--input))",
-                ring: "hsl(var(--ring))",
-                background: "hsl(var(--background))",
-                foreground: "hsl(var(--foreground))",
-                primary: {
-                    DEFAULT: "hsl(var(--primary))",
-                    foreground: "hsl(var(--primary-foreground))",
-                },
-                secondary: {
-                    DEFAULT: "hsl(var(--secondary))",
-                    foreground: "hsl(var(--secondary-foreground))",
-                },
-                destructive: {
-                    DEFAULT: "hsl(var(--destructive))",
-                    foreground: "hsl(var(--destructive-foreground))",
-                },
-                muted: {
-                    DEFAULT: "hsl(var(--muted))",
-                    foreground: "hsl(var(--muted-foreground))",
-                },
-                accent: {
-                    DEFAULT: "hsl(var(--accent))",
-                    foreground: "hsl(var(--accent-foreground))",
-                },
-                popover: {
-                    DEFAULT: "hsl(var(--popover))",
-                    foreground: "hsl(var(--popover-foreground))",
-                },
-                card: {
-                    DEFAULT: "hsl(var(--card))",
-                    foreground: "hsl(var(--card-foreground))",
-                },
-                brand: {
-                    DEFAULT: "hsl(var(--brand))",
-                },
+                paper: "rgb(var(--paper) / <alpha-value>)",
+                panel: "rgb(var(--panel) / <alpha-value>)",
+                ink: "rgb(var(--ink) / <alpha-value>)",
+                mute: "rgb(var(--mute) / <alpha-value>)",
+                haze: "rgb(var(--haze) / <alpha-value>)",
+                marker: "rgb(var(--marker) / <alpha-value>)",
+                pop: "rgb(var(--pop) / <alpha-value>)",
+                // Text placed on marker/pop fills stays dark in both themes.
+                "on-accent": "rgb(var(--on-accent) / <alpha-value>)",
             },
-            borderRadius: {
-                lg: "var(--radius)",
-                md: "calc(var(--radius) - 2px)",
-                sm: "calc(var(--radius) - 4px)",
+            fontFamily: {
+                display: ["var(--font-display)", "var(--font-cjk)"],
+                sans: ["var(--font-body)", "var(--font-cjk)"],
+            },
+            fontSize: {
+                // Body follows Apple's 17pt default.
+                base: ["1.0625rem", { lineHeight: "1.6" }],
             },
         },
     },
