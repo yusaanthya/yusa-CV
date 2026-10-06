@@ -106,7 +106,11 @@ paint. Tokens are defined for `prefers-color-scheme: dark` (unless
 `content/cv/yusa-liu.md` mirrors `career-prep/resume/cv/source/yusa-liu-cv.md`.
 Website-only differences: phone and email are omitted on the public page, the
 GitHub handle is a link, and the Skills / Education lines are list items so
-Markdown does not merge them into one paragraph.
+Markdown does not merge them into one paragraph. Without a one-page limit, the
+website also carries bullet-bank alternates ZW-07 (calendar fallback) and
+HTC-05 (texture prototype), plus a Selected Achievements section (MWC 2024,
+Diablo II launch campaign) carried over from main's earlier CV. The canonical
+source is intentionally not updated with these.
 
 ## Human-factors fixes
 
