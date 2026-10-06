@@ -10,6 +10,8 @@ export interface Project {
     image: string;
     // Keeps the product's key subject in view when the panel crops the image.
     imagePosition: string;
+    // Brand tone sampled from the key art; multiplied over it instead of a grey scrim.
+    tint: string;
 }
 
 // Copy is derived from the canonical CV and bullet bank in career-prep; keep claims in sync with it.
@@ -26,6 +28,7 @@ export const PROJECTS: Project[] = [
         linkLabel: "zonewallet.io",
         image: "/images/projects/zone-wallet.webp",
         imagePosition: "75% center",
+        tint: "#1458D6",
     },
     {
         slug: "viverse-closet",
@@ -39,5 +42,6 @@ export const PROJECTS: Project[] = [
         linkLabel: "avatar.viverse.com",
         image: "/images/projects/viverse-closet.webp",
         imagePosition: "center",
+        tint: "#3B2A8F",
     },
 ];

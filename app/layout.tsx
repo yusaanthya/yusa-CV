@@ -14,13 +14,19 @@ export const metadata: Metadata = {
   description: "Portfolio and Blog of Yusa Liu",
 };
 
+// Runs before first paint so a saved appearance never flashes the other theme.
+const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={sans.variable}>
+    <html lang="en" className={sans.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <div className="flex flex-col min-h-screen">
           <Header />

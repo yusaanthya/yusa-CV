@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "./container";
 import { NavLinks } from "./nav-links";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Header() {
     return (
@@ -15,7 +16,10 @@ export function Header() {
                     </span>
                     <span className="sr-only font-display text-lg sm:not-sr-only">Yusa Liu</span>
                 </Link>
-                <NavLinks />
+                <div className="flex items-center">
+                    <NavLinks />
+                    <ThemeToggle />
+                </div>
             </Container>
         </header>
     );

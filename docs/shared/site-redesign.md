@@ -44,17 +44,40 @@ of every section heading. The portrait rises out of a hairline circle; a CSS
 mask lets it break out above the circle's centre and crops it to the circle
 below, hiding the flat edge of the source image.
 
-## Projects showcase
+## Home: hero and projects
 
-The `/portfolio` page is replaced by a Projects section on the home page
-(`/#projects`, linked from the nav and the hero). Each project is a full-bleed
-panel with its key art as the background, moved with a framer-motion
-`useScroll` parallax (static under reduced motion). A hairline text panel sits
-over the art; on phones the art shows above the panel instead of under it.
-Panels link to the live product in a new tab.
+Hero: an outlined "Yusa / Liu" fills the left side like a backdrop (the hollow
+treatment echoes the outlined percentage on the e-book shelf). The portrait
+overlaps it from the right and a framed card with the intro and actions sits
+over the name's lower half; the three are separate grid items so each takes its
+own layer. Sora's overlapping contours show seams under a plain stroke, so the
+name uses a 3px stroke under a background-coloured fill (`paint-order: stroke
+fill`); `prefers-contrast: more` falls back to solid type.
 
-Copy lives in `features/projects/projects.ts` and is derived from the canonical
-CV and bullet bank in `career-prep`; keep its claims in sync with them.
+Projects (`/#projects`, replacing the missing `/portfolio` page): full-bleed
+panels with the key art as background, a brand-tone `mix-blend-multiply` wash
+sampled from each image (`tint` in `features/projects/projects.ts`) instead of a
+grey scrim, and a framed text panel with an always-visible summary.
+
+Motion, modelled on mediatonicgames.com:
+
+- `ScrollLag` (`features/ui/components/scroll-lag.tsx`): scroll *velocity*
+  drives a spring offset, so layers trail the page and settle with one soft
+  bounce. Layers: name 0.5, intro 1.5, buttons +1, portrait 2, project panel 1
+  with its button +1. Disabled under reduced motion.
+- Key-art parallax: position-linked, ±16% of the panel height.
+- `.btn-rollover`: pill outline whose skewed fill sweeps in from the left and
+  out to the right, using two transition layers so the exit also animates.
+
+Copy in `features/projects/projects.ts` is derived from the canonical CV and
+bullet bank in `career-prep`; keep its claims in sync with them.
+
+## Appearance
+
+Dark follows the system until the visitor uses the header toggle; the choice is
+stored in `localStorage` and applied by an inline head script before first
+paint. Tokens are defined for `prefers-color-scheme: dark` (unless
+`data-theme="light"`) and for `data-theme="dark"`.
 
 ## CV content
 
@@ -73,8 +96,8 @@ Markdown does not merge them into one paragraph.
 - Current page marked by an underline plus weight, not color alone.
 - Tags are flat labels, not button-shaped, because they are not interactive.
 - Whole blog row is the tap target; it shows a focus ring via `:has(:focus-visible)`.
-- Project summaries appear on hover only where hover exists (`@media (hover: hover)`)
-  and on keyboard focus; touch screens always show them.
+- Project summaries are always visible; only the button is the link, so the
+  tap target is explicit and the text stays selectable.
 - Tap targets ≥ 44px; `prefers-reduced-motion` keeps a cross-fade only;
   `prefers-reduced-transparency` makes the header solid; `prefers-contrast: more`
   darkens secondary text and lines.

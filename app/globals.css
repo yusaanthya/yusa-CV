@@ -18,8 +18,9 @@
     color-scheme: light;
   }
 
+  /* Dark follows the system unless the visitor picked an appearance in the header. */
   @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme="light"]) {
       --paper: 20 18 24;
       --surface: 28 25 34;
       --ink: 238 235 242;
@@ -30,6 +31,18 @@
       --plum: 201 138 180;
       color-scheme: dark;
     }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: 20 18 24;
+    --surface: 28 25 34;
+    --ink: 238 235 242;
+    --mute: 169 162 179;
+    --line: 58 53 66;
+    --accent: 255 95 115;
+    --on-accent: 20 18 24;
+    --plum: 201 138 180;
+    color-scheme: dark;
   }
 
   body {
@@ -97,6 +110,67 @@
 
   .btn-secondary {
     @apply border-ink text-ink hover:bg-ink hover:text-paper;
+  }
+
+  /* Mediatonic-style rollover: a skewed fill sweeps in from the left on hover and
+     sweeps out to the right on leave. Two layers keep both directions on transitions:
+     ::after enters, ::before (parked under it while hovered) exits. */
+  .btn-rollover {
+    @apply relative isolate inline-flex min-h-12 items-center gap-2 overflow-hidden rounded-full border-2 border-accent px-7 font-semibold text-accent;
+    transition: color 250ms ease-out, transform 100ms ease-out;
+  }
+
+  .btn-rollover::before,
+  .btn-rollover::after {
+    content: "";
+    position: absolute;
+    inset: 0 -20px;
+    z-index: -1;
+    background: rgb(var(--accent));
+  }
+
+  .btn-rollover::before {
+    transform: skewX(-30deg) translateX(110%);
+    transition: transform 400ms cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  .btn-rollover::after {
+    visibility: hidden;
+    transform: skewX(-30deg) translateX(-110%);
+  }
+
+  .btn-rollover:hover::before,
+  .btn-rollover:focus-visible::before {
+    visibility: hidden;
+    transform: skewX(-30deg) translateX(0);
+    transition: none;
+  }
+
+  .btn-rollover:hover::after,
+  .btn-rollover:focus-visible::after {
+    visibility: visible;
+    transform: skewX(-30deg) translateX(0);
+    transition: transform 400ms cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  .btn-rollover:hover,
+  .btn-rollover:focus-visible {
+    @apply text-on-accent;
+  }
+
+  .btn-rollover:active {
+    transform: scale(0.97);
+  }
+
+
+  /* Hollow display name, like the outlined percentage on the e-book shelf.
+     Sora's glyphs have overlapping contours, so a plain stroke shows seams inside
+     letters. Painting a background-coloured fill over a doubled stroke hides them,
+     leaving a clean 1.5px outline. */
+  .hero-name {
+    color: rgb(var(--paper));
+    -webkit-text-stroke: 3px rgb(var(--ink));
+    paint-order: stroke fill;
   }
 
   .intro-fade {
@@ -236,8 +310,16 @@
     }
   }
 
-  .btn:active {
+  .btn:active,
+  .btn-rollover:active {
     transform: none;
+  }
+
+  /* No sweep: the fill simply appears and disappears. */
+  .btn-rollover::before,
+  .btn-rollover:hover::after,
+  .btn-rollover:focus-visible::after {
+    transition: none;
   }
 }
 
@@ -252,6 +334,12 @@
   :root {
     --mute: var(--ink);
     --line: var(--ink);
+  }
+
+  /* A hairline outline is too faint here; fall back to solid type. */
+  .hero-name {
+    color: rgb(var(--ink));
+    -webkit-text-stroke: 0;
   }
 }
 
@@ -277,32 +365,6 @@
     --tw-prose-bold: black;
     --tw-prose-links: black;
     max-width: none;
-  }
-}
-
-/* Project summaries float in on hover, but only where hover exists; touch screens always show them. */
-.project-detail > div {
-  overflow: hidden;
-}
-
-@media (hover: hover) {
-  .project-detail {
-    display: grid;
-    grid-template-rows: 0fr;
-    opacity: 0;
-    transition: grid-template-rows 320ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 200ms ease-out;
-  }
-
-  .project-panel:hover .project-detail,
-  .project-panel:focus-visible .project-detail {
-    grid-template-rows: 1fr;
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .project-detail {
-    transition: opacity 200ms ease-out;
   }
 }
 
