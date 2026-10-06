@@ -1,7 +1,6 @@
 export interface Project {
     slug: string;
     org: string;
-    period: string;
     title: string;
     summary: string;
     tags: string[];
@@ -17,7 +16,6 @@ export const PROJECTS: Project[] = [
     {
         slug: "zone-wallet",
         org: "ZONE WALLET",
-        period: "2026 – present",
         title: "Exchange server backend",
         summary:
             "Go services behind a crypto exchange and wallet. I implemented corporate redemption review and refund flows inside a transactional outbox, built a rate-limited Pub/Sub reminder pipeline reused by two campaigns, and designed the fraud-return capability the team adopted as its baseline.",
@@ -30,7 +28,6 @@ export const PROJECTS: Project[] = [
     {
         slug: "viverse-closet",
         org: "HTC VIVERSE",
-        period: "2022 – 2024",
         title: "Outfit Closet 2.0",
         summary:
             "The avatar closet for HTC's VIVERSE platform, showcased at MWC 2024. I redefined the avatar, asset, and ownership boundaries so editor state, reusable assets, and inventory could evolve separately, and designed the accessory and animation APIs that let 7 internal contributors and 2 vendor developers build in parallel. The release shipped in 8 months against an original 2-year plan.",

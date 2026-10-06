@@ -55,9 +55,16 @@ Sora's overlapping contours show seams under a plain stroke, so the name uses a
 `prefers-contrast: more` falls back to solid type.
 
 Projects (`/#projects`, replacing the missing `/portfolio` page): full-bleed
-panels with the key art as background, a wash in the page background colour
-(follows light/dark) that blends the art into the site instead of a grey scrim,
-and a framed text panel with an always-visible summary.
+panels with the key art as background and the copy shown directly, without a
+card or dates. `HalftoneFade` cuts a page-coloured "hole" behind the copy that
+dissolves into the art as a halftone screen (solid behind the text, dots
+shrinking over ~280px on desktop / ~150px on phones), measured from the copy's
+position with a `ResizeObserver`. The screen is fixed to the panel so the art
+parallaxes behind it, and it uses `--paper`, so it follows light/dark.
+
+Key art is the 2000px source at WebP quality 92. Parallax overscan is kept to
+12% (±9% travel) because every extra percent enlarges the image and softens it
+on 2x screens; truly sharp full-bleed art on retina needs ~3200px+ sources.
 
 Motion, modelled on mediatonicgames.com:
 
@@ -72,7 +79,7 @@ Motion, modelled on mediatonicgames.com:
   overshoot, settles in ~1.9s. Layers: name 0.5; intro and portrait share
   layer 2 so they move as one group; project panel 1 with its button +1.
   Disabled under reduced motion.
-- Key-art parallax: position-linked, ±16% of the panel height.
+- Key-art parallax: position-linked, ±9% of the panel height.
 - `.btn-rollover`: pill outline whose skewed fill sweeps in from the left and
   out to the right (520ms), using two transition layers so the exit also
   animates. The home load fade runs 780ms.
@@ -117,3 +124,5 @@ Markdown does not merge them into one paragraph.
   animations would remove it but are not yet supported in Firefox.
 - `career-prep/resume/cv/README.md` still says the website CV is not synced.
 - The sign-key post references images that are missing from the content.
+- Project key art is limited to 2000px wide; supply ~3200px+ originals for crisp
+  retina rendering. Converting to SVG would not help: the art is raster.

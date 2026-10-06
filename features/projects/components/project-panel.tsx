@@ -8,6 +8,7 @@ import { Container } from "@/features/ui/components/container";
 import { ScrollLag } from "@/features/ui/components/scroll-lag";
 import { TagList } from "@/features/ui/components/tag-list";
 import { Project } from "../projects";
+import { HalftoneFade } from "./halftone-fade";
 
 interface ProjectPanelProps {
     project: Project;
@@ -15,10 +16,12 @@ interface ProjectPanelProps {
 
 export function ProjectPanel({ project }: ProjectPanelProps) {
     const ref = useRef<HTMLElement>(null);
+    const textRef = useRef<HTMLDivElement>(null);
     const shouldReduce = useReducedMotion();
     const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-    // The key art drifts slower than the page; it stays put under reduced motion.
-    const y = useTransform(scrollYProgress, [0, 1], shouldReduce ? ["0%", "0%"] : ["-16%", "16%"]);
+    // The key art drifts slower than the page. The overscan is kept small because every
+    // extra percent enlarges the image and softens it on high-density screens.
+    const y = useTransform(scrollYProgress, [0, 1], shouldReduce ? ["0%", "0%"] : ["-9%", "9%"]);
 
     return (
         <article
@@ -26,7 +29,7 @@ export function ProjectPanel({ project }: ProjectPanelProps) {
             aria-labelledby={`${project.slug}-title`}
             className="relative overflow-hidden sm:h-[min(84vh,46rem)] sm:min-h-[32rem]"
         >
-            <motion.div style={{ y }} className="absolute inset-x-0 -inset-y-[20%]">
+            <motion.div style={{ y }} className="absolute inset-x-0 -inset-y-[12%]">
                 <Image
                     src={project.image}
                     alt=""
@@ -36,32 +39,23 @@ export function ProjectPanel({ project }: ProjectPanelProps) {
                     style={{ objectPosition: project.imagePosition }}
                 />
             </motion.div>
-            {/* A wash in the page background colour blends the key art into the site and
-                mutes its own lettering behind the text panel. Follows light/dark. */}
-            <div
-                aria-hidden
-                className="absolute inset-0"
-                style={{
-                    background:
-                        "linear-gradient(to right, rgb(var(--paper) / 0.92) 0%, rgb(var(--paper) / 0.6) 26%, transparent 64%), linear-gradient(to top, rgb(var(--paper) / 0.7) 0%, transparent 45%)",
-                }}
-            />
 
-            {/* On phones the art shows above the panel instead of being covered by it. */}
-            <Container className="relative flex h-full items-end pb-8 pt-64 sm:pb-14 sm:pt-0">
-                <ScrollLag className="w-full max-w-xl">
-                    <div className="border border-line bg-paper/90 p-6 backdrop-blur-md sm:p-8">
-                        <div className="flex flex-wrap items-baseline justify-between gap-x-4 text-sm text-mute">
-                            <span className="font-semibold tracking-wide text-ink">{project.org}</span>
-                            <span>{project.period}</span>
-                        </div>
-                        <h3 id={`${project.slug}-title`} className="mt-2 font-display text-3xl leading-tight sm:text-4xl">
+            {/* Fixed to the panel, not the art, so the image moves behind a halftone screen. */}
+            <HalftoneFade containerRef={ref} textRef={textRef} />
+
+            {/* On phones the art shows above the copy instead of behind it. */}
+            <Container className="relative flex h-full items-center pb-10 pt-72 sm:py-0">
+                <ScrollLag className="w-full max-w-lg">
+                    <div ref={textRef}>
+                        <p className="text-sm font-semibold tracking-wide text-mute">{project.org}</p>
+                        <h3 id={`${project.slug}-title`} className="mt-2 font-display text-4xl leading-tight tracking-[-0.03em] sm:text-5xl">
                             {project.title}
                         </h3>
-                        <p className="pt-4 leading-relaxed text-mute">{project.summary}</p>
-                        <TagList tags={project.tags} className="mt-4" />
+                        <div aria-hidden className="rule mt-6 w-24 text-accent" />
+                        <p className="mt-6 leading-relaxed text-mute">{project.summary}</p>
+                        <TagList tags={project.tags} className="mt-5" />
 
-                        <ScrollLag className="mt-6">
+                        <ScrollLag className="mt-8">
                             <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn-rollover">
                                 Visit {project.linkLabel}
                                 <ArrowUpRight aria-hidden className="h-4 w-4" />
