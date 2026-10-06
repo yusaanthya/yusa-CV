@@ -44,6 +44,25 @@ of every section heading. The portrait rises out of a hairline circle; a CSS
 mask lets it break out above the circle's centre and crops it to the circle
 below, hiding the flat edge of the source image.
 
+## Projects showcase
+
+The `/portfolio` page is replaced by a Projects section on the home page
+(`/#projects`, linked from the nav and the hero). Each project is a full-bleed
+panel with its key art as the background, moved with a framer-motion
+`useScroll` parallax (static under reduced motion). A hairline text panel sits
+over the art; on phones the art shows above the panel instead of under it.
+Panels link to the live product in a new tab.
+
+Copy lives in `features/projects/projects.ts` and is derived from the canonical
+CV and bullet bank in `career-prep`; keep its claims in sync with them.
+
+## CV content
+
+`content/cv/yusa-liu.md` mirrors `career-prep/resume/cv/source/yusa-liu-cv.md`.
+Website-only differences: phone and email are omitted on the public page, the
+GitHub handle is a link, and the Skills / Education lines are list items so
+Markdown does not merge them into one paragraph.
+
 ## Human-factors fixes
 
 - Measure capped at 68ch (CV lines were ~95 characters); post header matches it.
@@ -54,13 +73,16 @@ below, hiding the flat edge of the source image.
 - Current page marked by an underline plus weight, not color alone.
 - Tags are flat labels, not button-shaped, because they are not interactive.
 - Whole blog row is the tap target; it shows a focus ring via `:has(:focus-visible)`.
+- Project summaries appear on hover only where hover exists (`@media (hover: hover)`)
+  and on keyboard focus; touch screens always show them.
 - Tap targets ≥ 44px; `prefers-reduced-motion` keeps a cross-fade only;
   `prefers-reduced-transparency` makes the header solid; `prefers-contrast: more`
   darkens secondary text and lines.
 
 ## Follow-ups
 
-- `/portfolio` is still linked from nav and home but has no page (404).
 - `npm run lint` fails on `main` too (`eslint/config` export error with ESLint 8).
-- `framer-motion` is no longer imported; remove it from `package.json`.
+- framer-motion adds ~46 kB to the home page for the parallax. CSS scroll-driven
+  animations would remove it but are not yet supported in Firefox.
+- `career-prep/resume/cv/README.md` still says the website CV is not synced.
 - The sign-key post references images that are missing from the content.

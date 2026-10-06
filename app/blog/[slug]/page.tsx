@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { BlogService } from "@/features/blog/services/post-service";
 import { Container } from "@/features/ui/components/container";
-import { TagList } from "@/features/blog/components/tag-list";
+import { TagList } from "@/features/ui/components/tag-list";
 import { formatDate } from "@/lib/utils";
 import { markdownToHtml } from "@/lib/markdown";
 

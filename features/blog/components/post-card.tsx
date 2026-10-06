@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BlogPost } from "../types";
 import { formatDate, cn } from "@/lib/utils";
-import { TagList } from "./tag-list";
+import { TagList } from "@/features/ui/components/tag-list";
 
 interface PostCardProps {
     post: BlogPost;

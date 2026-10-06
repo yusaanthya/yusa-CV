@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
     { label: "CV", href: "/cv" },
     { label: "Blog", href: "/blog" },
-    { label: "Portfolio", href: "/portfolio" },
+    { label: "Projects", href: "/#projects" },
 ];
 
 export function NavLinks() {

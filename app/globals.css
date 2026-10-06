@@ -279,3 +279,39 @@
     max-width: none;
   }
 }
+
+/* Project summaries float in on hover, but only where hover exists; touch screens always show them. */
+.project-detail > div {
+  overflow: hidden;
+}
+
+@media (hover: hover) {
+  .project-detail {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 320ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 200ms ease-out;
+  }
+
+  .project-panel:hover .project-detail,
+  .project-panel:focus-visible .project-detail {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-detail {
+    transition: opacity 200ms ease-out;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
