@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BlogPost } from "../types";
 import { formatDate, cn } from "@/lib/utils";
+import { TagList } from "@/features/ui/components/tag-list";
 
 interface PostCardProps {
     post: BlogPost;
@@ -9,31 +10,28 @@ interface PostCardProps {
 
 export function PostCard({ post, className }: PostCardProps) {
     return (
-        <Link
-            href={`/blog/${post.slug}`}
+        <article
             className={cn(
-                "group block p-6 -mx-6 rounded-2xl hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors",
+                "group relative border border-line bg-surface p-6 transition-[border-color,transform] duration-150",
+                "hover:border-ink active:scale-[0.99] motion-reduce:active:scale-100",
+                "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent",
                 className
             )}
         >
-            <div className="flex flex-col gap-2">
-                <span className="text-sm text-muted-foreground font-mono">
-                    {formatDate(post.date)}
-                </span>
-                <h3 className="text-xl font-bold group-hover:text-primary transition-colors">
+            <time dateTime={post.date} className="text-sm text-mute">
+                {formatDate(post.date)}
+            </time>
+            <h2 className="mt-1 font-display text-[1.4rem] leading-snug">
+                {/* The stretched link makes the whole frame a single tap target. */}
+                <Link
+                    href={`/blog/${post.slug}`}
+                    className="after:absolute after:inset-0 group-hover:text-accent focus-visible:outline-none"
+                >
                     {post.title}
-                </h3>
-                <p className="text-muted-foreground line-clamp-2">
-                    {post.description}
-                </p>
-                <div className="flex gap-2 mt-2">
-                    {post.tags.map(tag => (
-                        <span key={tag} className="text-xs px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
-                            #{tag}
-                        </span>
-                    ))}
-                </div>
-            </div>
-        </Link>
+                </Link>
+            </h2>
+            <p className="mt-2 line-clamp-2 text-mute">{post.description}</p>
+            <TagList tags={post.tags} className="mt-4" />
+        </article>
     );
 }

@@ -1,30 +1,25 @@
 import Link from "next/link";
 import { Container } from "./container";
-
-const NAV_ITEMS = [
-    { label: "CV", href: "/cv" },
-    { label: "Blog", href: "/blog" },
-    { label: "Portfolio", href: "/portfolio" },
-];
+import { NavLinks } from "./nav-links";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Header() {
     return (
-        <header className="py-8 sticky top-0 z-50 bg-background/80 backdrop-blur-sm">
-            <Container className="flex items-center justify-between">
-                <Link href="/" className="font-bold text-xl tracking-tight">
-                    Yusa Liu
+        <header className="site-header sticky top-0 z-50 border-b border-line bg-paper/80 backdrop-blur-xl backdrop-saturate-150">
+            <Container className="flex h-16 items-center justify-between">
+                <Link href="/" className="inline-flex min-h-11 items-center gap-3">
+                    <span
+                        aria-hidden
+                        className="grid h-9 w-9 place-items-center border border-ink font-display text-sm leading-none"
+                    >
+                        YL
+                    </span>
+                    <span className="sr-only font-display text-lg sm:not-sr-only">Yusa Liu</span>
                 </Link>
-                <nav className="flex gap-6">
-                    {NAV_ITEMS.map((item) => (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            className="text-sm font-medium text-muted-foreground hover:text-brand transition-colors"
-                        >
-                            {item.label}
-                        </Link>
-                    ))}
-                </nav>
+                <div className="flex items-center">
+                    <NavLinks />
+                    <ThemeToggle />
+                </div>
             </Container>
         </header>
     );

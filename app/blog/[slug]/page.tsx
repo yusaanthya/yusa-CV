@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { BlogService } from "@/features/blog/services/post-service";
 import { Container } from "@/features/ui/components/container";
+import { TagList } from "@/features/ui/components/tag-list";
 import { formatDate } from "@/lib/utils";
 import { markdownToHtml } from "@/lib/markdown";
-import { AnimateIn } from "@/features/ui/components/animate-in";
 
 interface Props {
     params: {
@@ -29,26 +29,24 @@ export default async function BlogPostPage({ params }: Props) {
     const htmlContent = await markdownToHtml(post.content);
 
     return (
-        <Container className="py-20">
-            <AnimateIn variant="fade-in">
-                <article className="prose prose-neutral dark:prose-invert max-w-none">
-                    <header className="mb-10 not-prose">
-                        <time className="text-sm text-muted-foreground font-mono">
-                            {formatDate(post.date)}
-                        </time>
-                        <h1 className="text-3xl font-bold mt-2 tracking-tight">{post.title}</h1>
-                        <div className="flex gap-2 mt-4">
-                            {post.tags.map(tag => (
-                                <span key={tag} className="text-xs px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-brand">
-                                    #{tag}
-                                </span>
-                            ))}
-                        </div>
-                    </header>
+        <Container className="py-12 sm:py-16">
+            <article className="mx-auto max-w-3xl">
+                <header className="mb-12 max-w-[68ch]">
+                    <time dateTime={post.date} className="text-sm text-mute">
+                        {formatDate(post.date)}
+                    </time>
+                    <h1 className="mt-2 font-display text-4xl leading-[1.1] tracking-[-0.04em] sm:text-5xl">
+                        {post.title}
+                    </h1>
+                    <TagList tags={post.tags} className="mt-5" />
+                    <div aria-hidden className="rule mt-8 text-ink" />
+                </header>
 
-                    <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-                </article>
-            </AnimateIn>
+                <div
+                    className="prose prose-site"
+                    dangerouslySetInnerHTML={{ __html: htmlContent }}
+                />
+            </article>
         </Container>
     );
 }

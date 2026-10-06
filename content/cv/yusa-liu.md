@@ -1,88 +1,55 @@
-# Yusa Liu 劉于莎
-**Backend Software Engineer | Go | Fintech Backend | Distributed Workflows**
+# Yusa Liu
 
-Taiwan, Global Remote
-GitHub: https://github.com/yusaanthya
+**Backend Software Engineer | Go | Fintech | Distributed Workflows**
 
----
+Taiwan / Global Remote | [github.com/yusaanthya](https://github.com/yusaanthya)
 
 ## Summary
 
-Backend Engineer with production experience in fintech and metaverse platforms, focused on Go services, domain modeling, transactional consistency, idempotent event-driven workflows, and end-to-end feature ownership. Known for turning ambiguous product requirements into executable API contracts, state machines, data models, tests, and cross-functional delivery plans.
-
----
+Go backend engineer with fintech and platform experience, owning feature design, cross-functional delivery, and team workflow improvements. Builds transactional and event-driven services within complex existing systems.
 
 ## Experience
 
-### Backend Software Engineer
-**ZONE WALLET** | Mar 2026 – Present | Taipei, TW
+### Backend Software Engineer - ZONE WALLET
 
-- Extended corporate stablecoin redemption review and refund workflows within an existing DDD / transactional-outbox architecture, keeping order state, audit logs, and domain events atomic while downstream refunds, partner webhooks, and address release remained retryable and idempotent.
-- Implemented payee eligibility validation for corporate redemption deposits, integrating blacklist, freeze, and KYB checks in business-priority order and separating business-rule failures from infrastructure errors; identified an uncovered duplicate-deposit edge case, aligned its refund behavior with PM and technical stakeholders, and validated the behavior with 30 integration tests.
-- Drove the adopted Phase 1 design for fraud-return accounting settlement, reducing initial scope from a multi-system payout workflow to an idempotent post-bank command on existing asset tables while preserving ledger, trust reconciliation, and future crypto-liquidation boundaries.
-- Implemented redemption fee calculation with explicit rounding and formatting boundaries, preserving the accounting invariant `gross = fee + net` in storage while keeping API monetary outputs consistent across create and query paths.
-- Improved payment-page availability by moving slow external calendar lookups off the request path into a validated Redis last-known-good snapshot with bounded fail-open enrichment.
-- Modeled external transfer completion facts in their owning records rather than the redemption order aggregate, keeping order state stable while making operational display, filtering, and sorting consistent.
-- Stack: Go, Gin, gRPC, GCP (Cloud Run / Pub/Sub / Cloud Scheduler / Secret Manager), PostgreSQL, Redis, Fireblocks, Sumsub (KYC), Elliptic (AML)
+Mar 2026 - Present | Taipei / Remote
 
----
+- Designed a new fraud-return capability from the ground up, separating crypto liquidation from fiat settlement and defining idempotency, reconciliation, and manual-recovery boundaries; the design was adopted as the baseline for subsequent research and implementation planning.
+- Drove adoption of pre-refinement technical review and capacity planning across an 18-person engineering, QA, and product team, partnering with the engineering manager to help the team prioritize ready work, identify blockers, and defer unresolved tickets before sprint commitments.
+- Implemented corporate redemption review and refund flows within an existing transactional outbox, keeping state, audit logs, and events atomic; separated eligibility failures from retryable infrastructure errors and resolved duplicate-deposit precedence, validated by 30 eligibility integration tests.
+- Built a Go/Pub/Sub reminder pipeline reused by two campaigns, combining cancellation-aware publisher rate limiting, persistent send-history deduplication, and explicit retry boundaries to throttle publishing and suppress repeat sends without retrying successful sends solely on recording failures.
 
-### Software Engineer
-**HTC VIVERSE** | Nov 2022 – Dec 2024 | Taipei, TW
+### Software Engineer - HTC VIVERSE
 
-- Led end-to-end backend design for VIVERSE avatar accessory creation and animation systems, turning UI mocks into service-boundary decisions, resource lifecycles, API contracts, DB schemas, AWS infrastructure needs, and FE / vendor work breakdowns while coordinating 7 cross-functional internal contributors and 2 vendor developers.
-- Evaluated new microservice vs. existing asset-service extension paths, choosing a compatibility-preserving design for new accessory and animation resource types while keeping existing avatar and legacy service contracts stable.
-- Refined Closet 2.0 domain boundaries by keeping Avatar as mutable editor state, treating Asset as immutable master data, and introducing normalized `asset_ownership` to separate inventory / marketplace / gifting ownership from avatar edits, helping ship Closet 2.0 in 8 months against an original 2-year plan.
-- Owned Go/Gin avatar core service and Scala/Finatra legacy integrations across Global / CN / UAE deployments, using OpenAPI specs and semantic versioning to preserve backward-compatible contracts in a 100+ microservice environment.
-- Designed a reusable SNS/SQS + Lambda event-handling package shared by two business units, reducing duplicated handler code by approximately 800 lines while standardizing event trigger behavior.
-- Prototyped backend avatar assembly and texture optimization using Kubernetes jobs, Node.js, and Basisu/KTX2, reducing texture storage by 30-70% and increasing supported texture resolution from 512x512 to 2K (16x the pixel count) while preserving existing service compatibility.
-- Stack: Go/Gin, Node.js, Scala/Finatra, MySQL, MongoDB, Redis, AWS (Lambda / SNS / SQS / S3), Docker, Kubernetes
+Nov 2022 - Dec 2024 | Taipei
 
----
+- Designed backend database schemas, resource lifecycles, and API contracts for avatar accessories and animations, with state-based idempotency guards for AWS SQS-driven vendor integration; enabled parallel implementation across 7 internal contributors and 2 vendor developers.
+- Developed and maintained the Go/Gin avatar service within a 100+ microservice ecosystem, applying layered design and mockable repository interfaces for business-logic testing while preserving backward-compatible contracts through OpenAPI and semantic versioning.
+- Redefined Closet 2.0's avatar, asset, and ownership boundaries to separate mutable editor state from reusable assets and inventory ownership, helping deliver the release in 8 months against an original 2-year plan.
+- Built a shared SNS/SQS and Lambda event-handling package adopted by two business units, replacing duplicated handlers and removing approximately 800 lines of repeated code.
 
-### SWE Skill Enhancement
-**Self-directed** | Dec 2024 – Mar 2026
+## Projects
 
-- Built Go-based distributed systems practice projects, including a quorum election simulator with heartbeat-based leader election, dead-node detection, majority-vote removal, context-driven shutdown, Cobra CLI, Logrus logging, and Testify-based tests.
-- Continued backend fundamentals training through algorithm practice, Clean Architecture exercises, and system design reading focused on consensus, event-driven workflows, and reliability tradeoffs.
+### NiCE2 Event Navigation PWA
 
----
+Aug 2026
+
+- Productized a community-built navigation tool for a 3,000-stall event into an offline-capable PWA on Cloudflare Pages, hardening JSON import and rendering against malformed input and XSS and managing cache expiry and retirement; served 51.67k HTTP requests over four public days.
+
+### Go Quorum Election Simulator
+
+Dec 2024 - Mar 2026
+
+- Built a Go concurrency simulator modeling heartbeat-based failure detection, vote-based member removal, and leader reselection, with injectable timing and messaging interfaces for node-failure and insufficient-vote tests.
 
 ## Skills
 
-**Languages:** Go, Node.js, Java/Scala, Python
+- Go, Java/Scala, Node.js, Python | REST, Gin, API contracts, transactional outbox, idempotency
+- PostgreSQL, MySQL, MongoDB, Redis | GCP Pub/Sub, Cloud Scheduler, AWS SNS/SQS/Lambda, Docker, Kubernetes
 
-**Backend:** REST APIs, gRPC, event-driven architecture, transactional outbox, webhook delivery, idempotency design
+## Education and Languages
 
-**Data / Infra:** PostgreSQL, MySQL, MongoDB, Redis, GCP Pub/Sub, AWS SNS/SQS/Lambda/S3, Docker, Kubernetes
-
-**Practices:** Domain-Driven Design, Clean Architecture, API design, reliability-oriented testing, QA handoff, technical writing
-
-**Tools:** Git, Swagger/OpenAPI, Vim
-
----
-
-## Languages
-
-- Mandarin Chinese — Native
-- English — Fluent
-- Japanese — Advanced
-
----
-
-## Selected Achievements
-
-- VIVERSE Avatar Closet 2.0 showcased at **MWC 2024**.
-- Diablo II: Resurrected launch campaign drove 400,000+ launch-day engagements before transitioning into software engineering.
-
----
-
-## Education
-
-**MA in Computer Game Design**
-Goldsmiths College, London UK | Jul 2018 – Nov 2019
-
-**BA in Digital Technology Design**
-National Taipei University of Education | Sep 2012 – Jun 2016
-
-Taipei First Girls' High School | Sep 2009 – Jun 2012
+- MA, Computer Game Design - Goldsmiths, University of London | 2018-2019
+- BA, Digital Technology Design - National Taipei University of Education | 2012-2016
+- Taipei First Girls' High School | 2009-2012
+- Mandarin Chinese: Native | English: Fluent | Japanese: Advanced

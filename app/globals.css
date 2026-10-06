@@ -1,118 +1,341 @@
+@import 'highlight.js/styles/github-dark.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import 'highlight.js/styles/github.css';
-
-.dark .hljs {
-  background: #0d1117;
-  color: #c9d1d9;
-}
-
-.dark .hljs-doctag,
-.dark .hljs-keyword,
-.dark .hljs-meta .hljs-keyword,
-.dark .hljs-template-tag,
-.dark .hljs-template-variable,
-.dark .hljs-type,
-.dark .hljs-variable.language_ { color: #ff7b72; }
-
-.dark .hljs-title,
-.dark .hljs-title.class_,
-.dark .hljs-title.class_.inherited__,
-.dark .hljs-title.function_ { color: #d2a8ff; }
-
-.dark .hljs-attr,
-.dark .hljs-attribute,
-.dark .hljs-literal,
-.dark .hljs-meta,
-.dark .hljs-number,
-.dark .hljs-operator,
-.dark .hljs-selector-attr,
-.dark .hljs-selector-class,
-.dark .hljs-selector-id,
-.dark .hljs-variable { color: #79c0ff; }
-
-.dark .hljs-meta .hljs-string,
-.dark .hljs-regexp,
-.dark .hljs-string { color: #a5d6ff; }
-
-.dark .hljs-built_in,
-.dark .hljs-symbol { color: #ffa657; }
-
-.dark .hljs-code,
-.dark .hljs-comment,
-.dark .hljs-formula { color: #8b949e; }
-
-.dark .hljs-name,
-.dark .hljs-quote,
-.dark .hljs-selector-pseudo,
-.dark .hljs-selector-tag { color: #7ee787; }
-
-.dark .hljs-subst { color: #c9d1d9; }
-.dark .hljs-section { color: #1f6feb; font-weight: bold; }
-.dark .hljs-bullet { color: #f2cc60; }
-.dark .hljs-emphasis { color: #c9d1d9; font-style: italic; }
-.dark .hljs-strong { color: #c9d1d9; font-weight: bold; }
-.dark .hljs-addition { color: #aff5b4; background-color: #033a16; }
-.dark .hljs-deletion { color: #ffdcd7; background-color: #67060c; }
-
 @layer base {
   :root {
-    --background: 36 25% 96%;
-    --foreground: 20 10% 10%;
-    --card: 36 25% 96%;
-    --card-foreground: 20 10% 10%;
-    --popover: 36 25% 96%;
-    --popover-foreground: 20 10% 10%;
-    --primary: 20 10% 10%;
-    --primary-foreground: 36 25% 96%;
-    --secondary: 36 20% 90%;
-    --secondary-foreground: 20 10% 10%;
-    --muted: 36 20% 90%;
-    --muted-foreground: 20 8% 45%;
-    --accent: 36 20% 90%;
-    --accent-foreground: 20 10% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 36 15% 85%;
-    --input: 36 15% 85%;
-    --ring: 20 10% 10%;
-    --radius: 0.5rem;
-    --brand: 20 55% 58%;
+    --paper: 246 245 248;
+    --surface: 255 255 255;
+    --ink: 30 26 36;
+    --mute: 98 91 107;
+    --line: 216 212 222;
+    --accent: 196 30 58;
+    --on-accent: 255 255 255;
+    --plum: 110 44 85;
+    --font-cjk-sans: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    color-scheme: light;
   }
 
-  .dark {
-    --background: 20 8% 8%;
-    --foreground: 36 20% 95%;
-    --card: 20 8% 8%;
-    --card-foreground: 36 20% 95%;
-    --popover: 20 8% 8%;
-    --popover-foreground: 36 20% 95%;
-    --primary: 36 20% 95%;
-    --primary-foreground: 20 8% 8%;
-    --secondary: 20 6% 14%;
-    --secondary-foreground: 36 20% 95%;
-    --muted: 20 6% 14%;
-    --muted-foreground: 36 10% 60%;
-    --accent: 20 6% 14%;
-    --accent-foreground: 36 20% 95%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 20 6% 18%;
-    --input: 20 6% 18%;
-    --ring: 36 20% 80%;
-    --brand: 20 60% 65%;
+  /* Dark follows the system unless the visitor picked an appearance in the header. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: 20 18 24;
+      --surface: 28 25 34;
+      --ink: 238 235 242;
+      --mute: 169 162 179;
+      --line: 58 53 66;
+      --accent: 255 95 115;
+      --on-accent: 20 18 24;
+      --plum: 201 138 180;
+      color-scheme: dark;
+    }
   }
-}
 
-@layer base {
-  * {
-    @apply border-border;
+  :root[data-theme="dark"] {
+    --paper: 20 18 24;
+    --surface: 28 25 34;
+    --ink: 238 235 242;
+    --mute: 169 162 179;
+    --line: 58 53 66;
+    --accent: 255 95 115;
+    --on-accent: 20 18 24;
+    --plum: 201 138 180;
+    color-scheme: dark;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-paper text-ink font-sans text-base antialiased;
+  }
+
+  ::selection {
+    @apply bg-accent text-on-accent;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Display type tightens as it grows; small text stays near zero. */
+  .font-display {
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+}
+
+@layer components {
+  /* Signature ornament: a hairline with diamond terminals. Color follows currentColor. */
+  .rule {
+    position: relative;
+    height: 1px;
+    margin-inline: 4px;
+    background: currentColor;
+  }
+
+  .rule::before,
+  .rule::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    background: currentColor;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .rule::before {
+    left: 0;
+  }
+
+  .rule::after {
+    left: 100%;
+  }
+
+  .btn {
+    @apply inline-flex min-h-12 items-center justify-center rounded border px-5 text-[0.95rem] font-medium;
+    transition: transform 100ms ease-out, background-color 150ms ease-out, color 150ms ease-out;
+  }
+
+  /* Feedback lands on press, not on release. */
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  .btn-secondary {
+    @apply border-ink text-ink hover:bg-ink hover:text-paper;
+  }
+
+  /* Mediatonic-style rollover: a skewed fill sweeps in from the left on hover and
+     sweeps out to the right on leave. Two layers keep both directions on transitions:
+     ::after enters, ::before (parked under it while hovered) exits. */
+  .btn-rollover {
+    @apply relative isolate inline-flex min-h-12 items-center gap-2 overflow-hidden rounded-full border-2 border-accent px-7 font-semibold text-accent;
+    transition: color 325ms ease-out, transform 100ms ease-out;
+  }
+
+  .btn-rollover::before,
+  .btn-rollover::after {
+    content: "";
+    position: absolute;
+    inset: 0 -20px;
+    z-index: -1;
+    background: rgb(var(--accent));
+  }
+
+  .btn-rollover::before {
+    transform: skewX(-30deg) translateX(110%);
+    transition: transform 520ms cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  .btn-rollover::after {
+    visibility: hidden;
+    transform: skewX(-30deg) translateX(-110%);
+  }
+
+  .btn-rollover:hover::before,
+  .btn-rollover:focus-visible::before {
+    visibility: hidden;
+    transform: skewX(-30deg) translateX(0);
+    transition: none;
+  }
+
+  .btn-rollover:hover::after,
+  .btn-rollover:focus-visible::after {
+    visibility: visible;
+    transform: skewX(-30deg) translateX(0);
+    transition: transform 520ms cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  .btn-rollover:hover,
+  .btn-rollover:focus-visible {
+    @apply text-on-accent;
+  }
+
+  .btn-rollover:active {
+    transform: scale(0.97);
+  }
+
+
+  /* Hollow display name, like the outlined percentage on the e-book shelf.
+     Sora's glyphs have overlapping contours, so a plain stroke shows seams inside
+     letters. Painting a background-coloured fill over a doubled stroke hides them,
+     leaving a clean 1.5px outline. */
+  .hero-name {
+    color: rgb(var(--paper));
+    -webkit-text-stroke: 3px rgb(var(--ink));
+    paint-order: stroke fill;
+  }
+
+  .intro-fade {
+    animation: intro-fade 780ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes intro-fade {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  .prose-site {
+    --tw-prose-body: rgb(var(--ink));
+    --tw-prose-headings: rgb(var(--ink));
+    --tw-prose-lead: rgb(var(--mute));
+    --tw-prose-links: rgb(var(--ink));
+    --tw-prose-bold: rgb(var(--ink));
+    --tw-prose-counters: rgb(var(--mute));
+    --tw-prose-bullets: rgb(var(--accent));
+    --tw-prose-hr: rgb(var(--line));
+    --tw-prose-quotes: rgb(var(--ink));
+    --tw-prose-quote-borders: rgb(var(--accent));
+    --tw-prose-captions: rgb(var(--mute));
+    --tw-prose-code: rgb(var(--ink));
+    --tw-prose-pre-code: #e6e4ec;
+    --tw-prose-pre-bg: #17141c;
+    --tw-prose-th-borders: rgb(var(--line));
+    --tw-prose-td-borders: rgb(var(--line));
+    font-size: 1.0625rem;
+    /* Posts mix CJK and Latin; CJK needs the extra leading. */
+    line-height: 1.75;
+    /* Keep the measure under ~70 characters. */
+    max-width: 68ch;
+  }
+
+  .prose-site :where(h1, h2, h3):not(:where(.not-prose *)) {
+    @apply font-display;
+  }
+
+  .prose-site h1 {
+    font-size: clamp(2.25rem, 5.5vw, 3.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.4em;
+  }
+
+  /* Section headings run into a hairline that ends in a diamond. */
+  .prose-site h2 {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.6rem;
+    line-height: 1.25;
+    margin-top: 2.4em;
+  }
+
+  .prose-site h2::before {
+    content: "";
+    order: 2;
+    flex: 1;
+    height: 1px;
+    background: rgb(var(--ink));
+  }
+
+  .prose-site h2::after {
+    content: "";
+    order: 3;
+    width: 7px;
+    height: 7px;
+    margin-left: -1.2rem;
+    background: rgb(var(--ink));
+    transform: rotate(45deg);
+  }
+
+  .prose-site h3 {
+    font-size: 1.3rem;
+    line-height: 1.25;
+    margin-top: 1.8em;
+  }
+
+  .prose-site hr {
+    margin: 2.25em 0;
+  }
+
+  /* Section headings already draw their own rule, so skip the markdown hr before them. */
+  .prose-site hr:has(+ h2) {
+    display: none;
+  }
+
+  .prose-site :where(ul):not(:where(.not-prose *)) > li::marker {
+    content: "◆  ";
+    font-size: 0.6em;
+  }
+
+  .prose-site a {
+    text-decoration-color: rgb(var(--accent));
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  .prose-site a:hover {
+    @apply text-accent;
+  }
+
+  .prose-site :not(pre) > code {
+    @apply rounded border border-line bg-surface px-1.5 py-0.5 font-normal;
+  }
+
+  .prose-site :not(pre) > code::before,
+  .prose-site :not(pre) > code::after {
+    content: none;
+  }
+
+  .prose-site pre {
+    border: 1px solid rgb(var(--line));
+    border-radius: 6px;
+  }
+
+  .prose-site pre code.hljs {
+    background: transparent;
+    padding: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Keep a gentle cross-fade; drop movement and scaling. */
+  .intro-fade {
+    animation-name: intro-fade-reduced;
+  }
+
+  @keyframes intro-fade-reduced {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .btn:active,
+  .btn-rollover:active {
+    transform: none;
+  }
+
+  /* No sweep: the fill simply appears and disappears. */
+  .btn-rollover::before,
+  .btn-rollover:hover::after,
+  .btn-rollover:focus-visible::after {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-header {
+    background: rgb(var(--paper));
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --mute: var(--ink);
+    --line: var(--ink);
+  }
+
+  /* A hairline outline is too faint here; fall back to solid type. */
+  .hero-name {
+    color: rgb(var(--ink));
+    -webkit-text-stroke: 0;
   }
 }
 
@@ -125,5 +348,28 @@
   body {
     background: white;
     color: black;
+  }
+
+  .cv-sheet {
+    border: none;
+    padding: 0;
+  }
+
+  .prose-site {
+    --tw-prose-body: black;
+    --tw-prose-headings: black;
+    --tw-prose-bold: black;
+    --tw-prose-links: black;
+    max-width: none;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
