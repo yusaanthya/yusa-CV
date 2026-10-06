@@ -62,11 +62,16 @@ and a framed text panel with an always-visible summary.
 Motion, modelled on mediatonicgames.com:
 
 - `ScrollLag` (`features/ui/components/scroll-lag.tsx`): scroll *velocity*
-  drives a spring offset, so layers trail the page and settle with one soft
-  bounce (stiffness 127, damping 12.6, mass 0.6: ~30% slower than the first
-  pass, settling in ~600ms). Layers: name 0.5; intro and portrait share layer 2
-  so they move as one group; project panel 1 with its button +1. Disabled under
-  reduced motion.
+  drives an offset, so layers trail the page and ease back once it stops.
+  Springs use Apple's response/damping model converted to framer-motion
+  physics, critically damped (ratio 1.0) per the apple-design guidance that
+  bounce belongs only to motion the user flicks. Wheel input is stepped, so the
+  velocity first passes a 0.3s critically damped smoothing spring (like
+  Mediatonic's scroll-delta history) before the 0.45s output spring. Measured
+  over ~1s of wheel scrolling: direction reversals 22 -> 4, no visible
+  overshoot, settles in ~1.9s. Layers: name 0.5; intro and portrait share
+  layer 2 so they move as one group; project panel 1 with its button +1.
+  Disabled under reduced motion.
 - Key-art parallax: position-linked, ±16% of the panel height.
 - `.btn-rollover`: pill outline whose skewed fill sweeps in from the left and
   out to the right (520ms), using two transition layers so the exit also
