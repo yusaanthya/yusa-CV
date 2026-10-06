@@ -3,6 +3,7 @@ import { Container } from "@/features/ui/components/container";
 import { ProjectPanel } from "@/features/projects/components/project-panel";
 import { ScrollLag } from "@/features/ui/components/scroll-lag";
 import { PROJECTS } from "@/features/projects/projects";
+import { assetPath } from "@/lib/utils";
 
 export default function Home() {
   return (
@@ -39,7 +40,7 @@ export default function Home() {
               className="absolute bottom-[2%] left-1/2 h-2 w-2 -translate-x-1/2 translate-y-1/2 rotate-45 bg-accent"
             />
             <Image
-              src="/images/portrait.png"
+              src={assetPath("/images/portrait.png")}
               alt="Illustrated self-portrait of Yusa in a red skirt, holding a drawing tablet and a stylus"
               width={700}
               height={768}

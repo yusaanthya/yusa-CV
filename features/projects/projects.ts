@@ -1,3 +1,5 @@
+import { assetPath } from "@/lib/utils";
+
 export interface Project {
     slug: string;
     org: string;
@@ -22,7 +24,7 @@ export const PROJECTS: Project[] = [
         tags: ["Go", "GCP Pub/Sub", "PostgreSQL", "Transactional outbox"],
         url: "https://www.zonewallet.io/",
         linkLabel: "zonewallet.io",
-        image: "/images/projects/zone-wallet.webp",
+        image: assetPath("/images/projects/zone-wallet.webp"),
         imagePosition: "100% center",
     },
     {
@@ -34,7 +36,7 @@ export const PROJECTS: Project[] = [
         tags: ["Go / Gin", "MySQL", "AWS SQS", "OpenAPI"],
         url: "https://avatar.viverse.com/zh-TW/avatar",
         linkLabel: "avatar.viverse.com",
-        image: "/images/projects/viverse-closet.webp",
+        image: assetPath("/images/projects/viverse-closet.webp"),
         imagePosition: "center",
     },
 ];
