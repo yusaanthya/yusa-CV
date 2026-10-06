@@ -66,8 +66,10 @@ panel, so the art parallaxes behind the screen.
 
 - Desktop: tone rises along the 45° axis from the bottom-left corner. The clear
   corner covers 10% of the panel; tone then reaches full over φ^1.5 × that
-  corner's leg, and beyond it the mask is one solid polygon. Dots shrink to
-  nothing within 200px of the copy so it sits on the page colour.
+  corner's leg, and beyond it the mask is one solid polygon. Near the copy,
+  tone is held down along the same 45° axis, measured from the copy's top-right
+  corner over 240px, so the screen stays one smooth diagonal gradient. (Fading
+  by distance to the copy's box drew a visible rectangle.)
 - Phones: tone rises upwards from just above the full-width copy.
 - Rejected passes: page-coloured dot screens over the art (read as a stencil)
   and a sampled-colour tile mosaic (not the silkscreen look wanted).

@@ -21,9 +21,9 @@ const CLEAR_AREA = 0.1;
 const BAND_RATIO = Math.pow(GOLDEN, 1.5);
 const MOBILE_BAND = 170;
 const TEXT_GAP = 32;
-// Dots shrink to nothing around the copy so it always sits on the page colour.
-const COPY_PADDING = 0;
-const COPY_FEATHER = 200;
+// Near the copy, tone is held down along the same 45° axis (never by distance to its box,
+// which drew a visible rectangle), so the screen stays one smooth diagonal gradient.
+const COPY_FEATHER = 240;
 
 const smoothstep = (x: number) => {
     const t = Math.min(Math.max(x, 0), 1);
@@ -46,10 +46,8 @@ export function HalftoneMask({ containerRef, textRef, children }: HalftoneMaskPr
             const copy = text.getBoundingClientRect();
             const w = box.width;
             const h = box.height;
-            const cl = copy.left - box.left - COPY_PADDING;
-            const ct = copy.top - box.top - COPY_PADDING;
-            const cr = copy.right - box.left + COPY_PADDING;
-            const cb = copy.bottom - box.top + COPY_PADDING;
+            // The copy's top-right corner, the point of it furthest along the 45° axis.
+            const copyLeg = copy.right - box.left + (box.bottom - copy.top);
             const desktop = w >= 640;
 
             let tone: (x: number, y: number) => number;
@@ -78,9 +76,7 @@ export function HalftoneMask({ containerRef, textRef, children }: HalftoneMaskPr
                     if (x < -SPACING || x > w + SPACING || y < -SPACING || y > h + SPACING) continue;
                     let t = tone(x, y);
                     if (t <= 0 || t >= 1.05) continue;
-                    const dx = Math.max(cl - x, 0, x - cr);
-                    const dy = Math.max(ct - y, 0, y - cb);
-                    t *= smoothstep(Math.hypot(dx, dy) / COPY_FEATHER);
+                    if (desktop) t *= smoothstep((x + (h - y) - copyLeg + COPY_FEATHER * 0.65) / COPY_FEATHER);
                     // Dot area is proportional to tone, so the radius follows its square root.
                     const r = FULL_RADIUS * Math.sqrt(Math.min(t, 1));
                     if (r < 0.35) continue;
