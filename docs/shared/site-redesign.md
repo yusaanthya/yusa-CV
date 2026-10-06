@@ -6,9 +6,9 @@
 
 ## Brief
 
-Modern, elegant serif typography (the first pass with Dela Gothic One read as
-too playful). Reference: the owner's earlier e-book site, keeping its hairline
-frames and crisp serif headings, not its wine-red palette. The owner's painted
+Modern, elegant typography (the first pass with Dela Gothic One read as too
+playful; a serif pass with Instrument Serif was rejected as unattractive). Reference: the owner's earlier e-book site, keeping its hairline
+frames and crisp headings, not its wine-red palette. The owner's painted
 self-portrait is the main visual asset. UX follows Apple's HIG; human-factors
 problems are fixed directly.
 
@@ -29,9 +29,12 @@ Palette is sampled from the portrait (hair, skirt, shadow) and cooled down.
 All text pairs are ≥ 5.4:1. `line` (1.3:1) is never the only boundary of an
 interactive control; buttons use `ink` borders.
 
-Type: Instrument Serif (display, tightened tracking) and Instrument Sans (body,
-17px base per HIG). CJK falls back to system Songti / PingFang, which avoids the
-`next/font/google` server/client hash mismatch hit by the CJK display font.
+Type: Sora for both headings (`font-display`: weight 500, tracking down to
+-0.045em on the hero) and body (17px base per HIG). Chosen from a side-by-side
+of Instrument Serif, Montserrat, Manrope, Sora and Righteous. CJK falls back to
+system PingFang / Noto Sans TC, which also avoids the `next/font/google`
+server/client hash mismatch hit earlier by a CJK display font. The home hero
+shows the Latin name only.
 
 ## Signature device
 

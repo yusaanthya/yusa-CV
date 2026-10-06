@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
-import { Instrument_Sans, Instrument_Serif } from "next/font/google";
+import { Sora } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/features/ui/components/header";
 import { Footer } from "@/features/ui/components/footer";
 
-const serif = Instrument_Serif({
-  weight: "400",
-  style: ["normal", "italic"],
-  subsets: ["latin"],
-  variable: "--font-serif",
-});
-
-const sans = Instrument_Sans({
+const sans = Sora({
   subsets: ["latin"],
   variable: "--font-sans",
 });
@@ -27,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${serif.variable} ${sans.variable}`}>
+    <html lang="en" className={sans.variable}>
       <body>
         <div className="flex flex-col min-h-screen">
           <Header />

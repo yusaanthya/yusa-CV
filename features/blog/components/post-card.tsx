@@ -21,7 +21,7 @@ export function PostCard({ post, className }: PostCardProps) {
             <time dateTime={post.date} className="text-sm text-mute">
                 {formatDate(post.date)}
             </time>
-            <h2 className="mt-1 font-serif text-[1.75rem] leading-tight">
+            <h2 className="mt-1 font-display text-[1.4rem] leading-snug">
                 {/* The stretched link makes the whole frame a single tap target. */}
                 <Link
                     href={`/blog/${post.slug}`}

@@ -19,7 +19,7 @@ const config: Config = {
                 plum: "rgb(var(--plum) / <alpha-value>)",
             },
             fontFamily: {
-                serif: ["var(--font-serif)", "var(--font-cjk-serif)"],
+                display: ["var(--font-sans)", "var(--font-cjk-sans)"],
                 sans: ["var(--font-sans)", "var(--font-cjk-sans)"],
             },
             fontSize: {

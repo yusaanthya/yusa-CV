@@ -8,7 +8,7 @@ export default async function BlogPage() {
     return (
         <Container className="py-12 sm:py-16">
             <div className="mx-auto max-w-3xl">
-                <h1 className="font-serif text-6xl leading-none tracking-[-0.02em]">Blog</h1>
+                <h1 className="font-display text-5xl leading-none tracking-[-0.04em]">Blog</h1>
                 <div aria-hidden className="rule mb-10 mt-6 text-ink" />
                 <ul className="flex flex-col gap-3">
                     {posts.map((post) => (

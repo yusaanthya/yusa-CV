@@ -7,15 +7,11 @@ export default function Home() {
     <Container className="grid items-center gap-10 py-12 md:grid-cols-[1.15fr_0.85fr] md:gap-12 md:py-24">
       <div className="intro-fade order-2 md:order-1" style={{ "--d": "120ms" } as React.CSSProperties}>
         <h1
-          className="font-serif leading-[0.95] tracking-[-0.025em]"
-          style={{ fontSize: "clamp(3.5rem, 9vw, 6.25rem)" }}
+          className="font-display leading-[0.95] tracking-[-0.045em]"
+          style={{ fontSize: "clamp(3.25rem, 8vw, 5.5rem)" }}
         >
           Yusa Liu
         </h1>
-        <p lang="zh-Hant" className="mt-3 font-serif text-2xl text-mute">
-          劉于莎
-        </p>
-
         <div aria-hidden className="rule mt-8 w-40 text-accent" />
 
         <p className="mt-8 text-xl font-medium">

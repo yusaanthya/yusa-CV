@@ -14,7 +14,6 @@
     --accent: 196 30 58;
     --on-accent: 255 255 255;
     --plum: 110 44 85;
-    --font-cjk-serif: "Songti TC", "Noto Serif TC", "PMingLiU", serif;
     --font-cjk-sans: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
     color-scheme: light;
   }
@@ -48,8 +47,9 @@
   }
 
   /* Display type tightens as it grows; small text stays near zero. */
-  .font-serif {
-    letter-spacing: -0.015em;
+  .font-display {
+    font-weight: 500;
+    letter-spacing: -0.03em;
   }
 }
 
@@ -82,7 +82,7 @@
   }
 
   .btn {
-    @apply inline-flex min-h-12 items-center justify-center rounded border px-6 font-medium;
+    @apply inline-flex min-h-12 items-center justify-center rounded border px-5 text-[0.95rem] font-medium;
     transition: transform 100ms ease-out, background-color 150ms ease-out, color 150ms ease-out;
   }
 
@@ -136,13 +136,13 @@
   }
 
   .prose-site :where(h1, h2, h3):not(:where(.not-prose *)) {
-    @apply font-serif font-normal;
+    @apply font-display;
   }
 
   .prose-site h1 {
-    font-size: clamp(2.5rem, 6vw, 3.75rem);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
+    font-size: clamp(2.25rem, 5.5vw, 3.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
     margin-bottom: 0.4em;
   }
 
@@ -151,8 +151,8 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    font-size: 1.85rem;
-    line-height: 1.2;
+    font-size: 1.6rem;
+    line-height: 1.25;
     margin-top: 2.4em;
   }
 
@@ -175,7 +175,7 @@
   }
 
   .prose-site h3 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     line-height: 1.25;
     margin-top: 1.8em;
   }

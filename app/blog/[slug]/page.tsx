@@ -35,7 +35,7 @@ export default async function BlogPostPage({ params }: Props) {
                     <time dateTime={post.date} className="text-sm text-mute">
                         {formatDate(post.date)}
                     </time>
-                    <h1 className="mt-2 font-serif text-5xl leading-[1.05] tracking-[-0.02em] sm:text-6xl">
+                    <h1 className="mt-2 font-display text-4xl leading-[1.1] tracking-[-0.04em] sm:text-5xl">
                         {post.title}
                     </h1>
                     <TagList tags={post.tags} className="mt-5" />

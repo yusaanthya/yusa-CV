@@ -9,11 +9,11 @@ export function Header() {
                 <Link href="/" className="inline-flex min-h-11 items-center gap-3">
                     <span
                         aria-hidden
-                        className="grid h-9 w-9 place-items-center border border-ink font-serif text-lg leading-none"
+                        className="grid h-9 w-9 place-items-center border border-ink font-display text-sm leading-none"
                     >
                         YL
                     </span>
-                    <span className="sr-only font-serif text-xl sm:not-sr-only">Yusa Liu</span>
+                    <span className="sr-only font-display text-lg sm:not-sr-only">Yusa Liu</span>
                 </Link>
                 <NavLinks />
             </Container>
