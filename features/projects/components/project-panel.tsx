@@ -8,7 +8,7 @@ import { Container } from "@/features/ui/components/container";
 import { ScrollLag } from "@/features/ui/components/scroll-lag";
 import { TagList } from "@/features/ui/components/tag-list";
 import { Project } from "../projects";
-import { MosaicFade } from "./mosaic-fade";
+import { HalftoneMask } from "./halftone-mask";
 
 interface ProjectPanelProps {
     project: Project;
@@ -17,7 +17,6 @@ interface ProjectPanelProps {
 export function ProjectPanel({ project }: ProjectPanelProps) {
     const ref = useRef<HTMLElement>(null);
     const textRef = useRef<HTMLDivElement>(null);
-    const layerRef = useRef<HTMLDivElement>(null);
     const shouldReduce = useReducedMotion();
     const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
     // The key art drifts slower than the page. The overscan is kept small because every
@@ -30,27 +29,20 @@ export function ProjectPanel({ project }: ProjectPanelProps) {
             aria-labelledby={`${project.slug}-title`}
             className="relative overflow-hidden sm:h-[min(84vh,46rem)] sm:min-h-[32rem]"
         >
-            <motion.div ref={layerRef} style={{ y }} className="absolute inset-x-0 -inset-y-[12%]">
-                <Image
-                    src={project.image}
-                    alt=""
-                    fill
-                    sizes="100vw"
-                    className="object-cover"
-                    style={{ objectPosition: project.imagePosition }}
-                />
-            </motion.div>
-
-            {/* Fixed to the panel: the art turns into round mosaic tiles that thin out
-                towards the copy, recoloured live as the art parallaxes beneath. */}
-            <MosaicFade
-                containerRef={ref}
-                textRef={textRef}
-                layerRef={layerRef}
-                imageSrc={project.image}
-                imagePosition={project.imagePosition}
-                parallax={y}
-            />
+            {/* The art is clipped by a colour-halftone mask fixed to the panel, so it
+                parallaxes behind the dot screen; outside the dots is the page itself. */}
+            <HalftoneMask containerRef={ref} textRef={textRef}>
+                <motion.div style={{ y }} className="absolute inset-x-0 -inset-y-[12%]">
+                    <Image
+                        src={project.image}
+                        alt=""
+                        fill
+                        sizes="100vw"
+                        className="object-cover"
+                        style={{ objectPosition: project.imagePosition }}
+                    />
+                </motion.div>
+            </HalftoneMask>
 
             {/* On phones the art shows above the copy instead of behind it. */}
             <Container className="relative flex h-full items-center pb-10 pt-72 sm:items-end sm:pb-14 sm:pt-0">

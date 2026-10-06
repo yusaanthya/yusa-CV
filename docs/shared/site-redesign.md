@@ -56,21 +56,21 @@ Sora's overlapping contours show seams under a plain stroke, so the name uses a
 
 Projects (`/#projects`, replacing the missing `/portfolio` page): full-bleed
 panels with the key art as background and the copy shown directly, without a
-card or dates. `MosaicFade` turns the art itself into a round-tile mosaic
-under a curve sketched by the owner: a canvas samples the art's average colour
-per hexagonal cell (by downscaling it with the same object-fit/position), lays
-the page colour cell by cell (so the edge is stepped like tiles, not a smooth
-cut), and draws an equal-size round tile in the sampled colour. Tone fades by
-tile density only (8×8 Bayer threshold): dense at the curve, thinning over
-240px, and to none within 60px of the copy, which therefore sits on the plain
-page colour. The canvas is fixed to the panel and redraws on parallax, resize
-and appearance changes, so tiles recolour live as the art moves beneath.
+card or dates. `HalftoneMask` clips the art with a colour-halftone mask, like
+Photoshop's Color Halftone used as a clipping mask: the art shows only inside
+round dots on a 45° screen, and outside them is the page itself. Dot area
+follows tone (amplitude modulation, radius ∝ √tone), so dots grow from nothing
+until they merge into the full image. The mask is an SVG built from the
+measured panel and copy, applied with `mask-image` to a wrapper fixed to the
+panel, so the art parallaxes behind the screen.
 
-- Desktop: the curve rises slightly from the left edge, passes 90px above the
-  title (anchored to the copy) and sweeps down to the bottom right.
-- Phones: the mosaic is a band above the full-width copy.
-- Earlier passes (page-coloured dot screens over the art) were rejected: they
-  read as a stencil, not a mosaic.
+- Desktop: tone rises along the 45° axis from the bottom-left corner. The clear
+  corner covers 10% of the panel; tone then reaches full over φ^1.5 × that
+  corner's leg, and beyond it the mask is one solid polygon. Dots shrink to
+  nothing within 200px of the copy so it sits on the page colour.
+- Phones: tone rises upwards from just above the full-width copy.
+- Rejected passes: page-coloured dot screens over the art (read as a stencil)
+  and a sampled-colour tile mosaic (not the silkscreen look wanted).
 
 Key art is the 2000px source at WebP quality 92. Parallax overscan is kept to
 12% (±9% travel) because every extra percent enlarges the image and softens it
