@@ -56,26 +56,18 @@ Sora's overlapping contours show seams under a plain stroke, so the name uses a
 
 Projects (`/#projects`, replacing the missing `/portfolio` page): full-bleed
 panels with the key art as background and the copy shown directly, without a
-card or dates. `HalftoneMask` clips the art with a colour-halftone mask, like
-Photoshop's Color Halftone used as a clipping mask: the art shows only inside
-round dots on a 45° screen, and outside them is the page itself. Dot area
-follows tone (amplitude modulation, radius ∝ √tone), so dots grow from nothing
-until they merge into the full image. The mask is an SVG built from the
-measured panel and copy, applied with `mask-image` to a wrapper fixed to the
-panel, so the art parallaxes behind the screen.
+card or dates. A page-coloured linear wash at 45° (solid to 36%, 80% at 48%,
+clear at 70%) keeps the copy on a clean ground in the bottom left and blends
+the art into the site; on phones it rises from below the art. Zone Wallet's art
+is cropped from the right (`100% center`) so its own headline lettering stays
+out from behind the title. Measured: 0% of sampled pixels behind the copy under
+4.5:1 in light mode, ≤7% (title edges) in dark.
 
-- Desktop: tone rises along the 45° axis from the bottom-left corner. The clear
-  corner covers 10% of the panel; tone then reaches full over φ^1.5 × that
-  corner's leg, and beyond it the mask is one solid polygon. Near the copy,
-  tone is capped at 12% along the same 45° axis (measured from the copy's
-  top-right corner, easing out over 240px), so small dots stay behind the text
-  and the screen remains one smooth diagonal gradient. Fading by distance to the
-  copy's box drew a visible rectangle; no cap, or a 30% cap, let the art's own
-  lettering compete with the title (45–68% of title pixels under 4.5:1 in dark
-  mode). At 12%: 6–17% of sampled pixels behind the copy fall under 4.5:1.
-- Phones: tone rises upwards from just above the full-width copy.
-- Rejected passes: page-coloured dot screens over the art (read as a stencil)
-  and a sampled-colour tile mosaic (not the silkscreen look wanted).
+Halftone variants were tried and rejected: page-coloured dot screens over the
+art read as a stencil; a sampled-colour tile mosaic and a 45° colour-halftone
+clipping mask both looked right but left small text looking soft wherever dots
+sat behind it. Per the apple-design vibrancy guidance, copy over a changing
+background gets a solid ground; boldness stays with the art.
 
 Key art is the 2000px source at WebP quality 92. Parallax overscan is kept to
 12% (±9% travel) because every extra percent enlarges the image and softens it

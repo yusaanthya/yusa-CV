@@ -8,7 +8,6 @@ import { Container } from "@/features/ui/components/container";
 import { ScrollLag } from "@/features/ui/components/scroll-lag";
 import { TagList } from "@/features/ui/components/tag-list";
 import { Project } from "../projects";
-import { HalftoneMask } from "./halftone-mask";
 
 interface ProjectPanelProps {
     project: Project;
@@ -29,20 +28,22 @@ export function ProjectPanel({ project }: ProjectPanelProps) {
             aria-labelledby={`${project.slug}-title`}
             className="relative overflow-hidden sm:h-[min(84vh,46rem)] sm:min-h-[32rem]"
         >
-            {/* The art is clipped by a colour-halftone mask fixed to the panel, so it
-                parallaxes behind the dot screen; outside the dots is the page itself. */}
-            <HalftoneMask containerRef={ref} textRef={textRef}>
-                <motion.div style={{ y }} className="absolute inset-x-0 -inset-y-[12%]">
-                    <Image
-                        src={project.image}
-                        alt=""
-                        fill
-                        sizes="100vw"
-                        className="object-cover"
-                        style={{ objectPosition: project.imagePosition }}
-                    />
-                </motion.div>
-            </HalftoneMask>
+            <motion.div style={{ y }} className="absolute inset-x-0 -inset-y-[12%]">
+                <Image
+                    src={project.image}
+                    alt=""
+                    fill
+                    sizes="100vw"
+                    className="object-cover"
+                    style={{ objectPosition: project.imagePosition }}
+                />
+            </motion.div>
+            {/* A page-coloured wash from the bottom left keeps the copy on a clean ground and
+                blends the art into the site; on phones it rises from below the art instead. */}
+            <div
+                aria-hidden
+                className="absolute inset-0 bg-[linear-gradient(to_top,rgb(var(--paper))_calc(100%-15rem),rgb(var(--paper)/0)_calc(100%-6rem))] sm:bg-[linear-gradient(45deg,rgb(var(--paper))_36%,rgb(var(--paper)/0.8)_48%,rgb(var(--paper)/0)_70%)]"
+            />
 
             {/* On phones the art shows above the copy instead of behind it. */}
             <Container className="relative flex h-full items-center pb-10 pt-72 sm:items-end sm:pb-14 sm:pt-0">

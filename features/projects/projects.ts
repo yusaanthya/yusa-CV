@@ -23,7 +23,7 @@ export const PROJECTS: Project[] = [
         url: "https://www.zonewallet.io/",
         linkLabel: "zonewallet.io",
         image: "/images/projects/zone-wallet.webp",
-        imagePosition: "75% center",
+        imagePosition: "100% center",
     },
     {
         slug: "viverse-closet",
