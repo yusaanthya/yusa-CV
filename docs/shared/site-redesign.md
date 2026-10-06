@@ -56,20 +56,21 @@ Sora's overlapping contours show seams under a plain stroke, so the name uses a
 
 Projects (`/#projects`, replacing the missing `/portfolio` page): full-bleed
 panels with the key art as background and the copy shown directly, without a
-card or dates. `HalftoneFade` lays a page-coloured screen over the art, fixed
-to the panel so the art parallaxes behind it, and drawn in `--paper`, so it
-follows light/dark. It works like a silkscreen tone: every dot is the same size
-on a hexagonal grid, and tone comes only from density, via an 8×8 Bayer ordered
-threshold (random placement clumped; a square grid left cross-shaped gaps).
+card or dates. `MosaicFade` turns the art itself into a round-tile mosaic
+under a curve sketched by the owner: a canvas samples the art's average colour
+per hexagonal cell (by downscaling it with the same object-fit/position), lays
+the page colour cell by cell (so the edge is stepped like tiles, not a smooth
+cut), and draws an equal-size round tile in the sampled colour. Tone fades by
+tile density only (8×8 Bayer threshold): dense at the curve, thinning over
+240px, and to none within 60px of the copy, which therefore sits on the plain
+page colour. The canvas is fixed to the panel and redraws on parallax, resize
+and appearance changes, so tiles recolour live as the art moves beneath.
 
-- Desktop: the screen fills the area under a curve (sketched by the owner) that
-  rises slightly from the left edge, passes above the title and sweeps down to
-  the bottom right. Density ramps from 0 at the curve to 96% over 100px, so
-  there is no solid area and the gradient stays at the edge. The curve's left
-  part is anchored to the copy so the band always ends above the title.
-  Measured coverage behind the copy: title 80–89%, summary 96–97%.
-- Phones: the copy spans the full width, so the screen fades upwards from just
-  above it onto a solid page-coloured block.
+- Desktop: the curve rises slightly from the left edge, passes 90px above the
+  title (anchored to the copy) and sweeps down to the bottom right.
+- Phones: the mosaic is a band above the full-width copy.
+- Earlier passes (page-coloured dot screens over the art) were rejected: they
+  read as a stencil, not a mosaic.
 
 Key art is the 2000px source at WebP quality 92. Parallax overscan is kept to
 12% (±9% travel) because every extra percent enlarges the image and softens it

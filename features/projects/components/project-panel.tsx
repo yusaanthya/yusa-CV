@@ -8,7 +8,7 @@ import { Container } from "@/features/ui/components/container";
 import { ScrollLag } from "@/features/ui/components/scroll-lag";
 import { TagList } from "@/features/ui/components/tag-list";
 import { Project } from "../projects";
-import { HalftoneFade } from "./halftone-fade";
+import { MosaicFade } from "./mosaic-fade";
 
 interface ProjectPanelProps {
     project: Project;
@@ -17,6 +17,7 @@ interface ProjectPanelProps {
 export function ProjectPanel({ project }: ProjectPanelProps) {
     const ref = useRef<HTMLElement>(null);
     const textRef = useRef<HTMLDivElement>(null);
+    const layerRef = useRef<HTMLDivElement>(null);
     const shouldReduce = useReducedMotion();
     const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
     // The key art drifts slower than the page. The overscan is kept small because every
@@ -29,7 +30,7 @@ export function ProjectPanel({ project }: ProjectPanelProps) {
             aria-labelledby={`${project.slug}-title`}
             className="relative overflow-hidden sm:h-[min(84vh,46rem)] sm:min-h-[32rem]"
         >
-            <motion.div style={{ y }} className="absolute inset-x-0 -inset-y-[12%]">
+            <motion.div ref={layerRef} style={{ y }} className="absolute inset-x-0 -inset-y-[12%]">
                 <Image
                     src={project.image}
                     alt=""
@@ -40,15 +41,21 @@ export function ProjectPanel({ project }: ProjectPanelProps) {
                 />
             </motion.div>
 
-            {/* Fixed to the panel, not the art, so the image moves behind a halftone screen. */}
-            <HalftoneFade containerRef={ref} textRef={textRef} />
+            {/* Fixed to the panel: the art turns into round mosaic tiles that thin out
+                towards the copy, recoloured live as the art parallaxes beneath. */}
+            <MosaicFade
+                containerRef={ref}
+                textRef={textRef}
+                layerRef={layerRef}
+                imageSrc={project.image}
+                imagePosition={project.imagePosition}
+                parallax={y}
+            />
 
             {/* On phones the art shows above the copy instead of behind it. */}
             <Container className="relative flex h-full items-center pb-10 pt-72 sm:items-end sm:pb-14 sm:pt-0">
                 <ScrollLag className="w-full max-w-lg">
-                    {/* Past the solid corner the copy sits over the dot screen; a page-coloured
-                        halo keeps it legible where the dots thin out. */}
-                    <div ref={textRef} className="sm:[text-shadow:0_0_2px_rgb(var(--paper)),0_0_8px_rgb(var(--paper))]">
+                    <div ref={textRef}>
                         <p className="text-sm font-semibold tracking-wide text-ink">{project.org}</p>
                         <h3 id={`${project.slug}-title`} className="mt-2 font-display text-4xl leading-tight tracking-[-0.03em] sm:text-5xl">
                             {project.title}
