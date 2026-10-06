@@ -44,9 +44,11 @@ export function ProjectPanel({ project }: ProjectPanelProps) {
             <HalftoneFade containerRef={ref} textRef={textRef} />
 
             {/* On phones the art shows above the copy instead of behind it. */}
-            <Container className="relative flex h-full items-center pb-10 pt-72 sm:py-0">
+            <Container className="relative flex h-full items-center pb-10 pt-72 sm:items-end sm:pb-14 sm:pt-0">
                 <ScrollLag className="w-full max-w-lg">
-                    <div ref={textRef}>
+                    {/* Past the solid corner the copy sits over the dot screen; a page-coloured
+                        halo keeps it legible where the dots thin out. */}
+                    <div ref={textRef} className="sm:[text-shadow:0_0_2px_rgb(var(--paper)),0_0_8px_rgb(var(--paper))]">
                         <p className="text-sm font-semibold tracking-wide text-mute">{project.org}</p>
                         <h3 id={`${project.slug}-title`} className="mt-2 font-display text-4xl leading-tight tracking-[-0.03em] sm:text-5xl">
                             {project.title}

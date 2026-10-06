@@ -56,11 +56,19 @@ Sora's overlapping contours show seams under a plain stroke, so the name uses a
 
 Projects (`/#projects`, replacing the missing `/portfolio` page): full-bleed
 panels with the key art as background and the copy shown directly, without a
-card or dates. `HalftoneFade` cuts a page-coloured "hole" behind the copy that
-dissolves into the art as a halftone screen (solid behind the text, dots
-shrinking over ~280px on desktop / ~150px on phones), measured from the copy's
-position with a `ResizeObserver`. The screen is fixed to the panel so the art
-parallaxes behind it, and it uses `--paper`, so it follows light/dark.
+card or dates. `HalftoneFade` cuts a page-coloured "hole" that dissolves into
+the art as a halftone screen, fixed to the panel so the art parallaxes behind
+it, and drawn in `--paper`, so it follows light/dark.
+
+- Desktop: a 45° screen from the bottom-left corner. The solid corner is an
+  isosceles right triangle covering 10% of the panel; dots then shrink
+  (`1 − t^1.5`) over a band of φ^1.5 × the triangle's leg. The band and profile
+  were chosen by simulating art exposure against coverage behind the copy at
+  1024–1600px: ~52–56% of the art stays visible while the summary keeps 84–91%
+  coverage and the title 61–68% (measured in the browser). The copy sits
+  bottom-left with a small page-coloured halo for the sparser dots.
+- Phones: the copy spans the full width, so a 10% diagonal corner cannot hold
+  it; the screen fades upwards from just above the copy instead.
 
 Key art is the 2000px source at WebP quality 92. Parallax overscan is kept to
 12% (±9% travel) because every extra percent enlarges the image and softens it

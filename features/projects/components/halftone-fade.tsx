@@ -11,21 +11,33 @@ interface HalftoneFadeProps {
 interface Geometry {
     width: number;
     height: number;
-    horizontal: boolean;
+    diagonal: boolean;
+    // Phones only: where the solid block under the copy begins.
     edge: number;
 }
 
-const SPACING = 12;
+const SPACING = 13;
 // Dots start overlapping (solid) and shrink to nothing across the band.
 const MAX_RADIUS = SPACING * 0.72;
-const BAND_DESKTOP = 280;
+const GOLDEN = (1 + Math.sqrt(5)) / 2;
+// Desktop: the solid corner covers ~10% of the panel; the dot band runs φ^1.5 times its leg.
+// Chosen by simulating art exposure against coverage behind the copy at 1024–1600px:
+// ~52–56% of the art stays visible while the summary keeps ~85–91% coverage (the title,
+// set larger, ~62–68% plus a halo). φ² covered too much art; φ left the summary thin.
+const SOLID_AREA = 0.1;
+const BAND_RATIO = Math.pow(GOLDEN, 1.5);
 const BAND_MOBILE = 150;
 const TEXT_GAP = 32;
 
+// Holds dots large near the solid area and tapers late, so the screen stays dense
+// behind the copy before thinning out into the art.
+const radiusAt = (t: number) => MAX_RADIUS * (1 - Math.pow(t, 1.5));
+
 /**
- * A page-coloured "hole" behind the project copy that dissolves into the key art as a
- * halftone screen: solid behind the text, then dots that shrink towards the art.
- * Desktop fades rightwards from the text; phones fade upwards because the art sits above.
+ * A page-coloured "hole" that dissolves into the key art as a halftone screen.
+ * Desktop: a 45° screen from the bottom-left corner — a solid corner of ~10% of the panel,
+ * then dots that shrink over a golden-ratio band. Phones: the copy spans the full width,
+ * so the screen fades upwards from just above it instead.
  */
 export function HalftoneFade({ containerRef, textRef }: HalftoneFadeProps) {
     const [geometry, setGeometry] = useState<Geometry | null>(null);
@@ -40,12 +52,11 @@ export function HalftoneFade({ containerRef, textRef }: HalftoneFadeProps) {
         const measure = () => {
             const box = container.getBoundingClientRect();
             const copy = text.getBoundingClientRect();
-            const horizontal = box.width >= 640;
             setGeometry({
                 width: box.width,
                 height: box.height,
-                horizontal,
-                edge: horizontal ? copy.right - box.left + TEXT_GAP : copy.top - box.top - TEXT_GAP,
+                diagonal: box.width >= 640,
+                edge: copy.top - box.top - TEXT_GAP,
             });
         };
 
@@ -61,41 +72,54 @@ export function HalftoneFade({ containerRef, textRef }: HalftoneFadeProps) {
         return (
             <div
                 aria-hidden
-                className="absolute inset-0 bg-[linear-gradient(to_top,rgb(var(--paper))_55%,transparent_75%)] sm:bg-[linear-gradient(to_right,rgb(var(--paper))_55%,transparent_75%)]"
+                className="absolute inset-0 bg-[linear-gradient(to_top,rgb(var(--paper))_55%,transparent_75%)] sm:bg-[linear-gradient(45deg,rgb(var(--paper))_30%,transparent_60%)]"
             />
         );
     }
 
-    const { width, height, horizontal, edge } = geometry;
-    const band = horizontal ? BAND_DESKTOP : BAND_MOBILE;
+    const { width, height, diagonal, edge } = geometry;
     const dots: JSX.Element[] = [];
-    const along = horizontal ? height : width;
 
-    for (let step = 0; step * SPACING < band; step++) {
-        const t = (step * SPACING) / band;
-        const r = MAX_RADIUS * Math.pow(1 - t, 1.3);
-        if (r < 0.6) break;
-        // Offset alternate rows for a classic diagonal screen.
-        for (let j = 0; j * SPACING < along + SPACING; j++) {
-            const across = j * SPACING + (step % 2 ? SPACING / 2 : 0);
-            const main = horizontal ? edge + step * SPACING : edge - step * SPACING;
-            const [cx, cy] = horizontal ? [main, across] : [across, main];
-            dots.push(<circle key={`${step}-${j}`} cx={cx} cy={cy} r={r} />);
+    if (diagonal) {
+        // Distance from the bottom-left corner measured along the 45° axis, in "leg" units
+        // (x + distance from the bottom), so the solid corner is an isosceles right triangle.
+        const solidLeg = Math.sqrt(2 * SOLID_AREA * width * height);
+        const band = solidLeg * BAND_RATIO;
+        for (let row = 0; row * SPACING < height + SPACING; row++) {
+            const cy = height - row * SPACING;
+            const shift = row % 2 ? SPACING / 2 : 0;
+            for (let col = 0; col * SPACING < width + SPACING; col++) {
+                const cx = col * SPACING + shift;
+                const leg = cx + (height - cy);
+                // Start one row inside the solid corner so dots overlap its edge; otherwise
+                // the anti-aliased hypotenuse leaves slivers of art showing through.
+                if (leg < solidLeg - SPACING) continue;
+                const t = Math.max(0, (leg - solidLeg) / band);
+                if (t >= 1) break;
+                const r = radiusAt(t);
+                if (r < 0.6) break;
+                dots.push(<circle key={`${row}-${col}`} cx={cx} cy={cy} r={r} />);
+            }
         }
+        return (
+            <svg aria-hidden width={width} height={height} className="absolute inset-0 fill-paper">
+                <polygon points={`0,${height - solidLeg} 0,${height} ${solidLeg},${height}`} />
+                {dots}
+            </svg>
+        );
     }
 
+    for (let step = 0; step * SPACING < BAND_MOBILE; step++) {
+        const r = radiusAt((step * SPACING) / BAND_MOBILE);
+        if (r < 0.6) break;
+        for (let col = 0; col * SPACING < width + SPACING; col++) {
+            const cx = col * SPACING + (step % 2 ? SPACING / 2 : 0);
+            dots.push(<circle key={`${step}-${col}`} cx={cx} cy={edge - step * SPACING} r={r} />);
+        }
+    }
     return (
-        <svg
-            aria-hidden
-            width={width}
-            height={height}
-            className="absolute inset-0 fill-paper"
-        >
-            {horizontal ? (
-                <rect x={0} y={0} width={Math.max(edge, 0)} height={height} />
-            ) : (
-                <rect x={0} y={Math.max(edge, 0)} width={width} height={Math.max(height - edge, 0)} />
-            )}
+        <svg aria-hidden width={width} height={height} className="absolute inset-0 fill-paper">
+            <rect x={0} y={Math.max(edge, 0)} width={width} height={Math.max(height - edge, 0)} />
             {dots}
         </svg>
     );
