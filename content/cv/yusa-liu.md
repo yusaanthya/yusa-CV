@@ -18,6 +18,7 @@ Mar 2026 - Present | Taipei / Remote
 - Drove adoption of pre-refinement technical review and capacity planning across an 18-person engineering, QA, and product team, partnering with the engineering manager to help the team prioritize ready work, identify blockers, and defer unresolved tickets before sprint commitments.
 - Implemented corporate redemption review and refund flows within an existing transactional outbox, keeping state, audit logs, and events atomic; separated eligibility failures from retryable infrastructure errors and resolved duplicate-deposit precedence, validated by 30 eligibility integration tests.
 - Built a Go/Pub/Sub reminder pipeline reused by two campaigns, combining cancellation-aware publisher rate limiting, persistent send-history deduplication, and explicit retry boundaries to throttle publishing and suppress repeat sends without retrying successful sends solely on recording failures.
+- Improved payment-page availability by moving slow external calendar lookups off the request path into a validated Redis last-known-good snapshot with bounded fail-open enrichment.
 
 ### Software Engineer - HTC VIVERSE
 
@@ -27,6 +28,7 @@ Nov 2022 - Dec 2024 | Taipei
 - Developed and maintained the Go/Gin avatar service within a 100+ microservice ecosystem, applying layered design and mockable repository interfaces for business-logic testing while preserving backward-compatible contracts through OpenAPI and semantic versioning.
 - Redefined Closet 2.0's avatar, asset, and ownership boundaries to separate mutable editor state from reusable assets and inventory ownership, helping deliver the release in 8 months against an original 2-year plan.
 - Built a shared SNS/SQS and Lambda event-handling package adopted by two business units, replacing duplicated handlers and removing approximately 800 lines of repeated code.
+- Prototyped backend avatar assembly and texture optimization using Kubernetes jobs, Node.js, and Basisu/KTX2, reducing texture storage by 30-70% and increasing supported texture resolution from 512x512 to 2K (16x the pixel count) while preserving existing service compatibility.
 
 ## Projects
 
@@ -41,6 +43,11 @@ Aug 2026
 Dec 2024 - Mar 2026
 
 - Built a Go concurrency simulator modeling heartbeat-based failure detection, vote-based member removal, and leader reselection, with injectable timing and messaging interfaces for node-failure and insufficient-vote tests.
+
+## Selected Achievements
+
+- VIVERSE Avatar Closet 2.0 showcased at **MWC 2024**.
+- Diablo II: Resurrected launch campaign drove 400,000+ launch-day engagements before transitioning into software engineering.
 
 ## Skills
 
