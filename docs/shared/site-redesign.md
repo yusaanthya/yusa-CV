@@ -67,6 +67,11 @@ it, and drawn in `--paper`, so it follows light/dark.
   1024–1600px: ~52–56% of the art stays visible while the summary keeps 84–91%
   coverage and the title 61–68% (measured in the browser). The copy sits
   bottom-left with a small page-coloured halo for the sparser dots.
+- Dots are 70% opaque so ~30% of the art reads through, except around the copy:
+  within 24px of it they stay opaque, easing to 70% over 140px (smoothstep).
+  A uniform 70% let the art's own lettering ("Join us!") ghost through behind
+  the summary; a hard-edged opaque box recreated the card. Project copy uses
+  full `ink` instead of `mute` for the extra contrast over the blended screen.
 - Phones: the copy spans the full width, so a 10% diagonal corner cannot hold
   it; the screen fades upwards from just above the copy instead.
 

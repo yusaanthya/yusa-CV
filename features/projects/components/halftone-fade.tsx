@@ -14,6 +14,8 @@ interface Geometry {
     diagonal: boolean;
     // Phones only: where the solid block under the copy begins.
     edge: number;
+    // Desktop only: the copy's box within the panel, padded; dots inside stay opaque.
+    copyBox: { left: number; top: number; right: number; bottom: number };
 }
 
 const SPACING = 13;
@@ -28,6 +30,19 @@ const SOLID_AREA = 0.1;
 const BAND_RATIO = Math.pow(GOLDEN, 1.5);
 const BAND_MOBILE = 150;
 const TEXT_GAP = 32;
+// Away from the copy, dots let ~30% of the art read through. Within the copy's reach they
+// stay opaque: at 70% the key art's own lettering (e.g. "Join us!") ghosted through behind
+// the summary and competed with it.
+const SCREEN_OPACITY = 0.7;
+const COPY_PADDING = 24;
+// Opacity eases from 1 to SCREEN_OPACITY over this distance outside the copy, so the
+// opaque area never reads as a box (a hard edge recreated the card it replaced).
+const COPY_FEATHER = 140;
+
+const smoothstep = (x: number) => {
+    const t = Math.min(Math.max(x, 0), 1);
+    return t * t * (3 - 2 * t);
+};
 
 // Holds dots large near the solid area and tapers late, so the screen stays dense
 // behind the copy before thinning out into the art.
@@ -57,6 +72,12 @@ export function HalftoneFade({ containerRef, textRef }: HalftoneFadeProps) {
                 height: box.height,
                 diagonal: box.width >= 640,
                 edge: copy.top - box.top - TEXT_GAP,
+                copyBox: {
+                    left: copy.left - box.left - COPY_PADDING,
+                    top: copy.top - box.top - COPY_PADDING,
+                    right: copy.right - box.left + COPY_PADDING,
+                    bottom: copy.bottom - box.top + COPY_PADDING,
+                },
             });
         };
 
@@ -77,7 +98,7 @@ export function HalftoneFade({ containerRef, textRef }: HalftoneFadeProps) {
         );
     }
 
-    const { width, height, diagonal, edge } = geometry;
+    const { width, height, diagonal, edge, copyBox } = geometry;
     const dots: JSX.Element[] = [];
 
     if (diagonal) {
@@ -98,7 +119,11 @@ export function HalftoneFade({ containerRef, textRef }: HalftoneFadeProps) {
                 if (t >= 1) break;
                 const r = radiusAt(t);
                 if (r < 0.6) break;
-                dots.push(<circle key={`${row}-${col}`} cx={cx} cy={cy} r={r} />);
+                const dx = Math.max(copyBox.left - cx, 0, cx - copyBox.right);
+                const dy = Math.max(copyBox.top - cy, 0, cy - copyBox.bottom);
+                const fromCopy = Math.hypot(dx, dy);
+                const opacity = 1 - (1 - SCREEN_OPACITY) * smoothstep(fromCopy / COPY_FEATHER);
+                dots.push(<circle key={`${row}-${col}`} cx={cx} cy={cy} r={r} fillOpacity={opacity} />);
             }
         }
         return (
@@ -114,7 +139,9 @@ export function HalftoneFade({ containerRef, textRef }: HalftoneFadeProps) {
         if (r < 0.6) break;
         for (let col = 0; col * SPACING < width + SPACING; col++) {
             const cx = col * SPACING + (step % 2 ? SPACING / 2 : 0);
-            dots.push(<circle key={`${step}-${col}`} cx={cx} cy={edge - step * SPACING} r={r} />);
+            dots.push(
+                <circle key={`${step}-${col}`} cx={cx} cy={edge - step * SPACING} r={r} fillOpacity={SCREEN_OPACITY} />,
+            );
         }
     }
     return (

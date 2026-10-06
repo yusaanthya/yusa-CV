@@ -49,13 +49,13 @@ export function ProjectPanel({ project }: ProjectPanelProps) {
                     {/* Past the solid corner the copy sits over the dot screen; a page-coloured
                         halo keeps it legible where the dots thin out. */}
                     <div ref={textRef} className="sm:[text-shadow:0_0_2px_rgb(var(--paper)),0_0_8px_rgb(var(--paper))]">
-                        <p className="text-sm font-semibold tracking-wide text-mute">{project.org}</p>
+                        <p className="text-sm font-semibold tracking-wide text-ink">{project.org}</p>
                         <h3 id={`${project.slug}-title`} className="mt-2 font-display text-4xl leading-tight tracking-[-0.03em] sm:text-5xl">
                             {project.title}
                         </h3>
                         <div aria-hidden className="rule mt-6 w-24 text-accent" />
-                        <p className="mt-6 leading-relaxed text-mute">{project.summary}</p>
-                        <TagList tags={project.tags} className="mt-5" />
+                        <p className="mt-6 leading-relaxed text-ink">{project.summary}</p>
+                        <TagList tags={project.tags} className="mt-5 [&>li]:border-ink/40 [&>li]:text-ink" />
 
                         <ScrollLag className="mt-8">
                             <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn-rollover">
