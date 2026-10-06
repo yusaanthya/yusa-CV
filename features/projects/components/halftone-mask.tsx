@@ -20,15 +20,17 @@ const GOLDEN = (1 + Math.sqrt(5)) / 2;
 const CLEAR_AREA = 0.1;
 const BAND_RATIO = Math.pow(GOLDEN, 1.5);
 const MOBILE_BAND = 170;
-const TEXT_GAP = 32;
-// Near the copy, tone is held down along the same 45° axis (never by distance to its box,
-// which drew a visible rectangle), so the screen stays one smooth diagonal gradient.
+// Near the copy, tone is capped along the same 45° axis (never by distance to its box,
+// which drew a visible rectangle). Dots stay behind the text but small enough that the
+// art's own lettering cannot compete with it.
 const COPY_FEATHER = 240;
+const COPY_TONE_FLOOR = 0.12;
 
 const smoothstep = (x: number) => {
     const t = Math.min(Math.max(x, 0), 1);
     return t * t * (3 - 2 * t);
 };
+const TEXT_GAP = 32;
 
 export function HalftoneMask({ containerRef, textRef, children }: HalftoneMaskProps) {
     const [mask, setMask] = useState<string | null>(null);
@@ -76,7 +78,10 @@ export function HalftoneMask({ containerRef, textRef, children }: HalftoneMaskPr
                     if (x < -SPACING || x > w + SPACING || y < -SPACING || y > h + SPACING) continue;
                     let t = tone(x, y);
                     if (t <= 0 || t >= 1.05) continue;
-                    if (desktop) t *= smoothstep((x + (h - y) - copyLeg + COPY_FEATHER * 0.65) / COPY_FEATHER);
+                    if (desktop) {
+                        const away = smoothstep((x + (h - y) - copyLeg + COPY_FEATHER * 0.5) / COPY_FEATHER);
+                        t = Math.min(t, COPY_TONE_FLOOR + (1 - COPY_TONE_FLOOR) * away);
+                    }
                     // Dot area is proportional to tone, so the radius follows its square root.
                     const r = FULL_RADIUS * Math.sqrt(Math.min(t, 1));
                     if (r < 0.35) continue;

@@ -67,9 +67,12 @@ panel, so the art parallaxes behind the screen.
 - Desktop: tone rises along the 45° axis from the bottom-left corner. The clear
   corner covers 10% of the panel; tone then reaches full over φ^1.5 × that
   corner's leg, and beyond it the mask is one solid polygon. Near the copy,
-  tone is held down along the same 45° axis, measured from the copy's top-right
-  corner over 240px, so the screen stays one smooth diagonal gradient. (Fading
-  by distance to the copy's box drew a visible rectangle.)
+  tone is capped at 12% along the same 45° axis (measured from the copy's
+  top-right corner, easing out over 240px), so small dots stay behind the text
+  and the screen remains one smooth diagonal gradient. Fading by distance to the
+  copy's box drew a visible rectangle; no cap, or a 30% cap, let the art's own
+  lettering compete with the title (45–68% of title pixels under 4.5:1 in dark
+  mode). At 12%: 6–17% of sampled pixels behind the copy fall under 4.5:1.
 - Phones: tone rises upwards from just above the full-width copy.
 - Rejected passes: page-coloured dot screens over the art (read as a stencil)
   and a sampled-colour tile mosaic (not the silkscreen look wanted).
