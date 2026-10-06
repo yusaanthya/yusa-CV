@@ -29,19 +29,23 @@ export default async function BlogPostPage({ params }: Props) {
     const htmlContent = await markdownToHtml(post.content);
 
     return (
-        <Container className="py-16 sm:py-20">
-            <article className="prose prose-game max-w-none">
-                <header className="not-prose mb-12">
+        <Container className="py-12 sm:py-16">
+            <article className="mx-auto max-w-3xl">
+                <header className="mb-12 max-w-[68ch]">
                     <time dateTime={post.date} className="text-sm text-mute">
                         {formatDate(post.date)}
                     </time>
-                    <h1 className="mt-2 font-display text-4xl leading-tight sm:text-5xl">
+                    <h1 className="mt-2 font-serif text-5xl leading-[1.05] tracking-[-0.02em] sm:text-6xl">
                         {post.title}
                     </h1>
                     <TagList tags={post.tags} className="mt-5" />
+                    <div aria-hidden className="rule mt-8 text-ink" />
                 </header>
 
-                <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+                <div
+                    className="prose prose-site"
+                    dangerouslySetInnerHTML={{ __html: htmlContent }}
+                />
             </article>
         </Container>
     );

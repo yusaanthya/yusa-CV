@@ -6,25 +6,29 @@
 
 @layer base {
   :root {
-    --paper: 243 241 250;
-    --panel: 233 230 245;
-    --ink: 34 32 74;
-    --mute: 94 90 134;
-    --haze: 201 196 230;
-    --marker: 255 212 71;
-    --pop: 255 90 135;
-    --on-accent: 34 32 74;
-    --font-cjk: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    --paper: 246 245 248;
+    --surface: 255 255 255;
+    --ink: 30 26 36;
+    --mute: 98 91 107;
+    --line: 216 212 222;
+    --accent: 196 30 58;
+    --on-accent: 255 255 255;
+    --plum: 110 44 85;
+    --font-cjk-serif: "Songti TC", "Noto Serif TC", "PMingLiU", serif;
+    --font-cjk-sans: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
     color-scheme: light;
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: 26 24 56;
-      --panel: 37 35 82;
-      --ink: 243 241 250;
-      --mute: 178 173 214;
-      --haze: 66 62 120;
+      --paper: 20 18 24;
+      --surface: 28 25 34;
+      --ink: 238 235 242;
+      --mute: 169 162 179;
+      --line: 58 53 66;
+      --accent: 255 95 115;
+      --on-accent: 20 18 24;
+      --plum: 201 138 180;
       color-scheme: dark;
     }
   }
@@ -34,174 +38,220 @@
   }
 
   ::selection {
-    @apply bg-marker text-on-accent;
+    @apply bg-accent text-on-accent;
   }
 
   :focus-visible {
-    outline: 3px solid rgb(var(--ink));
+    outline: 2px solid rgb(var(--accent));
     outline-offset: 3px;
-    border-radius: 6px;
+    border-radius: 4px;
+  }
+
+  /* Display type tightens as it grows; small text stays near zero. */
+  .font-serif {
+    letter-spacing: -0.015em;
   }
 }
 
 @layer components {
-  /* Game-menu cursor: a skewed marker slab that slides in behind the label. */
-  .menu-cursor {
-    @apply relative isolate;
+  /* Signature ornament: a hairline with diamond terminals. Color follows currentColor. */
+  .rule {
+    position: relative;
+    height: 1px;
+    margin-inline: 4px;
+    background: currentColor;
   }
 
-  .menu-cursor::before {
+  .rule::before,
+  .rule::after {
     content: "";
     position: absolute;
-    inset: 0.15em -0.45em;
-    z-index: -1;
-    background: rgb(var(--marker));
-    transform: skewX(-12deg) scaleX(0);
-    transform-origin: left center;
-    transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    background: currentColor;
+    transform: translate(-50%, -50%) rotate(45deg);
   }
 
-  .menu-cursor:hover::before,
-  .menu-cursor:focus-visible::before,
-  a:hover > .menu-cursor::before,
-  a:focus-visible > .menu-cursor::before,
-  .menu-cursor[aria-current="page"]::before {
-    transform: skewX(-12deg) scaleX(1);
+  .rule::before {
+    left: 0;
   }
 
-  .menu-cursor:hover,
-  .menu-cursor:focus-visible,
-  a:hover > .menu-cursor,
-  a:focus-visible > .menu-cursor,
-  .menu-cursor[aria-current="page"] {
-    @apply text-on-accent;
+  .rule::after {
+    left: 100%;
   }
 
-  .menu-cursor:focus-visible {
-    outline: none;
+  .btn {
+    @apply inline-flex min-h-12 items-center justify-center rounded border px-6 font-medium;
+    transition: transform 100ms ease-out, background-color 150ms ease-out, color 150ms ease-out;
   }
 
-  /* The home page's single load sequence: slab sweeps in, then content rises. */
-  .intro-slab {
-    transform-origin: left center;
-    animation: slab-in 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  /* Feedback lands on press, not on release. */
+  .btn:active {
+    transform: scale(0.97);
   }
 
-  .intro-rise {
-    animation: rise-in 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  .btn-primary {
+    @apply border-accent bg-accent text-on-accent hover:border-plum hover:bg-plum;
+  }
+
+  .btn-secondary {
+    @apply border-ink text-ink hover:bg-ink hover:text-paper;
+  }
+
+  .intro-fade {
+    animation: intro-fade 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
     animation-delay: var(--d, 0ms);
   }
 
-  @keyframes slab-in {
-    from { transform: skewX(-12deg) scaleX(0); }
-    to { transform: skewX(-12deg) scaleX(1); }
+  @keyframes intro-fade {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
   }
 
-  @keyframes rise-in {
-    from { opacity: 0; transform: translateY(14px); }
-  }
-
-  .halftone {
-    background-image: radial-gradient(rgb(var(--haze)) 1.3px, transparent 1.6px);
-    background-size: 14px 14px;
-  }
-
-  .prose-game {
+  .prose-site {
     --tw-prose-body: rgb(var(--ink));
     --tw-prose-headings: rgb(var(--ink));
     --tw-prose-lead: rgb(var(--mute));
     --tw-prose-links: rgb(var(--ink));
     --tw-prose-bold: rgb(var(--ink));
     --tw-prose-counters: rgb(var(--mute));
-    --tw-prose-bullets: rgb(var(--pop));
-    --tw-prose-hr: rgb(var(--haze));
+    --tw-prose-bullets: rgb(var(--accent));
+    --tw-prose-hr: rgb(var(--line));
     --tw-prose-quotes: rgb(var(--ink));
-    --tw-prose-quote-borders: rgb(var(--marker));
+    --tw-prose-quote-borders: rgb(var(--accent));
     --tw-prose-captions: rgb(var(--mute));
     --tw-prose-code: rgb(var(--ink));
-    --tw-prose-pre-code: #e6e4f5;
-    --tw-prose-pre-bg: #100e26;
-    --tw-prose-th-borders: rgb(var(--haze));
-    --tw-prose-td-borders: rgb(var(--haze));
+    --tw-prose-pre-code: #e6e4ec;
+    --tw-prose-pre-bg: #17141c;
+    --tw-prose-th-borders: rgb(var(--line));
+    --tw-prose-td-borders: rgb(var(--line));
     font-size: 1.0625rem;
-    line-height: 1.65;
+    /* Posts mix CJK and Latin; CJK needs the extra leading. */
+    line-height: 1.75;
+    /* Keep the measure under ~70 characters. */
+    max-width: 68ch;
   }
 
-  .prose-game :where(h1, h2, h3):not(:where(.not-prose *)) {
-    @apply font-display font-normal tracking-normal;
+  .prose-site :where(h1, h2, h3):not(:where(.not-prose *)) {
+    @apply font-serif font-normal;
   }
 
-  .prose-game h1 {
-    font-size: clamp(2.25rem, 6vw, 3.5rem);
-    line-height: 1.1;
-    margin-bottom: 0.5em;
+  .prose-site h1 {
+    font-size: clamp(2.5rem, 6vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4em;
   }
 
-  /* Section headings read like tabs in a game's status screen. */
-  .prose-game h2 {
-    @apply inline-block bg-ink text-paper;
-    font-size: 1.3rem;
-    padding: 0.2em 0.8em;
-    margin-top: 2.2em;
-    transform: skewX(-8deg);
+  /* Section headings run into a hairline that ends in a diamond. */
+  .prose-site h2 {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.85rem;
+    line-height: 1.2;
+    margin-top: 2.4em;
   }
 
-  .prose-game hr + h2 {
-    margin-top: 0;
+  .prose-site h2::before {
+    content: "";
+    order: 2;
+    flex: 1;
+    height: 1px;
+    background: rgb(var(--ink));
   }
 
-  .prose-game h3 {
-    font-size: 1.4rem;
+  .prose-site h2::after {
+    content: "";
+    order: 3;
+    width: 7px;
+    height: 7px;
+    margin-left: -1.2rem;
+    background: rgb(var(--ink));
+    transform: rotate(45deg);
+  }
+
+  .prose-site h3 {
+    font-size: 1.5rem;
+    line-height: 1.25;
     margin-top: 1.8em;
   }
 
-  .prose-game hr {
-    border-top: 2px dashed rgb(var(--haze));
-    margin: 2.5em 0;
+  .prose-site hr {
+    margin: 2.25em 0;
   }
 
-  .prose-game :where(ul):not(:where(.not-prose *)) > li::marker {
+  /* Section headings already draw their own rule, so skip the markdown hr before them. */
+  .prose-site hr:has(+ h2) {
+    display: none;
+  }
+
+  .prose-site :where(ul):not(:where(.not-prose *)) > li::marker {
     content: "◆  ";
-    font-size: 0.7em;
+    font-size: 0.6em;
   }
 
-  .prose-game a {
-    text-decoration-color: rgb(var(--pop));
-    text-decoration-thickness: 2px;
-    text-underline-offset: 3px;
+  .prose-site a {
+    text-decoration-color: rgb(var(--accent));
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
   }
 
-  .prose-game a:hover {
-    @apply bg-marker text-on-accent;
+  .prose-site a:hover {
+    @apply text-accent;
   }
 
-  .prose-game :not(pre) > code {
-    @apply bg-panel rounded-md px-1.5 py-0.5 font-normal;
+  .prose-site :not(pre) > code {
+    @apply rounded border border-line bg-surface px-1.5 py-0.5 font-normal;
   }
 
-  .prose-game :not(pre) > code::before,
-  .prose-game :not(pre) > code::after {
+  .prose-site :not(pre) > code::before,
+  .prose-site :not(pre) > code::after {
     content: none;
   }
 
-  .prose-game pre {
-    border: 2px solid rgb(var(--haze));
-    border-radius: 14px;
+  .prose-site pre {
+    border: 1px solid rgb(var(--line));
+    border-radius: 6px;
   }
 
-  .prose-game pre code.hljs {
+  .prose-site pre code.hljs {
     background: transparent;
     padding: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  /* Keep a gentle cross-fade; drop movement and scaling. */
+  .intro-fade {
+    animation-name: intro-fade-reduced;
+  }
+
+  @keyframes intro-fade-reduced {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .btn:active {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-header {
+    background: rgb(var(--paper));
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --mute: var(--ink);
+    --line: var(--ink);
   }
 }
 
@@ -216,18 +266,16 @@
     color: black;
   }
 
-  .prose-game {
+  .cv-sheet {
+    border: none;
+    padding: 0;
+  }
+
+  .prose-site {
     --tw-prose-body: black;
     --tw-prose-headings: black;
     --tw-prose-bold: black;
     --tw-prose-links: black;
-  }
-
-  .prose-game h2 {
-    background: none;
-    color: black;
-    transform: none;
-    padding: 0;
-    border-bottom: 2px solid black;
+    max-width: none;
   }
 }

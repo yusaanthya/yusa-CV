@@ -10,17 +10,24 @@ interface PostCardProps {
 
 export function PostCard({ post, className }: PostCardProps) {
     return (
-        <article className={cn("relative py-7", className)}>
+        <article
+            className={cn(
+                "group relative border border-line bg-surface p-6 transition-[border-color,transform] duration-150",
+                "hover:border-ink active:scale-[0.99] motion-reduce:active:scale-100",
+                "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent",
+                className
+            )}
+        >
             <time dateTime={post.date} className="text-sm text-mute">
                 {formatDate(post.date)}
             </time>
-            <h2 className="mt-1 font-display text-2xl leading-snug">
-                {/* The stretched link makes the whole entry a single tap target. */}
+            <h2 className="mt-1 font-serif text-[1.75rem] leading-tight">
+                {/* The stretched link makes the whole frame a single tap target. */}
                 <Link
                     href={`/blog/${post.slug}`}
-                    className="after:absolute after:inset-0 focus-visible:outline-none"
+                    className="after:absolute after:inset-0 group-hover:text-accent focus-visible:outline-none"
                 >
-                    <span className="menu-cursor">{post.title}</span>
+                    {post.title}
                 </Link>
             </h2>
             <p className="mt-2 line-clamp-2 text-mute">{post.description}</p>

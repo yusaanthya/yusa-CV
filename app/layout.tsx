@@ -1,21 +1,19 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque } from "next/font/google";
-import localFont from "next/font/local";
+import { Instrument_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/features/ui/components/header";
 import { Footer } from "@/features/ui/components/footer";
 
-// Self-hosted latin subset (SIL OFL): next/font/google hashes this CJK font
-// differently on server and client, so the display variable never applied.
-const display = localFont({
-  src: "./fonts/dela-gothic-one-latin.woff2",
+const serif = Instrument_Serif({
   weight: "400",
-  variable: "--font-display",
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-serif",
 });
 
-const body = Bricolage_Grotesque({
+const sans = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-body",
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
@@ -29,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body>
         <div className="flex flex-col min-h-screen">
           <Header />

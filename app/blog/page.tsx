@@ -6,12 +6,13 @@ export default async function BlogPage() {
     const posts = await BlogService.getAllPosts();
 
     return (
-        <Container className="py-16 sm:py-20">
-            <div className="max-w-2xl">
-                <h1 className="mb-10 font-display text-5xl">Blog</h1>
-                <ul className="border-t-2 border-dashed border-haze">
+        <Container className="py-12 sm:py-16">
+            <div className="mx-auto max-w-3xl">
+                <h1 className="font-serif text-6xl leading-none tracking-[-0.02em]">Blog</h1>
+                <div aria-hidden className="rule mb-10 mt-6 text-ink" />
+                <ul className="flex flex-col gap-3">
                     {posts.map((post) => (
-                        <li key={post.slug} className="border-b-2 border-dashed border-haze">
+                        <li key={post.slug}>
                             <PostCard post={post} />
                         </li>
                     ))}

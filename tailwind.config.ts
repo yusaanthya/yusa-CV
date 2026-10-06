@@ -10,22 +10,21 @@ const config: Config = {
         extend: {
             colors: {
                 paper: "rgb(var(--paper) / <alpha-value>)",
-                panel: "rgb(var(--panel) / <alpha-value>)",
+                surface: "rgb(var(--surface) / <alpha-value>)",
                 ink: "rgb(var(--ink) / <alpha-value>)",
                 mute: "rgb(var(--mute) / <alpha-value>)",
-                haze: "rgb(var(--haze) / <alpha-value>)",
-                marker: "rgb(var(--marker) / <alpha-value>)",
-                pop: "rgb(var(--pop) / <alpha-value>)",
-                // Text placed on marker/pop fills stays dark in both themes.
+                line: "rgb(var(--line) / <alpha-value>)",
+                accent: "rgb(var(--accent) / <alpha-value>)",
                 "on-accent": "rgb(var(--on-accent) / <alpha-value>)",
+                plum: "rgb(var(--plum) / <alpha-value>)",
             },
             fontFamily: {
-                display: ["var(--font-display)", "var(--font-cjk)"],
-                sans: ["var(--font-body)", "var(--font-cjk)"],
+                serif: ["var(--font-serif)", "var(--font-cjk-serif)"],
+                sans: ["var(--font-sans)", "var(--font-cjk-sans)"],
             },
             fontSize: {
                 // Body follows Apple's 17pt default.
-                base: ["1.0625rem", { lineHeight: "1.6" }],
+                base: ["1.0625rem", { lineHeight: "1.65" }],
             },
         },
     },

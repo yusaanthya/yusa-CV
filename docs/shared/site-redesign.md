@@ -1,0 +1,63 @@
+# Site Redesign — Design Notes
+
+> **Created:** 2026-10-07
+> **Status:** Implemented on `feat/yusa_liu/indie-redesign`
+> **Replaces:** the "Minimal + Typography" look from `proposal.md` (UI Refinement)
+
+## Brief
+
+Modern, elegant serif typography (the first pass with Dela Gothic One read as
+too playful). Reference: the owner's earlier e-book site, keeping its hairline
+frames and crisp serif headings, not its wine-red palette. The owner's painted
+self-portrait is the main visual asset. UX follows Apple's HIG; human-factors
+problems are fixed directly.
+
+## Tokens
+
+Palette is sampled from the portrait (hair, skirt, shadow) and cooled down.
+
+| Token | Light | Dark | Role |
+|---|---|---|---|
+| `paper` | `#F6F5F8` | `#141218` | page background |
+| `surface` | `#FFFFFF` | `#1C1922` | framed sheets and rows |
+| `ink` | `#1E1A24` | `#EEEBF2` | text, frames, interactive borders |
+| `mute` | `#625B6B` | `#A9A2B3` | secondary text |
+| `line` | `#D8D4DE` | `#3A3542` | decorative hairlines only |
+| `accent` | `#C41E3A` | `#FF5F73` | primary button, current page, focus ring, bullets |
+| `plum` | `#6E2C55` | `#C98AB4` | primary button hover |
+
+All text pairs are ≥ 5.4:1. `line` (1.3:1) is never the only boundary of an
+interactive control; buttons use `ink` borders.
+
+Type: Instrument Serif (display, tightened tracking) and Instrument Sans (body,
+17px base per HIG). CJK falls back to system Songti / PingFang, which avoids the
+`next/font/google` server/client hash mismatch hit by the CJK display font.
+
+## Signature device
+
+The **diamond rule** (`.rule`): a hairline with diamond terminals, taken from the
+e-book site. It appears under the home name, under page titles, and as the tail
+of every section heading. The portrait rises out of a hairline circle; a CSS
+mask lets it break out above the circle's centre and crops it to the circle
+below, hiding the flat edge of the source image.
+
+## Human-factors fixes
+
+- Measure capped at 68ch (CV lines were ~95 characters); post header matches it.
+- Mobile CV sheet goes edge to edge so lines are ~40 characters instead of ~32.
+- Prose leading 1.75 for mixed CJK/Latin text.
+- Clear action hierarchy on home: one filled primary button, outlined secondaries.
+- Press feedback on `:active` (scale 0.97, 100ms); none under reduced motion.
+- Current page marked by an underline plus weight, not color alone.
+- Tags are flat labels, not button-shaped, because they are not interactive.
+- Whole blog row is the tap target; it shows a focus ring via `:has(:focus-visible)`.
+- Tap targets ≥ 44px; `prefers-reduced-motion` keeps a cross-fade only;
+  `prefers-reduced-transparency` makes the header solid; `prefers-contrast: more`
+  darkens secondary text and lines.
+
+## Follow-ups
+
+- `/portfolio` is still linked from nav and home but has no page (404).
+- `npm run lint` fails on `main` too (`eslint/config` export error with ESLint 8).
+- `framer-motion` is no longer imported; remove it from `package.json`.
+- The sign-key post references images that are missing from the content.
