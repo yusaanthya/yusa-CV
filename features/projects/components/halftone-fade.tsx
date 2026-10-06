@@ -14,45 +14,71 @@ interface Geometry {
     diagonal: boolean;
     // Phones only: where the solid block under the copy begins.
     edge: number;
-    // Desktop only: the copy's box within the panel, padded; dots inside stay opaque.
-    copyBox: { left: number; top: number; right: number; bottom: number };
+    // Desktop only: the copy's top-left corner within the panel.
+    copyLeft: number;
+    copyTop: number;
 }
 
-const SPACING = 13;
-// Dots start overlapping (solid) and shrink to nothing across the band.
-const MAX_RADIUS = SPACING * 0.72;
-const GOLDEN = (1 + Math.sqrt(5)) / 2;
-// Desktop: the solid corner covers ~10% of the panel; the dot band runs φ^1.5 times its leg.
-// Chosen by simulating art exposure against coverage behind the copy at 1024–1600px:
-// ~52–56% of the art stays visible while the summary keeps ~85–91% coverage (the title,
-// set larger, ~62–68% plus a halo). φ² covered too much art; φ left the summary thin.
-const SOLID_AREA = 0.1;
-const BAND_RATIO = Math.pow(GOLDEN, 1.5);
-const BAND_MOBILE = 150;
+const SPACING = 11;
+// Every dot is the same size; tone comes from how many grid cells carry one (an ordered
+// screen, like silkscreen). Dots sit on a hexagonal grid and are just large enough for
+// neighbours to merge (≥ spacing/√3) without the cross-shaped gaps a square grid leaves.
+// Density never reaches 1, so the field always keeps some open cells instead of going solid.
+const ROW_SPACING = (SPACING * Math.sqrt(3)) / 2;
+const DOT_RADIUS = SPACING * 0.6;
+const MAX_DENSITY = 0.96;
 const TEXT_GAP = 32;
-// Away from the copy, dots let ~30% of the art read through. Within the copy's reach they
-// stay opaque: at 70% the key art's own lettering (e.g. "Join us!") ghosted through behind
-// the summary and competed with it.
-const SCREEN_OPACITY = 0.7;
-const COPY_PADDING = 24;
-// Opacity eases from 1 to SCREEN_OPACITY over this distance outside the copy, so the
-// opaque area never reads as a box (a hard edge recreated the card it replaced).
-const COPY_FEATHER = 140;
+// Density ramps from 0 at the curve to MAX_DENSITY over this depth, so the screen is
+// dense right below the curve and the gradient stays at its edge.
+const FADE_DEPTH = 100;
+const MOBILE_FADE = 150;
+
+// The screen's top edge, as fractions of the panel: rises slightly from the left edge,
+// then sweeps down to the right, leaving the art's focal area clear.
+const CURVE: [number, number][] = [
+    [0, 0.42],
+    [0.1, 0.35],
+    [0.22, 0.32],
+    [0.34, 0.33],
+    [0.42, 0.38],
+    [0.5, 0.47],
+    [0.57, 0.63],
+    [0.72, 0.79],
+    [1, 0.88],
+];
 
 const smoothstep = (x: number) => {
     const t = Math.min(Math.max(x, 0), 1);
     return t * t * (3 - 2 * t);
 };
 
-// Holds dots large near the solid area and tapers late, so the screen stays dense
-// behind the copy before thinning out into the art.
-const radiusAt = (t: number) => MAX_RADIUS * (1 - Math.pow(t, 1.5));
+function curveY(u: number) {
+    for (let i = 1; i < CURVE.length; i++) {
+        const [x0, y0] = CURVE[i - 1];
+        const [x1, y1] = CURVE[i];
+        if (u <= x1) return y0 + (y1 - y0) * smoothstep((u - x0) / (x1 - x0));
+    }
+    return CURVE[CURVE.length - 1][1];
+}
+
+// 8×8 Bayer threshold matrix for the ordered screen.
+const BAYER: number[][] = (() => {
+    let m = [[0]];
+    while (m.length < 8) {
+        const k = m.length;
+        m = Array.from({ length: 2 * k }, (_, i) =>
+            Array.from({ length: 2 * k }, (_, j) => 4 * m[i % k][j % k] + [0, 2, 3, 1][Math.floor(i / k) * 2 + Math.floor(j / k)]),
+        );
+    }
+    return m;
+})();
+const threshold = (row: number, col: number) => (BAYER[row % 8][col % 8] + 0.5) / 64;
 
 /**
- * A page-coloured "hole" that dissolves into the key art as a halftone screen.
- * Desktop: a 45° screen from the bottom-left corner — a solid corner of ~10% of the panel,
- * then dots that shrink over a golden-ratio band. Phones: the copy spans the full width,
- * so the screen fades upwards from just above it instead.
+ * A page-coloured screen of equal dots that dissolves into the key art by density.
+ * Desktop: it fills the area below a curve that sweeps from the left edge down to the
+ * bottom right. Phones: the copy spans the full width, so the screen fades upwards from
+ * just above it instead.
  */
 export function HalftoneFade({ containerRef, textRef }: HalftoneFadeProps) {
     const [geometry, setGeometry] = useState<Geometry | null>(null);
@@ -72,12 +98,8 @@ export function HalftoneFade({ containerRef, textRef }: HalftoneFadeProps) {
                 height: box.height,
                 diagonal: box.width >= 640,
                 edge: copy.top - box.top - TEXT_GAP,
-                copyBox: {
-                    left: copy.left - box.left - COPY_PADDING,
-                    top: copy.top - box.top - COPY_PADDING,
-                    right: copy.right - box.left + COPY_PADDING,
-                    bottom: copy.bottom - box.top + COPY_PADDING,
-                },
+                copyLeft: copy.left - box.left,
+                copyTop: copy.top - box.top,
             });
         };
 
@@ -98,49 +120,42 @@ export function HalftoneFade({ containerRef, textRef }: HalftoneFadeProps) {
         );
     }
 
-    const { width, height, diagonal, edge, copyBox } = geometry;
+    const { width, height, diagonal, edge, copyLeft, copyTop } = geometry;
     const dots: JSX.Element[] = [];
 
     if (diagonal) {
-        // Distance from the bottom-left corner measured along the 45° axis, in "leg" units
-        // (x + distance from the bottom), so the solid corner is an isosceles right triangle.
-        const solidLeg = Math.sqrt(2 * SOLID_AREA * width * height);
-        const band = solidLeg * BAND_RATIO;
-        for (let row = 0; row * SPACING < height + SPACING; row++) {
-            const cy = height - row * SPACING;
+        // The curve's shape comes from CURVE, but its left part is anchored to the copy so the
+        // whole fade band ends above the title; the shift tapers to zero at the right edge.
+        const lift = copyTop - TEXT_GAP - FADE_DEPTH - curveY(copyLeft / width) * height;
+        const edgeY = (u: number) => curveY(u) * height + lift * (1 - u);
+        for (let row = 0; row * ROW_SPACING < height + SPACING; row++) {
+            const cy = row * ROW_SPACING;
             const shift = row % 2 ? SPACING / 2 : 0;
             for (let col = 0; col * SPACING < width + SPACING; col++) {
                 const cx = col * SPACING + shift;
-                const leg = cx + (height - cy);
-                // Start one row inside the solid corner so dots overlap its edge; otherwise
-                // the anti-aliased hypotenuse leaves slivers of art showing through.
-                if (leg < solidLeg - SPACING) continue;
-                const t = Math.max(0, (leg - solidLeg) / band);
-                if (t >= 1) break;
-                const r = radiusAt(t);
-                if (r < 0.6) break;
-                const dx = Math.max(copyBox.left - cx, 0, cx - copyBox.right);
-                const dy = Math.max(copyBox.top - cy, 0, cy - copyBox.bottom);
-                const fromCopy = Math.hypot(dx, dy);
-                const opacity = 1 - (1 - SCREEN_OPACITY) * smoothstep(fromCopy / COPY_FEATHER);
-                dots.push(<circle key={`${row}-${col}`} cx={cx} cy={cy} r={r} fillOpacity={opacity} />);
+                const depth = cy - edgeY(cx / width);
+                const density = MAX_DENSITY * smoothstep(depth / FADE_DEPTH);
+                if (density <= threshold(row, col)) continue;
+                dots.push(<circle key={`${row}-${col}`} cx={cx} cy={cy} r={DOT_RADIUS} />);
             }
         }
         return (
             <svg aria-hidden width={width} height={height} className="absolute inset-0 fill-paper">
-                <polygon points={`0,${height - solidLeg} 0,${height} ${solidLeg},${height}`} />
                 {dots}
             </svg>
         );
     }
 
-    for (let step = 0; step * SPACING < BAND_MOBILE; step++) {
-        const r = radiusAt((step * SPACING) / BAND_MOBILE);
-        if (r < 0.6) break;
+    for (let row = 0; row * ROW_SPACING < height + SPACING; row++) {
+        const cy = row * ROW_SPACING;
+        const shift = row % 2 ? SPACING / 2 : 0;
+        const density = MAX_DENSITY * smoothstep((cy - (edge - MOBILE_FADE)) / MOBILE_FADE);
+        if (density <= 0) continue;
+        if (cy >= edge) break;
         for (let col = 0; col * SPACING < width + SPACING; col++) {
-            const cx = col * SPACING + (step % 2 ? SPACING / 2 : 0);
+            if (density <= threshold(row, col)) continue;
             dots.push(
-                <circle key={`${step}-${col}`} cx={cx} cy={edge - step * SPACING} r={r} fillOpacity={SCREEN_OPACITY} />,
+                <circle key={`${row}-${col}`} cx={col * SPACING + shift} cy={cy} r={DOT_RADIUS} />,
             );
         }
     }

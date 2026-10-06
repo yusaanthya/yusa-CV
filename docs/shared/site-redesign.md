@@ -56,24 +56,20 @@ Sora's overlapping contours show seams under a plain stroke, so the name uses a
 
 Projects (`/#projects`, replacing the missing `/portfolio` page): full-bleed
 panels with the key art as background and the copy shown directly, without a
-card or dates. `HalftoneFade` cuts a page-coloured "hole" that dissolves into
-the art as a halftone screen, fixed to the panel so the art parallaxes behind
-it, and drawn in `--paper`, so it follows light/dark.
+card or dates. `HalftoneFade` lays a page-coloured screen over the art, fixed
+to the panel so the art parallaxes behind it, and drawn in `--paper`, so it
+follows light/dark. It works like a silkscreen tone: every dot is the same size
+on a hexagonal grid, and tone comes only from density, via an 8×8 Bayer ordered
+threshold (random placement clumped; a square grid left cross-shaped gaps).
 
-- Desktop: a 45° screen from the bottom-left corner. The solid corner is an
-  isosceles right triangle covering 10% of the panel; dots then shrink
-  (`1 − t^1.5`) over a band of φ^1.5 × the triangle's leg. The band and profile
-  were chosen by simulating art exposure against coverage behind the copy at
-  1024–1600px: ~52–56% of the art stays visible while the summary keeps 84–91%
-  coverage and the title 61–68% (measured in the browser). The copy sits
-  bottom-left with a small page-coloured halo for the sparser dots.
-- Dots are 70% opaque so ~30% of the art reads through, except around the copy:
-  within 24px of it they stay opaque, easing to 70% over 140px (smoothstep).
-  A uniform 70% let the art's own lettering ("Join us!") ghost through behind
-  the summary; a hard-edged opaque box recreated the card. Project copy uses
-  full `ink` instead of `mute` for the extra contrast over the blended screen.
-- Phones: the copy spans the full width, so a 10% diagonal corner cannot hold
-  it; the screen fades upwards from just above the copy instead.
+- Desktop: the screen fills the area under a curve (sketched by the owner) that
+  rises slightly from the left edge, passes above the title and sweeps down to
+  the bottom right. Density ramps from 0 at the curve to 96% over 100px, so
+  there is no solid area and the gradient stays at the edge. The curve's left
+  part is anchored to the copy so the band always ends above the title.
+  Measured coverage behind the copy: title 80–89%, summary 96–97%.
+- Phones: the copy spans the full width, so the screen fades upwards from just
+  above it onto a solid page-coloured block.
 
 Key art is the 2000px source at WebP quality 92. Parallax overscan is kept to
 12% (±9% travel) because every extra percent enlarges the image and softens it
