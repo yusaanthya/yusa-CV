@@ -83,7 +83,7 @@ Motion, modelled on mediatonicgames.com:
   velocity first passes a 0.3s critically damped smoothing spring (like
   Mediatonic's scroll-delta history) before the 0.45s output spring. Measured
   over ~1s of wheel scrolling: direction reversals 22 -> 4, no visible
-  overshoot, settles in ~1.9s. Layers: name 0.5; intro and portrait share
+  overshoot, settles in ~1.9s. Layers: name and the Projects heading 0.5; intro and portrait share
   layer 2 so they move as one group; project panel 1 with its button +1.
   Disabled under reduced motion.
 - Key-art parallax: position-linked, ±9% of the panel height.

@@ -77,10 +77,13 @@ export default function Home() {
 
       <section id="projects" aria-labelledby="projects-heading" className="scroll-mt-16 pb-4 pt-8">
         <Container className="pb-10">
-          <h2 id="projects-heading" className="font-display text-4xl tracking-[-0.04em]">
-            Projects
-          </h2>
-          <div aria-hidden className="rule mt-5 text-ink" />
+          {/* Same slow layer as the hero name: headings anchor the scroll, content moves more. */}
+          <ScrollLag layer={0.5}>
+            <h2 id="projects-heading" className="font-display text-4xl tracking-[-0.04em]">
+              Projects
+            </h2>
+            <div aria-hidden className="rule mt-5 text-ink" />
+          </ScrollLag>
         </Container>
         <div className="flex flex-col gap-1">
           {PROJECTS.map((project) => (
