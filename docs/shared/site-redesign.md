@@ -96,14 +96,18 @@ bullet bank in `career-prep`; keep its claims in sync with them.
 
 Side projects & earlier work: a text list after Projects for older or
 non-production work (`OTHER_WORK` in `features/projects/projects.ts`), newest
-first. Each row shows year and kind, then title and one-line summary, separated
-by hairlines; no images or cards. A row links out only when it has a `url`
-(whole row is the target, opens in a new tab). The heading shares the slow 0.5
-layer with the other headings; rows trail at 1, 1.25 and 1.5 so the list
-cascades on scroll. NiCE2's repository is private and the event site now only
-shows a retirement page, so it is not linked. Diablo II links to the Blizzard
-news article on the Taiwan / HK / Macau launch film; EGX Rezzed has no public
-reference and deliberately omits the game name.
+first, with no visible heading (an `sr-only` h2 keeps the section named for
+screen readers). Each row starts as a right-aligned title only and unfolds its
+year, kind and summary once scrolled well into view (`useInView`, 90%, once),
+one after another; under reduced motion rows render open. Rows trail the scroll
+at 1, 1.25 and 1.5 so the list cascades. Only rows with a `url` are links: their
+title takes `.text-sweep`, the text form of the Projects rollover (an accent copy
+sweeps in from the left and out to the right; the text itself turns accent once
+the sweep lands so no dark fringe shows). Unlinked rows never change colour on
+hover, so colour change always means "clickable". NiCE2's repository is private
+and the event site now only shows a retirement page, so it is not linked.
+Diablo II links to the Blizzard news article on the Taiwan / HK / Macau launch
+film; EGX Rezzed has no public reference and deliberately omits the game name.
 
 ## Appearance
 

@@ -96,15 +96,11 @@ export default function Home() {
 
       <section aria-labelledby="other-work-heading" className="pb-8 pt-24">
         <Container>
-          <ScrollLag layer={0.5}>
-            <h2 id="other-work-heading" className="font-display text-4xl tracking-[-0.04em]">
-              Side projects &amp; earlier work
-            </h2>
-            <div aria-hidden className="rule mt-5 text-ink" />
-          </ScrollLag>
-          <div className="mt-10">
-            <OtherWorkList items={OTHER_WORK} />
-          </div>
+          {/* No visible heading by design; screen readers still get a named section. */}
+          <h2 id="other-work-heading" className="sr-only">
+            Side projects and earlier work
+          </h2>
+          <OtherWorkList items={OTHER_WORK} />
         </Container>
       </section>
     </>

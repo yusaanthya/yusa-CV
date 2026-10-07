@@ -169,6 +169,54 @@
     paint-order: stroke fill;
   }
 
+  /* Text version of the rollover: an accent copy of the text sweeps in from the left on
+     hover and out to the right on leave. Two pseudo layers keep both directions on
+     transitions, like .btn-rollover. Needs data-text matching the element's text. */
+  .text-sweep {
+    position: relative;
+  }
+
+  /* Once the sweep lands, the text itself turns accent so the overlay's anti-aliased edges
+     no longer sit on dark glyphs (which read as a blurry fringe). */
+  .text-sweep-trigger:hover .text-sweep,
+  .text-sweep-trigger:focus-visible .text-sweep {
+    color: rgb(var(--accent));
+    transition: color 0s 520ms;
+  }
+
+  .text-sweep::before,
+  .text-sweep::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    color: rgb(var(--accent));
+    pointer-events: none;
+  }
+
+  .text-sweep::before {
+    clip-path: inset(0 0 0 100%);
+    transition: clip-path 520ms cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
+  .text-sweep::after {
+    visibility: hidden;
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .text-sweep-trigger:hover .text-sweep::before,
+  .text-sweep-trigger:focus-visible .text-sweep::before {
+    visibility: hidden;
+    clip-path: inset(0 0 0 0);
+    transition: none;
+  }
+
+  .text-sweep-trigger:hover .text-sweep::after,
+  .text-sweep-trigger:focus-visible .text-sweep::after {
+    visibility: visible;
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 520ms cubic-bezier(0.42, 0, 0.58, 1);
+  }
+
   .intro-fade {
     animation: intro-fade 780ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
     animation-delay: var(--d, 0ms);
@@ -314,7 +362,12 @@
   /* No sweep: the fill simply appears and disappears. */
   .btn-rollover::before,
   .btn-rollover:hover::after,
-  .btn-rollover:focus-visible::after {
+  .btn-rollover:focus-visible::after,
+  .text-sweep::before,
+  .text-sweep-trigger:hover .text-sweep,
+  .text-sweep-trigger:focus-visible .text-sweep,
+  .text-sweep-trigger:hover .text-sweep::after,
+  .text-sweep-trigger:focus-visible .text-sweep::after {
     transition: none;
   }
 }
