@@ -67,7 +67,7 @@ export default function Home() {
 
         {/* Intro shares the portrait's scroll layer so the two move as one group. */}
         <div
-          className="intro-fade relative z-20 mt-14 md:col-start-1 md:row-start-2 md:mt-16"
+          className="intro-fade relative z-20 mt-8 md:col-start-1 md:row-start-2"
           style={{ "--d": "1100ms" } as React.CSSProperties}
         >
           <ScrollLag layer={2}>
