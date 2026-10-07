@@ -102,9 +102,10 @@ small mark below it: a hairline ending in a ring (the portrait frame's
 language), right-aligned and 30% of that title's width. The mark stays put when
 the title shifts, so it anchors the right edge. The section's top spacing is
 about one row high, so it follows Projects closely. Hovering or focusing
-a title sweeps it to accent (`.text-sweep`, the text form of the Projects
-rollover), shifts it 0.75rem left, and unfolds year, kind and summary below.
-Every row behaves the same; only rows with a `url` are links (pointer cursor,
+a title fades it to accent (150ms), shifts it 0.75rem left, and unfolds year, kind and summary below.
+A text form of the Projects rollover sweep was tried on titles and dropped:
+alongside the shift and unfold it was tiring to watch and added no information,
+so the sweep stays unique to the Projects button. Every row behaves the same; only rows with a `url` are links (pointer cursor,
 new tab), the others are focusable `div`s so keyboard users can reveal them.
 Per WCAG 1.4.13 nothing is hover-only: on `(hover: none)` devices the details
 stay open. Details open and collapse with the pointer, with no delays: a 150ms
