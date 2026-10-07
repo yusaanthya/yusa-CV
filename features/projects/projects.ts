@@ -52,7 +52,8 @@ export interface OtherWork {
 }
 
 // Earlier and non-production work, newest first. Claims follow the career-prep bullet bank
-// and earlier CVs: NiCE2's repository is private, so it is not linked.
+// and earlier CVs: NiCE2's repository is private, so it is not linked. The Diablo II link
+// is the owner-supplied Blizzard article on the Taiwan / HK / Macau launch film.
 export const OTHER_WORK: OtherWork[] = [
     {
         slug: "nice2-pwa",
@@ -67,6 +68,7 @@ export const OTHER_WORK: OtherWork[] = [
         year: "2021",
         kind: "Launch campaign",
         title: "Diablo II: Resurrected launch event",
+        url: "https://news.blizzard.com/zh-tw/article/23724528/6tan",
         summary: "A launch campaign that drove 400,000+ launch-day engagements, before I moved into software engineering.",
     },
     {

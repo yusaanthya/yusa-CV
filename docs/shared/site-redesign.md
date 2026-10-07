@@ -101,8 +101,9 @@ by hairlines; no images or cards. A row links out only when it has a `url`
 (whole row is the target, opens in a new tab). The heading shares the slow 0.5
 layer with the other headings; rows trail at 1, 1.25 and 1.5 so the list
 cascades on scroll. NiCE2's repository is private and the event site now only
-shows a retirement page, so it is not linked; Diablo II and EGX Rezzed have no
-confirmed public reference yet.
+shows a retirement page, so it is not linked. Diablo II links to the Blizzard
+news article on the Taiwan / HK / Macau launch film; EGX Rezzed has no public
+reference and deliberately omits the game name.
 
 ## Appearance
 
