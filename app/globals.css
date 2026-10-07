@@ -228,13 +228,11 @@
     transform: translateX(-0.75rem);
   }
 
-  /* Collapsing waits 300ms so the details survive the pointer briefly leaving the row;
-     the title's colour and shift stay instant, so feedback itself is never delayed. */
   .ow-detail {
     display: grid;
     grid-template-rows: 0fr;
     opacity: 0;
-    transition: grid-template-rows 520ms cubic-bezier(0.2, 0.8, 0.2, 1) 300ms, opacity 320ms ease-out 300ms;
+    transition: grid-template-rows 520ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 320ms ease-out;
   }
 
   .ow-detail > div {
@@ -245,12 +243,6 @@
   .ow-row:focus-visible .ow-detail {
     grid-template-rows: 1fr;
     opacity: 1;
-  }
-
-  /* Opening is immediate; only collapsing keeps the 300ms grace above. */
-  .ow-row:hover .ow-detail,
-  .ow-row:focus-visible .ow-detail {
-    transition-delay: 0ms;
   }
 
   @media (hover: none) {
