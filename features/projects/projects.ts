@@ -40,3 +40,41 @@ export const PROJECTS: Project[] = [
         imagePosition: "center",
     },
 ];
+
+export interface OtherWork {
+    slug: string;
+    year: string;
+    kind: string;
+    title: string;
+    summary: string;
+    // Optional reference; rows without one render as plain text.
+    url?: string;
+}
+
+// Earlier and non-production work, newest first. Claims follow the career-prep bullet bank
+// and earlier CVs: NiCE2's repository is private, so it is not linked.
+export const OTHER_WORK: OtherWork[] = [
+    {
+        slug: "nice2-pwa",
+        year: "2026",
+        kind: "Side project",
+        title: "NiCE2 event navigation PWA",
+        summary:
+            "Turned a community-built map for a 3,000-stall event into an installable, offline-first PWA on Cloudflare Pages, with hardened JSON import and a planned retirement after the event. Served 51.67k HTTP requests over four public days.",
+    },
+    {
+        slug: "diablo-ii-resurrected",
+        year: "2021",
+        kind: "Launch campaign",
+        title: "Diablo II: Resurrected launch event",
+        summary: "A launch campaign that drove 400,000+ launch-day engagements, before I moved into software engineering.",
+    },
+    {
+        slug: "egx-rezzed",
+        year: "2019",
+        kind: "Exhibition",
+        title: "EGX Rezzed, London",
+        summary:
+            "Exhibited an indie game prototype with an international team from Portugal, Australia and the UK during my MA in Computer Game Design at Goldsmiths.",
+    },
+];

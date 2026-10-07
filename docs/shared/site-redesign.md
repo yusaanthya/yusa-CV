@@ -94,6 +94,16 @@ Motion, modelled on mediatonicgames.com:
 Copy in `features/projects/projects.ts` is derived from the canonical CV and
 bullet bank in `career-prep`; keep its claims in sync with them.
 
+Side projects & earlier work: a text list after Projects for older or
+non-production work (`OTHER_WORK` in `features/projects/projects.ts`), newest
+first. Each row shows year and kind, then title and one-line summary, separated
+by hairlines; no images or cards. A row links out only when it has a `url`
+(whole row is the target, opens in a new tab). The heading shares the slow 0.5
+layer with the other headings; rows trail at 1, 1.25 and 1.5 so the list
+cascades on scroll. NiCE2's repository is private and the event site now only
+shows a retirement page, so it is not linked; Diablo II and EGX Rezzed have no
+confirmed public reference yet.
+
 ## Appearance
 
 Dark follows the system until the visitor uses the header toggle; the choice is

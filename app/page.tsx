@@ -2,7 +2,8 @@ import Image from "next/image";
 import { Container } from "@/features/ui/components/container";
 import { ProjectPanel } from "@/features/projects/components/project-panel";
 import { ScrollLag } from "@/features/ui/components/scroll-lag";
-import { PROJECTS } from "@/features/projects/projects";
+import { OTHER_WORK, PROJECTS } from "@/features/projects/projects";
+import { OtherWorkList } from "@/features/projects/components/other-work-list";
 import { assetPath } from "@/lib/utils";
 
 export default function Home() {
@@ -91,6 +92,20 @@ export default function Home() {
             <ProjectPanel key={project.slug} project={project} />
           ))}
         </div>
+      </section>
+
+      <section aria-labelledby="other-work-heading" className="pb-8 pt-24">
+        <Container>
+          <ScrollLag layer={0.5}>
+            <h2 id="other-work-heading" className="font-display text-4xl tracking-[-0.04em]">
+              Side projects &amp; earlier work
+            </h2>
+            <div aria-hidden className="rule mt-5 text-ink" />
+          </ScrollLag>
+          <div className="mt-10">
+            <OtherWorkList items={OTHER_WORK} />
+          </div>
+        </Container>
       </section>
     </>
   );
