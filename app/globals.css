@@ -247,12 +247,8 @@
     opacity: 1;
   }
 
-  /* Hover intent: a pointer passing over a row on its way elsewhere does not unfold it. */
-  .ow-row:hover .ow-detail {
-    transition-delay: 150ms;
-  }
-
-  /* Keyboard focus is deliberate, so it opens at once. */
+  /* Opening is immediate; only collapsing keeps the 300ms grace above. */
+  .ow-row:hover .ow-detail,
   .ow-row:focus-visible .ow-detail {
     transition-delay: 0ms;
   }
