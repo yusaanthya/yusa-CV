@@ -97,7 +97,11 @@ bullet bank in `career-prep`; keep its claims in sync with them.
 Side projects & earlier work: a text list after Projects for older or
 non-production work (`OTHER_WORK` in `features/projects/projects.ts`), newest
 first, with no visible heading (an `sr-only` h2 keeps the section named), no
-rules and no arrows. Rows show only a right-aligned title. Hovering or focusing
+rules between rows and no arrows. Rows show only a right-aligned title with a
+small mark below it: a hairline ending in a ring (the portrait frame's
+language), right-aligned and 30% of that title's width. The mark stays put when
+the title shifts, so it anchors the right edge. The section's top spacing is
+about one row high, so it follows Projects closely. Hovering or focusing
 a title sweeps it to accent (`.text-sweep`, the text form of the Projects
 rollover), shifts it 0.75rem left, and unfolds year, kind and summary below.
 Every row behaves the same; only rows with a `url` are links (pointer cursor,

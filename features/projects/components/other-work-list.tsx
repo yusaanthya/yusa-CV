@@ -23,11 +23,20 @@ export function OtherWorkList({ items }: OtherWorkListProps) {
 function OtherWorkRow({ item }: { item: OtherWork }) {
     const content = (
         <>
-            <h3 className="ow-title font-display text-2xl leading-snug tracking-[-0.02em] sm:text-3xl">
-                <span className="text-sweep" data-text={item.title}>
-                    {item.title}
-                </span>
-            </h3>
+            {/* Shrink-wrapped to the title so the mark below can be sized from its width. */}
+            <div className="ml-auto w-fit">
+                <h3 className="ow-title font-display text-2xl leading-snug tracking-[-0.02em] sm:text-3xl">
+                    <span className="text-sweep" data-text={item.title}>
+                        {item.title}
+                    </span>
+                </h3>
+                {/* Hairline ending in a ring, echoing the portrait's frame; it stays put as the
+                    title shifts, so it anchors the right edge. */}
+                <div aria-hidden className="ow-mark ml-auto mt-3 flex w-[30%] items-center">
+                    <span className="h-px flex-1 bg-ink" />
+                    <span className="h-2.5 w-2.5 shrink-0 rounded-full border border-ink" />
+                </div>
+            </div>
             {/* Collapsed until the title is hovered or focused; always open without hover. */}
             <div className="ow-detail">
                 <div>

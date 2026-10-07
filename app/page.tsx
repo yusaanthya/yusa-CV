@@ -94,7 +94,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section aria-labelledby="other-work-heading" className="pb-8 pt-24">
+      <section aria-labelledby="other-work-heading" className="pb-8 pt-6">
         <Container>
           {/* No visible heading by design; screen readers still get a named section. */}
           <h2 id="other-work-heading" className="sr-only">
