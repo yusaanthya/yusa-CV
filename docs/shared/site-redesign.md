@@ -107,12 +107,9 @@ rollover), shifts it 0.75rem left, and unfolds year, kind and summary below.
 Every row behaves the same; only rows with a `url` are links (pointer cursor,
 new tab), the others are focusable `div`s so keyboard users can reveal them.
 Per WCAG 1.4.13 nothing is hover-only: on `(hover: none)` devices the details
-stay open. Details collapse again when the pointer leaves (hover is transient
-by platform convention, and staying open would let the list grow and shift
-with every pass), but after a 300ms grace period. Opening is immediate on hover and focus: a
-150ms hover-intent delay was tried and dropped because it made the list feel
-sluggish, and with three rows at the bottom of the page accidental pass-overs
-are rare. The title's colour and shift are instant too. Rows trail the scroll at 1, 1.25 and 1.5. NiCE2's repository is
+stay open. Details open and collapse with the pointer, with no delays: a 150ms
+hover-intent delay felt sluggish, and a 300ms collapse grace on its own made
+the list harder to read, so both were dropped. Rows trail the scroll at 1, 1.25 and 1.5. NiCE2's repository is
 private and its event site now shows a retirement page, so it is not linked.
 Diablo II links to the Blizzard article on the Taiwan / HK / Macau launch film;
 EGX Rezzed has no public reference and deliberately omits the game name.
