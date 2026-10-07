@@ -107,7 +107,11 @@ rollover), shifts it 0.75rem left, and unfolds year, kind and summary below.
 Every row behaves the same; only rows with a `url` are links (pointer cursor,
 new tab), the others are focusable `div`s so keyboard users can reveal them.
 Per WCAG 1.4.13 nothing is hover-only: on `(hover: none)` devices the details
-stay open. Rows trail the scroll at 1, 1.25 and 1.5. NiCE2's repository is
+stay open. Details collapse again when the pointer leaves (hover is transient
+by platform convention, and staying open would let the list grow and shift
+with every pass), but with timing: unfolding waits 150ms of hover intent so a
+passing pointer does not trigger it, collapsing waits 300ms of grace, and
+keyboard focus opens at once. The title's colour and shift stay instant. Rows trail the scroll at 1, 1.25 and 1.5. NiCE2's repository is
 private and its event site now shows a retirement page, so it is not linked.
 Diablo II links to the Blizzard article on the Taiwan / HK / Macau launch film;
 EGX Rezzed has no public reference and deliberately omits the game name.
