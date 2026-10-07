@@ -207,6 +207,73 @@
     }
   }
 
+  /* Hero typing: each character is hidden until its own --at time; a "_" caret rides on the
+     newest character for one --slot, then sits after the last one, blinks a few times and
+     disappears. Animations only ever hide things, so the resting state is the finished name and
+     nothing relies on fill-mode to stay visible. */
+  .type-char {
+    position: relative;
+    animation: type-wait var(--at) step-end;
+  }
+
+  .type-char::after {
+    content: "";
+    position: absolute;
+    /* An underscore caret: Sora's baseline sits 0.97em below the inline box top, so the bar
+       rests just under it, about half a character wide and thin like the outlined name. */
+    top: 1em;
+    height: max(2px, 0.022em);
+    left: calc(100% + 0.06em);
+    width: 0.42em;
+    background: rgb(var(--accent));
+    opacity: 0;
+    animation: caret-slot var(--slot) step-end;
+    animation-delay: var(--at);
+  }
+
+  /* After typing, the caret blinks a few times and is gone: its resting opacity is 0. */
+  .type-char-last::after {
+    animation: caret-blink var(--blink) step-end var(--blinks);
+    animation-delay: var(--at);
+  }
+
+  @keyframes type-wait {
+    from,
+    to {
+      visibility: hidden;
+    }
+  }
+
+  @keyframes caret-slot {
+    from,
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes caret-blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.01%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Already typed this session: show the name at once, without a caret. */
+  :root[data-typed] .type-char,
+  :root[data-typed] .type-char::after {
+    animation: none;
+  }
+
+
+  /* Nothing waits for typing that is not happening. */
+  :root[data-typed] .intro-fade {
+    animation-delay: 0ms;
+  }
+
   .intro-fade {
     animation: intro-fade 780ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
     animation-delay: var(--d, 0ms);
@@ -333,6 +400,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .type-char,
+  .type-char::after {
+    animation: none !important;
+  }
+
   /* Keep a gentle cross-fade; drop movement and scaling. */
   .intro-fade {
     animation-name: intro-fade-reduced;
