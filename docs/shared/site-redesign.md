@@ -157,6 +157,8 @@ source is intentionally not updated with these.
 - framer-motion adds ~46 kB to the home page for the parallax. CSS scroll-driven
   animations would remove it but are not yet supported in Firefox.
 - `career-prep/resume/cv/README.md` still says the website CV is not synced.
-- The sign-key post references images that are missing from the content.
+- The sign-key post hotlinks five images from `hackmd.io/_uploads`, which return 403
+  to non-browser requests; re-export them into `public/images/posts/` (see the
+  `publish-post` skill).
 - Project key art is limited to 2000px wide; supply ~3200px+ originals for crisp
   retina rendering. Converting to SVG would not help: the art is raster.
