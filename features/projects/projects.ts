@@ -69,7 +69,8 @@ export const OTHER_WORK: OtherWork[] = [
         kind: "Launch campaign",
         title: "Diablo II: Resurrected launch event",
         url: "https://news.blizzard.com/zh-tw/article/23724528/6tan",
-        summary: "A launch campaign that drove 400,000+ launch-day engagements, before I moved into software engineering.",
+        summary:
+            "Worked on social media marketing and event planning for the Taiwan, Hong Kong and Macau launch; the campaign drove 400,000+ launch-day engagements, before I moved into software engineering.",
     },
     {
         slug: "egx-rezzed",
