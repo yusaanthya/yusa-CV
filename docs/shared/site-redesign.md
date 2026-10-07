@@ -94,6 +94,29 @@ Motion, modelled on mediatonicgames.com:
 Copy in `features/projects/projects.ts` is derived from the canonical CV and
 bullet bank in `career-prep`; keep its claims in sync with them.
 
+Side projects & earlier work: a text list after Projects for older or
+non-production work (`OTHER_WORK` in `features/projects/projects.ts`), newest
+first, with no visible heading (an `sr-only` h2 keeps the section named), no
+rules between rows and no arrows. Rows show only a right-aligned title with a
+small mark below it: a hairline ending in a ring (the portrait frame's
+language), right-aligned and 30% of that title's width. The mark stays put when
+the title shifts, so it anchors the right edge. The section's top spacing is
+about one row high, so it follows Projects closely. Hovering or focusing
+a title sweeps it to accent (`.text-sweep`, the text form of the Projects
+rollover), shifts it 0.75rem left, and unfolds year, kind and summary below.
+Every row behaves the same; only rows with a `url` are links (pointer cursor,
+new tab), the others are focusable `div`s so keyboard users can reveal them.
+Per WCAG 1.4.13 nothing is hover-only: on `(hover: none)` devices the details
+stay open. Details collapse again when the pointer leaves (hover is transient
+by platform convention, and staying open would let the list grow and shift
+with every pass), but after a 300ms grace period. Opening is immediate on hover and focus: a
+150ms hover-intent delay was tried and dropped because it made the list feel
+sluggish, and with three rows at the bottom of the page accidental pass-overs
+are rare. The title's colour and shift are instant too. Rows trail the scroll at 1, 1.25 and 1.5. NiCE2's repository is
+private and its event site now shows a retirement page, so it is not linked.
+Diablo II links to the Blizzard article on the Taiwan / HK / Macau launch film;
+EGX Rezzed has no public reference and deliberately omits the game name.
+
 ## Appearance
 
 Dark follows the system until the visitor uses the header toggle; the choice is

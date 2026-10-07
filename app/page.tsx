@@ -2,7 +2,8 @@ import Image from "next/image";
 import { Container } from "@/features/ui/components/container";
 import { ProjectPanel } from "@/features/projects/components/project-panel";
 import { ScrollLag } from "@/features/ui/components/scroll-lag";
-import { PROJECTS } from "@/features/projects/projects";
+import { OTHER_WORK, PROJECTS } from "@/features/projects/projects";
+import { OtherWorkList } from "@/features/projects/components/other-work-list";
 import { assetPath } from "@/lib/utils";
 
 export default function Home() {
@@ -91,6 +92,16 @@ export default function Home() {
             <ProjectPanel key={project.slug} project={project} />
           ))}
         </div>
+      </section>
+
+      <section aria-labelledby="other-work-heading" className="pb-8 pt-6">
+        <Container>
+          {/* No visible heading by design; screen readers still get a named section. */}
+          <h2 id="other-work-heading" className="sr-only">
+            Side projects and earlier work
+          </h2>
+          <OtherWorkList items={OTHER_WORK} />
+        </Container>
       </section>
     </>
   );
