@@ -14,8 +14,9 @@ export const metadata: Metadata = {
   description: "Portfolio and Blog of Yusa Liu",
 };
 
-// Runs before first paint so a saved appearance never flashes the other theme.
-const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
+// Runs before first paint: a saved appearance never flashes the other theme, and the hero
+// name skips its typing animation after the first visit in a session.
+const themeScript = `try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}try{if(sessionStorage.getItem("hero-typed"))document.documentElement.dataset.typed="1"}catch(e){}`;
 
 export default function RootLayout({
   children,

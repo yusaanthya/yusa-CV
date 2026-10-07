@@ -207,6 +207,82 @@
     }
   }
 
+  /* Hero typing: each character is hidden until its own --at time; a caret rides on the
+     newest character for one --slot, then sits after the last one, blinks a few times and
+     holds. Animations only ever hide things, so the resting state is the finished name and
+     nothing relies on fill-mode to stay visible. */
+  .type-char {
+    position: relative;
+    animation: type-wait var(--at) step-end;
+  }
+
+  .type-char::after {
+    content: "";
+    position: absolute;
+    /* Sora: cap height 0.73em, baseline 0.97em below the inline box top, so the caret runs
+       from cap top to baseline. Thin, to match the hairline outline of the name. */
+    top: 0.24em;
+    height: 0.73em;
+    left: calc(100% + 0.04em);
+    width: max(2px, 0.014em);
+    background: rgb(var(--accent));
+    opacity: 0;
+    animation: caret-slot var(--slot) step-end;
+    animation-delay: var(--at);
+  }
+
+  .type-char-last::after {
+    opacity: 1;
+    animation:
+      caret-wait var(--at) step-end,
+      caret-blink var(--blink) step-end var(--blinks);
+    animation-delay: 0ms, var(--at);
+  }
+
+  @keyframes type-wait {
+    from,
+    to {
+      visibility: hidden;
+    }
+  }
+
+  @keyframes caret-slot {
+    from,
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes caret-wait {
+    from,
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes caret-blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.01%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Already typed this session, or reduced motion: show the name and a still caret at once. */
+  :root[data-typed] .type-char,
+  :root[data-typed] .type-char::after {
+    animation: none;
+  }
+
+
+  /* Nothing waits for typing that is not happening. */
+  :root[data-typed] .intro-fade {
+    animation-delay: 0ms;
+  }
+
   .intro-fade {
     animation: intro-fade 780ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
     animation-delay: var(--d, 0ms);
@@ -333,6 +409,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .type-char,
+  .type-char::after {
+    animation: none !important;
+  }
+
   /* Keep a gentle cross-fade; drop movement and scaling. */
   .intro-fade {
     animation-name: intro-fade-reduced;

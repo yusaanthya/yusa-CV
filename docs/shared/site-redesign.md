@@ -115,6 +115,24 @@ private and its event site now shows a retirement page, so it is not linked.
 Diablo II links to the Blizzard article on the Taiwan / HK / Macau launch film;
 EGX Rezzed has no public reference and deliberately omits the game name.
 
+Hero name typing: `HeroName` types "Yusa / Liu" once per session as the first
+beat of the load sequence (85ms per character, a 160ms "Enter" pause between
+lines, done by ~1.1s); the portrait fades in at 700ms and the intro at 1100ms.
+The full name is in the HTML (`aria-label` on the h1), so search engines,
+screen readers and no-JS readers get it; typing is a CSS reveal whose
+animations only ever *hide*, so the resting state is the finished name. A thin
+accent caret (cap height to baseline, from Sora's metrics) rides on the newest
+character, then blinks 4 times and holds still, so auto-blinking stops within
+5s (WCAG 2.2.2). After the first run, a session flag (set via the head script
+and the component) shows the name at once; reduced motion does the same.
+
+Social links (`features/ui/social-links.ts`, Simple Icons CC0 glyphs):
+LinkedIn, GitHub and ArtStation appear twice by design. In the hero, as 24px
+icons in 44px targets under the intro, because contacting is the main action
+for a CV site and recruiters land on Home; in the footer, as text links, so
+every page (CV, posts) carries them. Both use one list. The footer's former
+"Thanks for reading." made way for the links.
+
 ## Appearance
 
 Dark follows the system until the visitor uses the header toggle; the choice is
