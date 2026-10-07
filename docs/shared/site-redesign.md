@@ -39,7 +39,7 @@ shows the Latin name only.
 ## Signature device
 
 The **diamond rule** (`.rule`): a hairline with diamond terminals, taken from the
-e-book site. It appears under the home name, under page titles, and as the tail
+e-book site. It appears under page titles and as the tail
 of every section heading. The portrait rises out of a hairline circle; a CSS
 mask lets it break out above the circle's centre and crops it to the circle
 below, hiding the flat edge of the source image.
@@ -48,8 +48,9 @@ below, hiding the flat edge of the source image.
 
 Hero: an outlined "Yusa / Liu" fills the left side like a backdrop (the hollow
 treatment echoes the outlined percentage on the e-book shelf) and the portrait
-overlaps it from the right. Below the name, the intro is plain text under a
-diamond rule; there are no hero buttons (the header nav covers wayfinding).
+overlaps it from the right. Below the name, the intro is plain text with no rule (the typing caret is the
+hero's accent; a red rule under it read as a duplicate); there are no hero
+buttons (the header nav covers wayfinding).
 Sora's overlapping contours show seams under a plain stroke, so the name uses a
 3px stroke under a background-coloured fill (`paint-order: stroke fill`);
 `prefers-contrast: more` falls back to solid type.
