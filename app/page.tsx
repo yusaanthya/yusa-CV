@@ -59,9 +59,9 @@ export default function Home() {
                 }}
               />
             </div>
-            {/* Desktop: social links sit under the portrait, right edge 30px inside the circle's
+            {/* Desktop: social links sit under the portrait, right edge 50px inside the circle's
                 (which is inset 3%); the last glyph's 10px target padding is pulled back first. */}
-            <SocialIcons className="mt-4 hidden justify-end pr-[calc(3%+30px)] md:flex [&>li:last-child>a]:-mr-2.5 [&>li:first-child>a]:ml-0" />
+            <SocialIcons className="mt-4 hidden justify-end pr-[calc(3%+50px)] md:flex [&>li:last-child>a]:-mr-2.5 [&>li:first-child>a]:ml-0" />
           </ScrollLag>
         </div>
 

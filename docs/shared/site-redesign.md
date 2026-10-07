@@ -130,7 +130,7 @@ Social links (`features/ui/social-links.ts`, Simple Icons CC0 glyphs):
 LinkedIn, GitHub and ArtStation appear twice by design. In the hero, as 24px
 icons in 44px targets, because contacting is the main action for a CV site and
 recruiters land on Home. On desktop they sit under the portrait, right edge
-30px inside the circle's, so they belong to the portrait group instead of adding weight
+50px inside the circle's, so they belong to the portrait group instead of adding weight
 under the intro (a vertical rail right of the circle would overrun the content
 edge at ~1024px). On phones, where the portrait is small and above the name,
 they follow the intro; the inactive copy is `display: none`. Then in the footer, as text links, so
