@@ -26,9 +26,7 @@ function OtherWorkRow({ item }: { item: OtherWork }) {
             {/* Shrink-wrapped to the title so the mark below can be sized from its width. */}
             <div className="ml-auto w-fit">
                 <h3 className="ow-title font-display text-2xl leading-snug tracking-[-0.02em] sm:text-3xl">
-                    <span className="text-sweep" data-text={item.title}>
-                        {item.title}
-                    </span>
+                    {item.title}
                 </h3>
                 {/* Hairline ending in a ring, echoing the portrait's frame; it stays put as the
                     title shifts, so it anchors the right edge. */}
@@ -49,7 +47,7 @@ function OtherWorkRow({ item }: { item: OtherWork }) {
             </div>
         </>
     );
-    const className = "ow-row text-sweep-trigger ml-auto block w-fit max-w-[36rem] py-5 text-right";
+    const className = "ow-row ml-auto block w-fit max-w-[36rem] py-5 text-right";
 
     if (item.url) {
         return (
