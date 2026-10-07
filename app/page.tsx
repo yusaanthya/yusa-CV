@@ -31,31 +31,37 @@ export default function Home() {
           style={{ "--d": "700ms" } as React.CSSProperties}
         >
           {/* Circle and figure move as one so the mask stays aligned with the hairline. */}
-          <ScrollLag layer={2} className="relative">
-            <div
-              aria-hidden
-              className="absolute inset-x-[3%] bottom-[2%] aspect-square rounded-full border border-ink"
-            />
-            <div
-              aria-hidden
-              className="absolute bottom-[2%] left-1/2 h-2 w-2 -translate-x-1/2 translate-y-1/2 rotate-45 bg-accent"
-            />
-            <Image
-              src={assetPath("/images/portrait.png")}
-              alt="Illustrated self-portrait of Yusa in a red skirt, holding a drawing tablet and a stylus"
-              width={700}
-              height={768}
-              priority
-              className="relative h-auto w-full"
-              style={{
-                // Above the circle's centre the figure breaks out; below it, the circle crops her.
-                // Circle: 94% of width, centred at 55.2% of the 700x768 image height.
-                mask:
-                  "linear-gradient(#000 0 0) top / 100% 55.2% no-repeat, radial-gradient(ellipse 47% 42.85% at 50% 55.2%, #000 99.5%, transparent 100%)",
-                WebkitMask:
-                  "linear-gradient(#000 0 0) top / 100% 55.2% no-repeat, radial-gradient(ellipse 47% 42.85% at 50% 55.2%, #000 99.5%, transparent 100%)",
-              }}
-            />
+          <ScrollLag layer={2}>
+            {/* The circle is placed from this box's bottom, so the box holds only the portrait. */}
+            <div className="relative">
+              <div
+                aria-hidden
+                className="absolute inset-x-[3%] bottom-[2%] aspect-square rounded-full border border-ink"
+              />
+              <div
+                aria-hidden
+                className="absolute bottom-[2%] left-1/2 h-2 w-2 -translate-x-1/2 translate-y-1/2 rotate-45 bg-accent"
+              />
+              <Image
+                src={assetPath("/images/portrait.png")}
+                alt="Illustrated self-portrait of Yusa in a red skirt, holding a drawing tablet and a stylus"
+                width={700}
+                height={768}
+                priority
+                className="relative h-auto w-full"
+                style={{
+                  // Above the circle's centre the figure breaks out; below it, the circle crops her.
+                  // Circle: 94% of width, centred at 55.2% of the 700x768 image height.
+                  mask:
+                    "linear-gradient(#000 0 0) top / 100% 55.2% no-repeat, radial-gradient(ellipse 47% 42.85% at 50% 55.2%, #000 99.5%, transparent 100%)",
+                  WebkitMask:
+                    "linear-gradient(#000 0 0) top / 100% 55.2% no-repeat, radial-gradient(ellipse 47% 42.85% at 50% 55.2%, #000 99.5%, transparent 100%)",
+                }}
+              />
+            </div>
+            {/* Desktop: social links sit under the portrait, right edge on the circle's (which is
+                inset 3%); the last glyph's 10px target padding is pulled back to land on it. */}
+            <SocialIcons className="mt-4 hidden justify-end pr-[3%] md:flex [&>li:last-child>a]:-mr-2.5 [&>li:first-child>a]:ml-0" />
           </ScrollLag>
         </div>
 
@@ -73,9 +79,11 @@ export default function Home() {
               that, I studied game design in London and shipped an indie prototype
               at EGX Rezzed.
             </p>
-            <SocialIcons className="mt-6" />
+            {/* Phones: the portrait is small and above the name, so the links follow the intro. */}
+            <SocialIcons className="mt-6 md:hidden" />
           </ScrollLag>
         </div>
+
       </Container>
 
       <section id="projects" aria-labelledby="projects-heading" className="scroll-mt-16 pb-4 pt-8">

@@ -207,7 +207,7 @@
     }
   }
 
-  /* Hero typing: each character is hidden until its own --at time; a caret rides on the
+  /* Hero typing: each character is hidden until its own --at time; a "_" caret rides on the
      newest character for one --slot, then sits after the last one, blinks a few times and
      holds. Animations only ever hide things, so the resting state is the finished name and
      nothing relies on fill-mode to stay visible. */
@@ -219,12 +219,12 @@
   .type-char::after {
     content: "";
     position: absolute;
-    /* Sora: cap height 0.73em, baseline 0.97em below the inline box top, so the caret runs
-       from cap top to baseline. Thin, to match the hairline outline of the name. */
-    top: 0.24em;
-    height: 0.73em;
-    left: calc(100% + 0.04em);
-    width: max(2px, 0.014em);
+    /* An underscore caret: Sora's baseline sits 0.97em below the inline box top, so the bar
+       rests just under it, about half a character wide and thin like the outlined name. */
+    top: 1em;
+    height: max(2px, 0.022em);
+    left: calc(100% + 0.06em);
+    width: 0.42em;
     background: rgb(var(--accent));
     opacity: 0;
     animation: caret-slot var(--slot) step-end;
