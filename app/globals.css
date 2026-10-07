@@ -217,6 +217,41 @@
     transition: clip-path 520ms cubic-bezier(0.42, 0, 0.58, 1);
   }
 
+  /* Earlier-work rows: hovering or focusing a title shifts it left and unfolds its details.
+     On devices without hover the details stay open, so nothing is hover-only. */
+  .ow-title {
+    transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .ow-row:hover .ow-title,
+  .ow-row:focus-visible .ow-title {
+    transform: translateX(-0.75rem);
+  }
+
+  .ow-detail {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 520ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 320ms ease-out;
+  }
+
+  .ow-detail > div {
+    overflow: hidden;
+  }
+
+  .ow-row:hover .ow-detail,
+  .ow-row:focus-visible .ow-detail {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  @media (hover: none) {
+    .ow-detail {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+  }
+
   .intro-fade {
     animation: intro-fade 780ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
     animation-delay: var(--d, 0ms);
@@ -363,6 +398,8 @@
   .btn-rollover::before,
   .btn-rollover:hover::after,
   .btn-rollover:focus-visible::after,
+  .ow-title,
+  .ow-detail,
   .text-sweep::before,
   .text-sweep-trigger:hover .text-sweep,
   .text-sweep-trigger:focus-visible .text-sweep,
