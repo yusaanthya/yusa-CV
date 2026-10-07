@@ -159,7 +159,7 @@ n = len(nums) # find the length of the list
 
 接下來先剪枝篩除可以跳過的條件：
 
-1. 最小數已確認 > 0 (總相加怎麼家都不可能抵銷)
+1. 最小數已確認 > 0 (總相加怎麼加都不可能抵銷)
 2. 外層 loop 和上一個 index 相同的值 (等於在找同樣的解答)
 3. 內層 loop 進行中 (left<right) ，但 left point 和上一個 index 值相同 ( 等於在找同樣的解答 )
 4. 內層 loop 進行中 (left<right) ，但 right point 和上一個 index 值相同 ( 等於在找同樣的解答 )
@@ -204,6 +204,6 @@ def threeSum(nums):
 複雜度分析：
 
 - 時間：O(n log n)（ 最一開始的 sort）+ O(n²)（2 pointer）= O(n²)
-- 空間：O(1)（排序 in-place，res 不算）
+- 空間：O(1)（排序 in-place，res 不算）；嚴格來說 Python 的 `list.sort()` 是 Timsort，最差情況會用到 O(n) 的額外暫存空間，若不計排序本身的開銷則為 O(1)
 
-不需要額外準備空間來暫存目前看過的值，成功把空間複雜度壓平到 O(1)
+不需要額外準備空間來暫存目前看過的值，在不計排序開銷的前提下，成功把空間複雜度壓平到 O(1)
