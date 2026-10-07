@@ -122,15 +122,15 @@ The full name is in the HTML (`aria-label` on the h1), so search engines,
 screen readers and no-JS readers get it; typing is a CSS reveal whose
 animations only ever *hide*, so the resting state is the finished name. An accent
 underscore caret (`Yusa Liu_`; it rests just under Sora's baseline, about half a
-character wide) rides on the newest character, then blinks 4 times and holds still, so auto-blinking stops within
+character wide) rides on the newest character, then blinks 4 times and disappears, so auto-blinking stops within
 5s (WCAG 2.2.2). After the first run, a session flag (set via the head script
 and the component) shows the name at once; reduced motion does the same.
 
 Social links (`features/ui/social-links.ts`, Simple Icons CC0 glyphs):
 LinkedIn, GitHub and ArtStation appear twice by design. In the hero, as 24px
 icons in 44px targets, because contacting is the main action for a CV site and
-recruiters land on Home. On desktop they sit under the portrait, right edge on
-the circle's, so they belong to the portrait group instead of adding weight
+recruiters land on Home. On desktop they sit under the portrait, right edge
+10px inside the circle's, so they belong to the portrait group instead of adding weight
 under the intro (a vertical rail right of the circle would overrun the content
 edge at ~1024px). On phones, where the portrait is small and above the name,
 they follow the intro; the inactive copy is `display: none`. Then in the footer, as text links, so

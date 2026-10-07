@@ -7,7 +7,7 @@ const LINES = ["Yusa", "Liu"];
 const START_MS = 350;
 const CHAR_MS = 85;
 const LINE_PAUSE_MS = 160;
-// The caret blinks a few times, then holds still (WCAG 2.2.2: auto-blinking stops within 5s).
+// The caret blinks a few times after typing, then disappears.
 const BLINK_MS = 1000;
 const BLINKS = 4;
 

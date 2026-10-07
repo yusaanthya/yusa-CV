@@ -209,7 +209,7 @@
 
   /* Hero typing: each character is hidden until its own --at time; a "_" caret rides on the
      newest character for one --slot, then sits after the last one, blinks a few times and
-     holds. Animations only ever hide things, so the resting state is the finished name and
+     disappears. Animations only ever hide things, so the resting state is the finished name and
      nothing relies on fill-mode to stay visible. */
   .type-char {
     position: relative;
@@ -231,12 +231,10 @@
     animation-delay: var(--at);
   }
 
+  /* After typing, the caret blinks a few times and is gone: its resting opacity is 0. */
   .type-char-last::after {
-    opacity: 1;
-    animation:
-      caret-wait var(--at) step-end,
-      caret-blink var(--blink) step-end var(--blinks);
-    animation-delay: 0ms, var(--at);
+    animation: caret-blink var(--blink) step-end var(--blinks);
+    animation-delay: var(--at);
   }
 
   @keyframes type-wait {
@@ -253,13 +251,6 @@
     }
   }
 
-  @keyframes caret-wait {
-    from,
-    to {
-      opacity: 0;
-    }
-  }
-
   @keyframes caret-blink {
     0%,
     50% {
@@ -271,7 +262,7 @@
     }
   }
 
-  /* Already typed this session, or reduced motion: show the name and a still caret at once. */
+  /* Already typed this session: show the name at once, without a caret. */
   :root[data-typed] .type-char,
   :root[data-typed] .type-char::after {
     animation: none;
