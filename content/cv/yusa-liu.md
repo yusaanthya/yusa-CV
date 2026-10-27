@@ -45,9 +45,9 @@ Aug 2026
 
 ### Go Quorum Election Simulator
 
-Dec 2024 - Mar 2026
+Dec 2024 - Mar 2026; refactored Oct 2026 | [GitHub repository](https://github.com/yusaanthya/quorum-election-simulator)
 
-- Built a **Go concurrency simulator** modeling heartbeat-based failure detection, vote-based member removal, and leader reselection, with injectable timing and messaging interfaces for node-failure and insufficient-vote tests.
+- Refactored a Go (Golang) leader-election simulator by **separating Raft state transitions from goroutines, timers, and messaging**, enabling deterministic unit tests and fixing same-term double voting and concurrent state-access races.
 
 ## Skills
 

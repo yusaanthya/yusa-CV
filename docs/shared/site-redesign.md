@@ -155,6 +155,10 @@ mirror. The October 27, 2026 refresh uses career-prep commit `1a2a169`:
 - HTC order: HTC-04, HTC-02, HTC-01, HTC-05, HTC-03. MWC 2024 is grouped
   with Closet; the Diablo II achievement is an earlier-career footer section.
 - Projects: PRJ-03 (AI harness), PRJ-02 (NiCE2), PRJ-01 (Go simulator).
+- PRJ-01 subsequently synced to the preferred refactor bullet in career-prep
+  commit `02994ea`, with its public GitHub repository linked. The original
+  December 2024–March 2026 study period and October 2026 refactor are labeled
+  separately. Raft refers to leader election, not a complete consensus system.
 - Phone and email remain omitted; LinkedIn and GitHub provide public contact
   links. Skills are grouped by languages/APIs, cloud/data, and practices.
 - Preserve adopted-design status for ZW-01 and avoid claiming completed
