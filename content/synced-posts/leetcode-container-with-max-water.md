@@ -1,9 +1,16 @@
 ---
-title: "LeetCode Note: Array Day 1, Container with Max Water"
-date: "2025-09-08"
-description: "From brute force to two pointers on Container with Max Water, with time and space complexity for each."
-tags: ["LeetCode", "Arrays", "Two Pointers"]
+slug: leetcode-container-with-max-water
+title: 'LeetCode Note: Array Day 1, Container with Max Water'
+description: >-
+  From brute force to two pointers on Container with Max Water, with time and
+  space complexity for each.
+date: '2025-09-08'
+tags:
+  - LeetCode
+  - Arrays
+  - Two Pointers
 published: true
+lang: zh
 ---
 
 雖然是 Day 1，不過其實在這之前我已經陸續刷了幾題不同 topic 的題目，只是今天才剛好想到應該來記錄一下解題思路，所以我們的第一題就是從 array topic medium 的 Container with Max Water 開始啦！

@@ -1,6 +1,6 @@
 # Project Structure — yusa-CV
 
-> Last updated: 2026-04-14
+> Blog data flow updated: 2026-10-28; other sections retain the original inventory.
 
 ## Tech Stack
 
@@ -39,13 +39,13 @@ yusa-CV/
 │       └── [slug]/
 │           └── page.tsx            # Blog post detail (SSG)
 ├── content/
-│   └── posts/
-│       └── hello-world.md          # Sample markdown post
+│   └── synced-posts/              # Generated public snapshots + manifest
 ├── features/                       # Feature-based modules
 │   ├── blog/
 │   │   ├── types.ts                # BlogPost type + Zod schema
 │   │   ├── services/
-│   │   │   └── post-service.ts     # BlogService: getAllPosts, getPostBySlug
+│   │   │   ├── post-service.ts     # BlogService: getAllPosts, getPostBySlug
+│   │   │   └── post-files.mjs      # Snapshot validation and file reads
 │   │   └── components/
 │   │       └── post-card.tsx       # Blog post card UI
 │   └── ui/
@@ -55,8 +55,7 @@ yusa-CV/
 │           └── container.tsx       # Max-width layout wrapper
 ├── lib/
 │   ├── utils.ts                    # cn(), formatDate()
-│   └── content/
-│       └── reader.ts               # Generic markdown DAO (getHelpers, getBySlug)
+│   └── markdown.ts                 # Markdown rendering
 ├── public/                         # Static assets (SVGs)
 ├── reference/                      # Local reference docs (not deployed)
 ├── next.config.mjs                 # Static export config
@@ -78,11 +77,10 @@ Each domain lives under `features/<domain>/` with three layers:
 
 ### Content → Page Data Flow
 ```
-content/<type>/<slug>.md
-  └─ gray-matter (parse frontmatter + body)
-       └─ lib/content/reader.ts (DAO: validate, sort, slug)
-            └─ features/<domain>/services/<service>.ts
-                 └─ app/<route>/page.tsx (async Server Component)
+content/synced-posts/<slug>.md + manifest.json
+  └─ features/blog/services/post-files.mjs (parse, validate, sort)
+       └─ features/blog/services/post-service.ts
+            └─ app/blog/page.tsx and app/blog/[slug]/page.tsx
 ```
 
 ### Build Strategy

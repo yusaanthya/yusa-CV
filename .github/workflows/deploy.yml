@@ -27,6 +27,8 @@ concurrency:
 jobs:
   # Build job
   build:
+    # Manual dispatch must not deploy a feature branch.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

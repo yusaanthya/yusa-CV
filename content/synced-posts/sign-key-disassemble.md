@@ -1,9 +1,13 @@
 ---
-title: "Sign Key & disassemble tips"
-date: "2026-04-15"
-description: "Sign key and disassemble tips for mock test android data"
-tags: ["Next.js", "SDET"]
+slug: sign-key-disassemble
+title: Sign Key & disassemble tips
+description: Sign key and disassemble tips for mock test android data
+date: '2026-04-15'
+tags:
+  - Next.js
+  - SDET
 published: true
+lang: zh
 ---
 
 ## Sign Key

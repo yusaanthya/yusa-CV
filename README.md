@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Blog publishing
+
+Articles are authored in the private `blog-post` repository. Its publishing
+workflow exports approved `main` content into tracked snapshots here; the site
+builds without private-source access or credentials. The three existing articles
+are migrated as part of this change, with their public URLs preserved.
+Read [content synchronization](docs/blog/content-sync.md) for ownership,
+local preview, the migration inventory, and activation order.
+
 ## Getting Started
 
 First, run the development server:

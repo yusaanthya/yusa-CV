@@ -1,10 +1,17 @@
 ---
-title: "LeetCode Note: Array Day 2, 3SUM"
-date: "2026-04-15"
-description: "Three ways to solve 3SUM, from brute force to a hash set to sorted two pointers, with how each one handles duplicate triplets."
-tags: ["LeetCode", "Arrays", "Two Pointers", "Hash Set"]
+slug: leetcode-3sum
+title: 'LeetCode Note: Array Day 2, 3SUM'
+description: >-
+  Three ways to solve 3SUM, from brute force to a hash set to sorted two
+  pointers, with how each one handles duplicate triplets.
+date: '2026-04-15'
+tags:
+  - LeetCode
+  - Arrays
+  - Two Pointers
+  - Hash Set
 published: true
-source: "HackMD note, pasted into the publishing session"
+lang: zh
 ---
 
 ## 題目解析:
