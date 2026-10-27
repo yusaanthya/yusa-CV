@@ -147,14 +147,26 @@ paint. Tokens are defined for `prefers-color-scheme: dark` (unless
 
 ## CV content
 
-`content/cv/yusa-liu.md` mirrors `career-prep/resume/cv/source/yusa-liu-cv.md`.
-Website-only differences: phone and email are omitted on the public page, the
-GitHub handle is a link, and the Skills / Education lines are list items so
-Markdown does not merge them into one paragraph. Without a one-page limit, the
-website also carries bullet-bank alternates ZW-07 (calendar fallback) and
-HTC-05 (texture prototype), plus a Selected Achievements section (MWC 2024,
-Diablo II launch campaign) carried over from main's earlier CV. The canonical
-source is intentionally not updated with these.
+`content/cv/yusa-liu.md` is a curated public variant derived from
+`career-prep/resume/cv/source/yusa-liu-cv.md` and its bullet bank, not a direct
+mirror. The October 27, 2026 refresh uses career-prep commit `1a2a169`:
+
+- ZONE WALLET order: ZW-03, ZW-17, ZW-15, ZW-01, combined ZW-02/05, ZW-04.
+- HTC order: HTC-04, HTC-02, HTC-01, HTC-05, HTC-03. MWC 2024 is grouped
+  with Closet; the Diablo II achievement is an earlier-career footer section.
+- Projects: PRJ-03 (AI harness), PRJ-02 (NiCE2), PRJ-01 (Go simulator).
+- Phone and email remain omitted; LinkedIn and GitHub provide public contact
+  links. Skills are grouped by languages/APIs, cloud/data, and practices.
+- Preserve adopted-design status for ZW-01 and avoid claiming completed
+  remediation or production rollout for ZW-15. Do not infer exactly-once
+  delivery from ZW-04's send-history ledger.
+- ZW-07 (calendar fallback) is excluded at the owner's explicit request on
+  October 27, 2026: they described the work as unsuccessful. Do not restore it
+  from historical source material during a future sync without reassessment.
+
+This refresh changes only the website variant; career-prep sources and PDFs
+remain separately maintained. The existing print action prints the web CV,
+not a verified one-page application resume.
 
 ## Human-factors fixes
 
