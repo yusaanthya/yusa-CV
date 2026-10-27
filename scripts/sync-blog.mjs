@@ -107,7 +107,7 @@ export function syncBlog({ source, root = process.cwd() }) {
             const slug = file.slice(0, -3);
             slugs.add(slug);
             const { data } = matter(fs.readFileSync(path.join(local, file), 'utf8'));
-            if (data.published === true) {
+            if (data.published !== false) {
                 BlogPostSchema.parse({ ...data, slug });
                 publishedSlugs.add(slug);
             }
@@ -143,7 +143,13 @@ export function syncBlog({ source, root = process.cwd() }) {
         const rewrite = (url, image) => {
             if (externalUrl.test(url)) return url;
             const match = url.match(/^([^?#]*)(.*)$/);
-            const target = decodeURIComponent(match[1]);
+            let target;
+            try {
+                target = decodeURIComponent(match[1]);
+            } catch (error) {
+                if (!(error instanceof URIError)) throw error;
+                throw new Error(`Invalid URL encoding in ${filename}: ${url}`, { cause: error });
+            }
             const suffix = match[2];
             if (target.startsWith('/blog/') && !image) {
                 if (target === '/blog/') return url;

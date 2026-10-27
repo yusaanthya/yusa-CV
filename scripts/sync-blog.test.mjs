@@ -229,13 +229,13 @@ test('validates absolute published article links and preserves query, fragment a
     assert.ok(body.includes('[Index query](/blog/?lang=zh#posts)'));
 });
 
-for (const target of ['missing', 'draft', 'local-draft', 'local-unmarked']) {
+for (const target of ['missing', 'draft', 'local-draft', 'source-unmarked']) {
     test(`rejects absolute links to missing or unpublished articles: ${target}`, (t) => {
         const f = fixture(t);
         f.write('harness/zh/first.md', article('first-zh', {}, `[Other](/blog/${target}/?view=full#details)`));
         f.write('harness/zh/draft.md', article('draft', { published: false }));
         fs.writeFileSync(path.join(f.root, 'content/posts/local-draft.md'), article('local-draft', { published: false }));
-        fs.writeFileSync(path.join(f.root, 'content/posts/local-unmarked.md'), article('local-unmarked', { published: undefined }));
+        f.write('harness/zh/source-unmarked.md', article('source-unmarked', { published: undefined }));
         f.commit();
         assert.throws(f.sync, /Article link targets missing or unpublished content/);
     });
@@ -287,3 +287,29 @@ test('content hashes avoid same-name image collisions and disclose no source ass
     assert.equal(fs.readFileSync(path.join(f.root, 'public/images/synced-blog/first-zh', `${first}.png`), 'utf8'), 'first image');
     assert.equal(fs.readFileSync(path.join(f.root, 'public/images/synced-blog/first-zh', `${second}.png`), 'utf8'), 'second image');
 });
+
+
+test('legacy articles default to published consistently in reader and absolute link validation', (t) => {
+    const f = fixture(t);
+    fs.writeFileSync(path.join(f.root, 'content/posts/legacy.md'), article('legacy', { published: undefined }));
+    f.write('harness/zh/first.md', article('first-zh', {}, '[Legacy](/blog/legacy/#details)'));
+    f.commit();
+    f.sync();
+    assert.equal(readBlogPost('legacy', f.root).published, true);
+    assert.ok(readBlogPost('first-zh', f.root).content.includes('[Legacy](/blog/legacy/#details)'));
+});
+
+for (const body of ['[Other](other%ZZ.md)', '![Image](pic%E0%A4.png)']) {
+    test(`invalid URL encoding identifies source and destination: ${body}`, (t) => {
+        const f = fixture(t);
+        f.write('harness/zh/first.md', article('first-zh', {}, body));
+        f.commit();
+        const destination = body.slice(body.indexOf('(') + 1, -1);
+        assert.throws(f.sync, (error) => {
+            assert.equal(error.message, `Invalid URL encoding in harness/zh/first.md: ${destination}`);
+            assert.ok(error.cause instanceof URIError);
+            return true;
+        });
+        assert.throws(() => readBlogPosts(f.root), /snapshot is incomplete or missing/);
+    });
+}
