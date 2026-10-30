@@ -6,7 +6,7 @@ Taiwan / Global Remote | [LinkedIn](https://www.linkedin.com/in/yusa-liu-7847491
 
 ## Summary
 
-Go backend engineer building transactional and event-driven services across fintech and platform products. Turns ambiguous requirements into system designs and testable APIs, with cross-functional feature ownership and team-adopted delivery practices.
+Go backend engineer building transactional and event-driven services across fintech and platform products. Leads scoped feature and security workstreams across engineering, QA, and operations: clarifies requirements with product, exposes architecture gaps, sequences and delegates work, and stays hands-on in the core implementation.
 
 ## Experience
 
@@ -14,22 +14,23 @@ Go backend engineer building transactional and event-driven services across fint
 
 Mar 2026 - Present | Taipei / Remote
 
-- Implemented corporate redemption review and refund flows within an existing **transactional outbox**, keeping state, audit logs, and events atomic; clarified duplicate-deposit handling and separated eligibility failures from infrastructure retries in the deposit webhook path, validated by 30 eligibility integration tests.
-- Fixed **2 KYC data-consistency defects** in a vendor-integrated draft-first workflow, preserving operator-edited due-diligence fields and routing SMS to the current draft contact; verified with preservation tests and a UAT webhook regression.
-- Led the backend workstream of a quarterly security scan, translating **82 findings into 9 severity-prioritized tickets** and defining execution steps and acceptance criteria across backend, operations, and QA.
+- Led delivery of the OTC manual-review workflow, clarifying requirements with product management and exposing infrastructure gaps through an architecture diagram; aligned scope and frontend/backend sequencing amid workloads spanning **4 release targets**, built the application-list API and outbox infrastructure, published the review API contract, and delegated review API implementation and self-testing; the workflow passed acceptance testing.
+- Led the backend security remediation workstream, translating **82 scan findings into 9 severity-prioritized tickets** and allocating work across a backend, operations, and QA team that grew to 7 people on the same plan, with execution instructions and acceptance criteria.
+- Drove requirements-to-QA practices: partnered with the engineering manager to adopt pre-refinement technical review and capacity planning across an **18-person engineering, QA, and product team**, surfacing blockers and deferring unresolved work before sprint commitments, and established structured backend-to-QA handoffs adopted through retrospectives.
 - Designed a fraud-return capability from the ground up, separating crypto liquidation from fiat settlement and defining idempotency, reconciliation, and manual-recovery boundaries; **adopted as the baseline for implementation planning**.
-- Improved requirements-to-QA delivery by partnering with the engineering manager on pre-refinement technical review and capacity planning across an **18-person engineering, QA, and product team**, and establishing backend-to-QA handoffs adopted through retrospectives.
+- Handled **2 concurrent security workstreams within 3 days**: delivered an API hotfix enforcing user-level authorization on 7 write endpoints and removing 27 obsolete or operational routes, while upgrading Go across 8 repositories through CI blockers, an OpenTelemetry startup incompatibility, and a Cloud Run rollout failure.
+- Delivered **2 fiat-refund rule changes** in a reconciliation-sensitive deposit flow, recording bank-failure completion times for audit lookups and blocking refunds at or below the 30 TWD bank fee by reusing an existing review state; after the first merge, traced a 30 TWD-per-deposit trust-account reconciliation shortfall to how blocked records were netted and narrowed the block scope with product and QA.
 - Built a **Go/Pub/Sub reminder pipeline reused by 2 campaigns**, combining cancellation-aware publisher rate limiting with a uniquely keyed send-history ledger to suppress retries of recorded deliveries.
 
 ### Software Engineer - HTC VIVERSE
 
 Nov 2022 - Dec 2024 | Taipei
 
-- Developed and maintained the Go/Gin avatar service within a **100+ microservice ecosystem**, using layered design and mockable repository interfaces for testing while preserving backward-compatible contracts through OpenAPI and semantic versioning.
-- Redefined Closet 2.0's avatar, asset, and ownership boundaries to separate mutable editor state from reusable assets and inventory ownership, helping deliver the release in **8 months against an original 2-year plan**. Showcased at MWC 2024.
 - Designed database schemas, resource lifecycles, and API contracts for avatar accessories and animations, with state-based idempotency guards for AWS SQS-driven vendor integration; enabled parallel implementation across **7 internal contributors and 2 vendor developers**.
-- Implemented an API-triggered texture-conversion workflow using on-demand Kubernetes Jobs and EFS scratch storage; repackaged GLB textures with Basis Universal UASTC encoding in KTX2 containers, increasing supported resolution from **512×512 to 2K**.
+- Redefined Closet 2.0's avatar, asset, and ownership boundaries to separate mutable editor state from reusable assets and inventory ownership, helping deliver the release in **8 months against an original 2-year plan**. Showcased at MWC 2024.
 - Integrated an AWS SNS/SQS/Lambda event flow and built a reusable Lambda handler; the integration approach and handler were **adopted by 2 business units**.
+- Implemented an API-triggered texture-conversion workflow using on-demand Kubernetes Jobs and EFS scratch storage; repackaged GLB textures with Basis Universal UASTC encoding in KTX2 containers, increasing supported resolution from **512×512 to 2K**.
+- Developed and maintained the Go/Gin avatar service within a **100+ microservice ecosystem**, using layered design and mockable repository interfaces for testing while preserving backward-compatible contracts through OpenAPI and semantic versioning.
 
 ## Projects
 
