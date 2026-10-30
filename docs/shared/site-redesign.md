@@ -149,11 +149,26 @@ paint. Tokens are defined for `prefers-color-scheme: dark` (unless
 
 `content/cv/yusa-liu.md` is a curated public variant derived from
 `career-prep/resume/cv/source/yusa-liu-cv.md` and its bullet bank, not a direct
-mirror. The October 27, 2026 refresh uses career-prep commit `1a2a169`:
+mirror. The October 31, 2026 refresh uses career-prep commit `c3aa90b`:
 
-- ZONE WALLET order: ZW-03, ZW-17, ZW-15, ZW-01, combined ZW-02/05, ZW-04.
-- HTC order: HTC-04, HTC-02, HTC-01, HTC-05, HTC-03. MWC 2024 is grouped
-  with Closet; the Diablo II achievement is an earlier-career footer section.
+- Bullets are ordered by the owner's role first, then impact: stories where
+  they led others' work, then stories they owned alone, then extensions of an
+  inherited system or architecture. Delivered or accepted results go first
+  within a tier.
+- ZONE WALLET order: ZW-18, ZW-15, combined ZW-02/05, ZW-01, ZW-19 (combined
+  with ZW-21), ZW-20, ZW-04. ZW-03 (an extension of the inherited outbox,
+  overlapping ZW-18) and ZW-17 (small scope) are dropped to keep 7 bullets.
+- HTC order: HTC-01, HTC-02, HTC-03, HTC-05, HTC-04. HTC-04 applied the
+  team's existing architecture, so it goes last but keeps the 100+
+  microservice context. MWC 2024 is grouped with Closet; the Diablo II
+  achievement is an earlier-career footer section.
+- The Summary positions the owner as a hands-on lead of scoped feature and
+  security workstreams (ZW-18, ZW-15), not a people manager or tech-lead title.
+- The page is public and names a current employer, so it leaves out current
+  security status and incident detail that application PDFs may carry. ZW-15
+  omits the completed-ticket count, which implies open findings; ZW-19 omits
+  the abuse trigger and the per-repository vulnerability result, which implies
+  the other repositories. Reassess before adding either back.
 - Projects: PRJ-03 (AI harness), PRJ-02 (NiCE2), PRJ-01 (Go simulator).
 - PRJ-01 subsequently synced to the preferred refactor bullet in career-prep
   commit `02994ea`, with its public GitHub repository linked. The original
@@ -193,7 +208,6 @@ not a verified one-page application resume.
 - `npm run lint` fails on `main` too (`eslint/config` export error with ESLint 8).
 - framer-motion adds ~46 kB to the home page for the parallax. CSS scroll-driven
   animations would remove it but are not yet supported in Firefox.
-- `career-prep/resume/cv/README.md` still says the website CV is not synced.
 - The sign-key post hotlinks five images from `hackmd.io/_uploads`, which return 403
   to non-browser requests; re-export them into `public/images/posts/` (see the
   `publish-post` skill).
