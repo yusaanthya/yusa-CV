@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 536" width="560" height="536" role="img" aria-labelledby="t">
+<title id="t">工作流程：Jira ticket 開出、產生 AC 與 rough design、會議上敲定、產生 spec 與 task plan、impl 實作、自測完成並與 QA hand-off</title>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+<rect x="0.5" y="0.5" width="559" height="535" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+<g font-family="'PingFang TC','Noto Sans TC','Microsoft JhengHei',system-ui,sans-serif">
+<rect x="40" y="28" width="480" height="64" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="280.0" y="66" text-anchor="middle" font-size="18" font-weight="600" fill="#0f172a">Jira ticket 開出</text>
+<line x1="280.0" y1="94" x2="280.0" y2="129" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="40" y="132" width="480" height="64" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="280.0" y="159" text-anchor="middle" font-size="18" font-weight="600" fill="#0f172a">產生 AC 與 rough design</text>
+<text x="280.0" y="181" text-anchor="middle" font-size="14" fill="#475569">帶到會議上和 PM 進一步 refinement</text>
+<line x1="280.0" y1="198" x2="280.0" y2="233" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="294.0" y="221.0" font-size="14" font-weight="600" fill="#2563eb">會議上敲定</text>
+<rect x="40" y="236" width="480" height="64" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="280.0" y="263" text-anchor="middle" font-size="18" font-weight="600" fill="#0f172a">產生 spec 與 task plan</text>
+<text x="280.0" y="285" text-anchor="middle" font-size="14" fill="#475569">以 Jira 作為需求來源</text>
+<line x1="280.0" y1="302" x2="280.0" y2="337" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="40" y="340" width="480" height="64" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="280.0" y="378" text-anchor="middle" font-size="18" font-weight="600" fill="#0f172a">impl 實作</text>
+<line x1="280.0" y1="406" x2="280.0" y2="441" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="40" y="444" width="480" height="64" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="280.0" y="482" text-anchor="middle" font-size="18" font-weight="600" fill="#0f172a">自測完成，與 QA hand-off</text>
+</g></svg>
