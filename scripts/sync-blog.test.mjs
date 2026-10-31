@@ -8,6 +8,7 @@ import { createHash } from 'node:crypto';
 import matter from 'gray-matter';
 import { syncBlog } from './sync-blog.mjs';
 import { readBlogPosts, readBlogPost } from '../features/blog/services/post-files.mjs';
+import { groupBlogPosts } from '../features/blog/services/post-groups.mjs';
 
 function fixture(t) {
     const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'blog-sync-test-'));
@@ -313,3 +314,129 @@ for (const body of ['[Other](other%ZZ.md)', '![Image](pic%E0%A4.png)']) {
         assert.throws(() => readBlogPosts(f.root), /snapshot is incomplete or missing/);
     });
 }
+
+function snapshotFiles(root) {
+    const directory = path.join(root, 'content/synced-posts');
+    return Object.fromEntries(fs.readdirSync(directory).sort()
+        .map((file) => [file, fs.readFileSync(path.join(directory, file), 'utf8')]));
+}
+
+const manifestExists = (root) => fs.existsSync(path.join(root, 'content/synced-posts/manifest.json'));
+
+test('exports a translation pair with its key and reads it back as one article', (t) => {
+    const f = fixture(t);
+    f.write('harness/zh/a.md', article('example-zh', { translationKey: 'example', tags: ['Harness'], internalNote: 'PRIVATE-METADATA' }));
+    f.write('harness/en/a.md', article('example-en', {
+        lang: 'en', translationKey: 'example', date: '2026-10-31', tags: ['Harness', 'Claude Code'], internalNote: 'PRIVATE-METADATA',
+    }));
+    f.write('harness/zh/other.md', article('other-zh', { date: '2026-10-28' }));
+    f.commit();
+    assert.deepEqual(f.sync().slugs, ['example-en', 'example-zh', 'other-zh']);
+    const files = snapshotFiles(f.root);
+    assert.ok(!JSON.stringify(files).includes('PRIVATE-'));
+    for (const slug of ['example-zh', 'example-en']) {
+        const { data } = matter(files[`${slug}.md`]);
+        assert.equal(data.translationKey, 'example');
+        assert.equal(Object.keys(data).at(-1), 'translationKey');
+        assert.ok(!('internalNote' in data));
+    }
+    assert.ok(!('translationKey' in matter(files['other-zh.md']).data));
+    const posts = readBlogPosts(f.root);
+    assert.deepEqual(posts.map((post) => post.slug).sort(), ['example-en', 'example-zh', 'other-zh']);
+    const articles = groupBlogPosts(posts);
+    assert.deepEqual(articles.map((entry) => entry.id), ['slug:other-zh', 'key:example']);
+    const pair = articles[1];
+    assert.deepEqual(pair.versions.map(({ slug, lang }) => [slug, lang]), [['example-zh', 'zh'], ['example-en', 'en']]);
+    assert.equal(pair.date, '2026-10-27');
+    assert.deepEqual(pair.tags, ['Harness', 'Claude Code']);
+});
+
+test('rejects two published versions with the same key and language, leaving no manifest', (t) => {
+    const f = fixture(t);
+    f.write('harness/zh/a.md', article('example-zh', { translationKey: 'example' }));
+    f.commit();
+    f.sync();
+    assert.ok(manifestExists(f.root));
+    f.write('harness/zh/b.md', article('example-zh-copy', { translationKey: 'example' }));
+    f.commit();
+    assert.throws(f.sync, (error) => {
+        assert.match(error.message, /"example-zh"/);
+        assert.match(error.message, /"example-zh-copy"/);
+        assert.match(error.message, /translationKey "example"/);
+        return true;
+    });
+    assert.ok(!manifestExists(f.root));
+    assert.throws(() => readBlogPosts(f.root), /snapshot is incomplete or missing/);
+});
+
+test('rejects a keyed local legacy post without a language', (t) => {
+    const f = fixture(t);
+    f.write('harness/zh/a.md', article('example-zh'));
+    f.commit();
+    fs.writeFileSync(path.join(f.root, 'content/posts/legacy.md'), article('legacy', { lang: undefined, translationKey: 'legacy-key' }));
+    assert.throws(f.sync, /"legacy" has translationKey "legacy-key" but no lang/);
+    assert.ok(!manifestExists(f.root));
+});
+
+test('validates pairing across local legacy and exported posts together', (t) => {
+    const f = fixture(t);
+    f.write('harness/zh/a.md', article('example-zh', { translationKey: 'example' }));
+    f.commit();
+    fs.writeFileSync(path.join(f.root, 'content/posts/legacy.md'), article('legacy', { translationKey: 'example' }));
+    assert.throws(f.sync, /"legacy" and "example-zh" share translationKey "example" and lang "zh"/);
+    assert.ok(!manifestExists(f.root));
+    // An unpublished local draft is not admitted, so it cannot collide.
+    fs.writeFileSync(path.join(f.root, 'content/posts/legacy.md'), article('legacy', { translationKey: 'example', published: false }));
+    assert.deepEqual(f.sync().slugs, ['example-zh']);
+});
+
+for (const key of ['Bad_Key', '', 'example-', 'a/b']) {
+    test(`rejects an invalid translation key: ${JSON.stringify(key)}`, (t) => {
+        const f = fixture(t);
+        f.write('harness/zh/a.md', article('example-zh', { translationKey: key }));
+        f.commit();
+        assert.throws(f.sync);
+        assert.ok(!manifestExists(f.root));
+    });
+}
+
+test('an unpublished sibling contributes no route, tag, language or date', (t) => {
+    const f = fixture(t);
+    f.write('harness/zh/a.md', article('example-zh', { translationKey: 'example', tags: ['Harness'] }));
+    f.write('harness/en/a.md', article('example-en', {
+        lang: 'en', translationKey: 'example', published: false, date: '2026-01-01',
+        title: 'PRIVATE-TITLE', tags: ['Harness', 'PRIVATE-TAG'],
+    }));
+    f.commit();
+    assert.deepEqual(f.sync().slugs, ['example-zh']);
+    const files = snapshotFiles(f.root);
+    assert.ok(!JSON.stringify(files).includes('example-en'));
+    assert.ok(!JSON.stringify(files).includes('PRIVATE-'));
+    const [entry, ...rest] = groupBlogPosts(readBlogPosts(f.root));
+    assert.equal(rest.length, 0);
+    assert.equal(entry.id, 'key:example');
+    assert.deepEqual(entry.versions.map((version) => version.slug), ['example-zh']);
+    assert.deepEqual(entry.tags, ['Harness']);
+    assert.equal(entry.date, '2026-10-27');
+});
+
+test('withdrawing one and then both versions of a pair updates the group', (t) => {
+    const f = fixture(t);
+    f.write('harness/zh/a.md', article('example-zh', { translationKey: 'example' }));
+    f.write('harness/en/a.md', article('example-en', { lang: 'en', translationKey: 'example', date: '2026-01-01' }));
+    f.write('harness/zh/other.md', article('other-zh'));
+    f.commit();
+    f.sync();
+    assert.equal(groupBlogPosts(readBlogPosts(f.root)).find((entry) => entry.id === 'key:example').versions.length, 2);
+    f.write('harness/en/a.md', article('example-en', { lang: 'en', translationKey: 'example', published: false }));
+    f.commit();
+    f.sync();
+    assert.ok(!fs.existsSync(path.join(f.root, 'content/synced-posts/example-en.md')));
+    const pair = groupBlogPosts(readBlogPosts(f.root)).find((entry) => entry.id === 'key:example');
+    assert.deepEqual(pair.versions.map((version) => version.slug), ['example-zh']);
+    assert.equal(pair.date, '2026-10-27');
+    f.write('harness/zh/a.md', article('example-zh', { translationKey: 'example', published: false }));
+    f.commit();
+    f.sync();
+    assert.deepEqual(groupBlogPosts(readBlogPosts(f.root)).map((entry) => entry.id), ['slug:other-zh']);
+});
