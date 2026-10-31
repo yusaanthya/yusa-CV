@@ -395,7 +395,7 @@ for (const key of ['Bad_Key', '', 'example-', 'a/b']) {
         const f = fixture(t);
         f.write('harness/zh/a.md', article('example-zh', { translationKey: key }));
         f.commit();
-        assert.throws(f.sync);
+        assert.throws(f.sync, /translationKey/);
         assert.ok(!manifestExists(f.root));
     });
 }
