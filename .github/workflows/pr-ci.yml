@@ -1,0 +1,56 @@
+name: PR CI
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    # This job name is the status check that the main ruleset requires.
+    name: PR CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npx --no-install tsc --noEmit
+      - run: npm run test:blog
+
+      - name: Build at the site root
+        run: npm run build
+
+      # Production Pages injects basePath through actions/configure-pages; mirror it here.
+      - name: Build with the /yusa-CV Pages base path
+        env:
+          NEXT_PUBLIC_BASE_PATH: /yusa-CV
+        run: |
+          node -e '
+            const fs = require("fs");
+            const file = "next.config.mjs";
+            const before = fs.readFileSync(file, "utf8");
+            const after = before.replace("const nextConfig = {", "const nextConfig = { basePath: \"/yusa-CV\",");
+            if (after === before) {
+              console.error("Could not add basePath to next.config.mjs; update this CI step.");
+              process.exit(1);
+            }
+            fs.writeFileSync(file, after);
+          '
+          npm run build
+          grep -q 'href="/yusa-CV/blog/' out/blog/index.html || { echo "Blog links lack the /yusa-CV prefix"; exit 1; }
+          if grep -rq '/yusa-CV/yusa-CV' out; then echo "Doubled /yusa-CV prefix in out/"; exit 1; fi
