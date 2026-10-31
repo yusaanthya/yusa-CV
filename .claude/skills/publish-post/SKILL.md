@@ -55,6 +55,7 @@ retain its existing `content/posts/<slug>.md` until migration is authorized.
 title: "..."
 slug: "stable-article-slug"
 lang: "zh"
+translationKey: "shared-article-key" # optional; only to pair language versions
 date: "YYYY-MM-DD"
 description: "One sentence for the blog list."
 tags: ["...", "..."]
@@ -69,6 +70,17 @@ published: false
   `main` with explicit true is eligible; missing publication metadata means draft.
 - `lang`: match the source language directory. Preserve public provenance links,
   but do not export internal source paths, credentials, or private work records.
+- `translationKey`: omit unless the article is one language version of another.
+  Paired versions share the same key in slug format (lowercase kebab-case), each
+  with its own `lang`; at most one published version per key and language. The
+  key never chooses or changes a URL, and a key matching an unkeyed article's
+  slug does not pair them. To pair an existing article, add the key to both
+  source files without changing slugs, dates, prose, or assets, then regenerate
+  the snapshot. Invalid keys, a key without `lang`, or duplicate key/language
+  pairs fail export and the website build. See
+  [translation pairs](../../../docs/blog/content-sync.md#translation-pairs).
+  Publishing a translation is a separate owner-approved action; never invent
+  translation text or dates.
 - Keep the author's wording and title. Do not rewrite content or "correct" names
   (e.g. a problem title) without asking.
 - Convert source-specific syntax to plain GFM:

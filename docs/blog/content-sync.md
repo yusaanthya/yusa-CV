@@ -67,6 +67,29 @@ flags remain private. Do not invent publication dates or mark drafts ready.
 Changing a filename preserves its URL if the slug stays unchanged; changing the
 slug changes the URL. Automatic redirects are outside this integration.
 
+### Translation pairs
+
+Optional `translationKey` joins language versions of one logical article. It
+uses the slug format (lowercase kebab-case, for example `"example"`) and only
+identifies the article: each version keeps its own slug, URL, title,
+description, date, tags, and publication flag, and the key never chooses or
+changes a URL. A keyed article requires `lang`, and a key may have at most one
+published version per language; a key with one published version is valid.
+Keyed and unkeyed articles are separate namespaces, so a key equal to another
+article's slug does not join them, and nothing is inferred from slugs,
+filenames, or titles. Reuse the same tag spelling for the same topic.
+
+Pairing is validated over all published local and synchronized posts, by the
+exporter before it writes the snapshot and again when the website loads it. An
+invalid key, a keyed post without `lang`, or two published posts sharing a key
+and `lang` fails the export or the build. Drafts take no part in pairing.
+
+To pair an existing article, edit both versions' metadata in `blog-post` on a
+feature branch: add the same key and keep slugs, dates, prose, and assets
+unchanged. Regenerate the snapshot through the existing export; never add keys
+to synchronized copies. Publishing a translation is a separate owner-approved
+change that needs its own complete metadata and explicit `published: true`.
+
 Use relative Markdown links to other published source articles, and relative
 image paths to committed source assets. Public image names use the article slug
 and a SHA-256 content hash plus extension, never source directory names. The
