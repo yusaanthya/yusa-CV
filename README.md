@@ -6,7 +6,7 @@ Tailwind CSS, Sora via `next/font`, and Framer Motion for home-page motion.
 
 ## Local development
 
-Use Node.js 20, matching the deployment workflow:
+Use Node.js 24, matching the deployment workflow:
 
 ```sh
 npm ci
@@ -49,7 +49,7 @@ live yet; each translation is published separately from `blog-post`.
 ## Deployment and documentation
 
 `next.config.mjs` enables static export. The
-[Pages workflow](.github/workflows/deploy.yml) uses Node.js 20, builds `out/`, and
+[Pages workflow](.github/workflows/deploy.yml) uses Node.js 24, builds `out/`, and
 deploys to GitHub Pages on pushes to `main` or a manual run on `main`. It supplies
 the Pages base path and `NEXT_PUBLIC_BASE_PATH` for assets and supported Markdown
 links. No runtime application server is deployed.
