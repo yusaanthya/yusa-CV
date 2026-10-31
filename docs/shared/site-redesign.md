@@ -1,7 +1,10 @@
 # Site Redesign — Design Notes
 
 > **Created:** 2026-10-07
-> **Status:** Implemented on `feat/yusa_liu/indie-redesign`
+> **Status:** Implemented on `main`; audited 2026-10-31 at `d961784`.
+> The original implementation branch was `feat/yusa_liu/indie-redesign`.
+> Earlier measurements and rejected approaches below are historical design
+> records, not a new visual/accessibility verification of this revision.
 > **Replaces:** the "Minimal + Typography" look from `proposal.md` (UI Refinement)
 
 ## Brief
@@ -192,7 +195,8 @@ not a verified one-page application resume.
 - Measure capped at 68ch (CV lines were ~95 characters); post header matches it.
 - Mobile CV sheet goes edge to edge so lines are ~40 characters instead of ~32.
 - Prose leading 1.75 for mixed CJK/Latin text.
-- Clear action hierarchy on home: one filled primary button, outlined secondaries.
+- Home wayfinding uses the header navigation and hero social links; the hero has
+  no CTA buttons. Project panels expose their destinations through rollover links.
 - Press feedback on `:active` (scale 0.97, 100ms); none under reduced motion.
 - Current page marked by an underline plus weight, not color alone.
 - Tags are flat labels, not button-shaped, because they are not interactive.
@@ -205,11 +209,16 @@ not a verified one-page application resume.
 
 ## Follow-ups
 
-- `npm run lint` fails on `main` too (`eslint/config` export error with ESLint 8).
-- framer-motion adds ~46 kB to the home page for the parallax. CSS scroll-driven
-  animations would remove it but are not yet supported in Firefox.
-- The sign-key post hotlinks five images from `hackmd.io/_uploads`, which return 403
-  to non-browser requests; re-export them into `public/images/posts/` (see the
-  `publish-post` skill).
+- The previously observed `npm run lint` failure (`eslint/config` export error
+  with ESLint 8) remains a follow-up: the audited package/config still use that
+  incompatible combination. This documentation audit did not rerun lint.
+- The redesign recorded ~46 kB of Framer Motion cost on the home page. A CSS
+  scroll-driven alternative remains an evaluation item; remeasure bundle cost
+  and check browser support before adopting it.
+- The sign-key post retains five historical `hackmd.io/_uploads` hotlinks,
+  previously reported to return 403 to non-browser requests. Obtain the original
+  images and update this migrated article in `blog-post`; the exporter owns
+  generated assets under `public/images/synced-blog/`. Do not repair its website
+  snapshot by hand (see the `publish-post` skill).
 - Project key art is limited to 2000px wide; supply ~3200px+ originals for crisp
   retina rendering. Converting to SVG would not help: the art is raster.

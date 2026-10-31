@@ -1,74 +1,44 @@
-# CV Page — Tasks
+# CV Page — Status and Remaining Checks
 
-> **Proposal:** [proposal.md](./proposal.md)
-> **Created:** 2026-04-15
+> Original plan: [proposal.md](./proposal.md), created 2026-04-15.
+> Audited: 2026-10-31 against `d961784d5c73accbf0f022a109b8b97ee740f7d1`.
 
-## Overview
+The CV page is implemented. Its current source is `content/cv/yusa-liu.md`;
+`reference/YusaLiu_CV_2026_v2.md` is not present in the current tree and is not a
+current copy source. Follow the [CV content decisions](../shared/site-redesign.md#cv-content)
+when updating the curated public variant.
 
-| # | Task | File | Done |
-|---|------|------|------|
-| 1 | 建立 CV markdown 內容檔 | `content/cv/yusa-liu.md` | ☑ |
-| 2 | 建立 CV 頁面（Server Component） | `app/cv/page.tsx` | ☑ |
-| 3 | 建立 PDF 下載按鈕（Client Component） | `app/cv/print-button.tsx` | ☑ |
-| 4 | 加入 `@media print` CSS | `app/globals.css` | ☑ |
-| 5 | 修正 Header nav 連結 | `features/ui/components/header.tsx` | ☑ |
-| 6 | 驗證 build 正常 | — | ☑ |
+## Implemented
 
----
+- [x] Create the `content/cv/` directory.
+- [x] Store the CV content in `content/cv/yusa-liu.md`.
+- [x] Read that file directly in the `app/cv/page.tsx` Server Component.
+- [x] Reuse `markdownToHtml()` from `lib/markdown.ts`.
+- [x] Render HTML with `dangerouslySetInnerHTML` and Typography styling. The
+  redesign uses `prose prose-site` instead of the original neutral/invert classes.
+- [x] Place `<PrintButton />` above the CV sheet.
+- [x] Declare the print-button component with `"use client"`.
+- [x] Invoke `window.print()` when the button is clicked.
+- [x] Hide the print control with `print:hidden`.
+- [x] Hide `header` and `footer` in `@media print` rules in `app/globals.css`.
+- [x] Build the static site successfully at the audited revision:
+  [Pages run 41187047616](https://github.com/yusaanthya/yusa-CV/actions/runs/41187047616).
 
-## Detailed Tasks
+## Superseded details
 
-### 1. 建立 CV markdown 內容檔
+| April task | Current implementation |
+| --- | --- |
+| Label the action "Download PDF" | `app/cv/print-button.tsx` says "Print or save as PDF", accurately describing the browser print dialog. It does not generate a separate PDF file. |
+| Change the "About" link in `header.tsx` | `header.tsx` delegates to `features/ui/components/nav-links.tsx`; its "CV" link points to `/cv`. |
 
-- **File:** `content/cv/yusa-liu.md`
-- **Description:** 將 `reference/YusaLiu_CV_2026_v2.md` 的內容複製到此路徑，作為 CV 頁面的 content source
-- [ ] 建立 `content/cv/` 目錄
-- [ ] 複製 CV 內容至 `content/cv/yusa-liu.md`
+## Remaining verification
 
----
+- [ ] Inspect print preview for readable typography, margins, and pagination;
+  confirm the header, footer, and print control are absent.
+- [ ] Inspect the exported output for `/cv`. The route source and successful CI
+  build are verified; this audit did not inspect the build artifact or route log.
+- [ ] Check the rendered CV and print action in a browser.
 
-### 2. 建立 CV 頁面
-
-- **File:** `app/cv/page.tsx`
-- **Description:** Server Component，直接讀取 `content/cv/yusa-liu.md`，透過 `markdownToHtml()` 轉換後渲染
-- [ ] 讀取 `content/cv/yusa-liu.md`（用 `fs.readFile`，不需要經過 reader.ts）
-- [ ] Reuse `markdownToHtml()` 轉換（可從 blog/[slug]/page.tsx 抽出共用，或直接 inline）
-- [ ] 渲染結果用 `dangerouslySetInnerHTML`，套用 `prose prose-neutral dark:prose-invert` class
-- [ ] 加入 `<PrintButton />` 於頁面頂部
-
----
-
-### 3. 建立 PDF 下載按鈕
-
-- **File:** `app/cv/print-button.tsx`
-- **Description:** `'use client'` Client Component，按鈕觸發 `window.print()`
-- [ ] 加上 `'use client'` directive
-- [ ] 按鈕文字：「Download PDF」
-- [ ] onClick: `window.print()`
-- [ ] 加上 `print:hidden` Tailwind class（列印時隱藏）
-
----
-
-### 4. 加入 `@media print` CSS
-
-- **File:** `app/globals.css`
-- **Description:** 列印時隱藏不必要的 UI 元素
-- [ ] `header`、`footer` 設為 `display: none`
-- [ ] 確認 prose 內容在列印時排版正常（字體大小、margin 等）
-
----
-
-### 5. 修正 Header nav 連結
-
-- **File:** `features/ui/components/header.tsx`
-- **Description:** 將 "About" nav link href 從 `/` 改為 `/cv`
-- [ ] 找到 About link，修改 href
-
----
-
-### 6. 驗證 Build
-
-- **Description:** 確認靜態匯出正常
-- [ ] `npm run build` 無 error
-- [ ] `/cv` 路由出現在 build output
-- [ ] 在 dev server 確認頁面渲染、列印按鈕正常
+The current CV already contains the ZONE WALLET role and its October 31 refresh.
+This status update adds no career claims and does not certify a one-page resume
+or a visually verified print layout.

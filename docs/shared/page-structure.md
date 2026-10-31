@@ -1,6 +1,10 @@
 # UI Refinement — Page Structure
 
 > **Created:** 2026-04-15
+> **Status:** Historical structure, superseded by [site-redesign.md](./site-redesign.md).
+> `AnimateIn`, `--brand`, and `.dark` below are not current APIs. See
+> [tasks.md](./tasks.md) for disposition and [the current inventory](../../reference/structure.md)
+> for component paths and appearance handling.
 
 ## 新增 Component
 

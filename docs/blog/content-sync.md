@@ -1,5 +1,12 @@
 # Blog content synchronization
 
+> Status checked against public `main` at `d961784` on 2026-10-31. Website
+> integration merged in [PR #22](https://github.com/yusaanthya/yusa-CV/pull/22);
+> a later [snapshot commit](https://github.com/yusaanthya/yusa-CV/commit/fdf4bb69274d43a2e9762875151ec800fd79ea3a)
+> adds the published harness preface. This public-repository audit does not
+> verify current private workflow settings or credential configuration. The
+> source-side rules below describe the publishing contract.
+
 ## Ownership and requirements
 
 `blog-post` is the sole editable source for articles. This public repository owns
@@ -82,10 +89,10 @@ it cannot erase public Git history or caches.
 
 ## Migration inventory
 
-These three existing articles are migrated in the paired feature branches.
-Their source bodies, titles, dates, descriptions, tags, and public slugs are
-preserved. The old `content/posts/` originals are replaced by generated snapshots.
-This records implementation status, not confirmation that the PRs are merged.
+The three legacy articles below are present as generated snapshots on `main`;
+the website integration merged in PR #22. Their original public slugs remain
+unchanged, and `content/posts/` is absent from the audited tree. The migration
+record preserves their source bodies, titles, dates, descriptions, and tags.
 
 | Public slug | Source location in blog-post |
 | --- | --- |
@@ -96,12 +103,20 @@ This records implementation status, not confirmation that the PRs are merged.
 The sign-key article retains its five existing external HackMD image links.
 They can return HTTP 403 to automated requests; the migration does not repair
 those external assets. Replacing them requires exported original images.
-The seven existing harness articles remain unpublished drafts.
+The public manifest now also includes `harness-preface-zh`, for four published
+slugs in total. The earlier statement that all seven harness articles were
+unpublished is obsolete. The public snapshot does not establish how many
+private drafts currently exist or whether any remaining draft is ready.
 
-## Activation order
+## Initial setup and ongoing publication
 
-1. Review and merge the website PR first. Its initial tracked snapshot already
-   contains the three existing articles, so the website needs no source access.
+The website integration and a subsequent snapshot update are already on `main`.
+Keep the following setup order for reference or reconfiguration; it is not a
+claim that activation is still pending or that credentials were checked here.
+
+1. Merge website support before enabling the source workflow. This prerequisite
+   is complete for the current integration; the tracked snapshot needs no source
+   access at website build time.
 2. In **private `blog-post` only**, configure the Actions secret
    `WEBSITE_PUBLISH_TOKEN`: a fine-grained token restricted to `yusaanthya/yusa-CV`
    with Contents: write. Do not put token values in files, PRs, chat, or public
@@ -115,8 +130,8 @@ The seven existing harness articles remain unpublished drafts.
 
 The old public-pull/two-token proposal is superseded. Neither
 `BLOG_CONTENT_READ_TOKEN` nor `WEBSITE_DISPATCH_TOKEN` is needed. No credentials
-are created or configured by this change, and opening the PRs does not activate
-publication. The default source `GITHUB_TOKEN` cannot write the other repository;
+are created or configured by documentation changes, and documentation alone
+does not establish live publication status. The default source `GITHUB_TOKEN` cannot write the other repository;
 the source-side publishing credential supplies that narrowly scoped access.
 
 ## Local development and verification
@@ -161,7 +176,9 @@ exports. Validate a static export with a nonempty Pages base path when changing
 renderer links or images. Confirm existing article routes and content remain
 present and private drafts/planning material are absent.
 
-Series navigation, language-switching UI, and RSS remain separate work. General
+Series navigation, language-switching UI, and RSS remain separate work. The
+[bilingual articles and filters specification](./2026-10-31-bilingual-articles-and-filters-spec.md)
+is documentation only; translation grouping and list filters are not implemented. General
 site links outside `/blog/` and reducing repeated per-post file reads are also
 deferred; they are not changed by this integration.
 See [the publishing skill](../../.claude/skills/publish-post/SKILL.md) for source

@@ -1,7 +1,11 @@
 # Blog Markdown Rendering — Proposal
 
 > **Created:** 2026-04-14
-> **Status:** Draft
+> **Status:** Historical implementation proposal; renderer implemented.
+> **Current status:** See [tasks.md](./tasks.md), audited 2026-10-31. The original
+> requirements below are retained as history, not a current missing-feature list.
+> `lib/markdown.ts` now owns conversion; the old `lib/content/reader.ts` path is
+> gone. Separate light/dark syntax themes remain an unresolved acceptance item.
 
 ## Goal
 

@@ -1,6 +1,14 @@
 # Planning — CV, Portfolio & Blog Tech Docs
 
 > Last updated: 2026-04-14
+> **Historical baseline:** The "Current" column and gaps below describe April
+> 2026, not the current site. Markdown rendering, `/cv`, working navigation, and
+> home/project motion now exist. Projects use `/#projects`, not a planned
+> `/portfolio` route; `lib/content/reader.ts` has been replaced. See
+> [the current structure](./structure.md), [design decisions](../docs/shared/site-redesign.md),
+> and the [blog](../docs/blog/tasks.md), [CV](../docs/cv/tasks.md), and
+> [shared UI](../docs/shared/tasks.md) status lists. Unimplemented ideas such as
+> richer SEO remain historical proposals, not newly approved work.
 > Goal: Transform this site into a complete personal site covering CV, Portfolio, and Technical Blog.
 
 ---

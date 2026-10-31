@@ -1,7 +1,10 @@
 # UI Refinement — Proposal
 
 > **Created:** 2026-04-15
-> **Status:** Draft
+> **Status:** Superseded by [the October site redesign](./site-redesign.md).
+> **Current status:** See [tasks.md](./tasks.md), audited 2026-10-31. The amber
+> palette, `AnimateIn` component, and page-entry wrappers below are historical
+> design requirements, not pending implementation work.
 
 ## Goal
 
