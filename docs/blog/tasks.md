@@ -26,8 +26,8 @@ The renderer is implemented.
 ## Remaining checks
 
 - [ ] Confirm `npm ci` completes without peer-dependency warnings.
-- [ ] Confirm exported article HTML contains highlight token classes such as
-  `hljs-keyword`.
+- [x] Confirm exported article HTML contains highlight token classes such as
+  `hljs-keyword` (both LeetCode articles, local static export, 2026-10-31).
 - [ ] Check headings, lists, links, quotes, tables, GFM task lists/strikethrough,
   and code highlighting in a browser, in light and dark appearances.
 

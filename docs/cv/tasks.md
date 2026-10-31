@@ -20,6 +20,7 @@ when updating the curated public variant.
 - [x] Invoke `window.print()` when the button is clicked.
 - [x] Hide the print control with `print:hidden`.
 - [x] Hide `header` and `footer` in `@media print` rules in `app/globals.css`.
+- [x] Export `/cv` as `out/cv/index.html` (local static export, 2026-10-31).
 - [x] Build the static site successfully:
   [Pages run 41187047616](https://github.com/yusaanthya/yusa-CV/actions/runs/41187047616).
 
