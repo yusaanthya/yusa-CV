@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { BlogPostSchema, ImportedPostSchema } from '../schema.mjs';
+import { assertValidPairing } from './post-groups.mjs';
 
 /** @param {string} root */
 export function readBlogPosts(root = process.cwd()) {
@@ -41,6 +42,8 @@ export function readBlogPosts(root = process.cwd()) {
         throw new Error('Published blog files do not match the snapshot manifest');
     }
     read(importedDir, expectedFiles, true);
+    // Local and imported posts are grouped together, so pairing is validated across both.
+    assertValidPairing(posts);
     return posts.sort((a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
 }
 
