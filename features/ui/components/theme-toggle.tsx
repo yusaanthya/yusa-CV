@@ -16,6 +16,8 @@ export function ThemeToggle() {
     const [theme, setTheme] = useState<Theme | null>(null);
 
     useEffect(() => {
+        // Reading the DOM after mount keeps server and first client render identical.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setTheme(currentTheme());
     }, []);
 

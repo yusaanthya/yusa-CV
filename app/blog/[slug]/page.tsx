@@ -10,9 +10,9 @@ import { markdownToHtml } from "@/lib/markdown";
 import { articleUrl } from "@/lib/site";
 
 interface Props {
-    params: {
+    params: Promise<{
         slug: string;
-    };
+    }>;
 }
 
 // SSG: Generate params for all posts
@@ -26,7 +26,8 @@ export async function generateStaticParams() {
 // Each version carries its own title, description and canonical URL. Labelled versions also
 // list every published version of the article (itself included), so alternates are reciprocal.
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const post = await BlogService.getPostBySlug(params.slug);
+    const { slug } = await params;
+    const post = await BlogService.getPostBySlug(slug);
     if (!post) return {};
 
     const alternates: NonNullable<Metadata["alternates"]> = { canonical: articleUrl(post.slug) };
@@ -47,7 +48,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: Props) {
-    const post = await BlogService.getPostBySlug(params.slug);
+    const { slug } = await params;
+    const post = await BlogService.getPostBySlug(slug);
 
     if (!post) {
         notFound();
