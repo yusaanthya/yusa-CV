@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import type { FocusEvent, KeyboardEvent, MouseEvent } from "react";
 import { Check, ChevronDown, Search, Tag, X } from "lucide-react";
 import { matchTags } from "../services/post-groups.mjs";
@@ -35,7 +35,10 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
     const baseId = useId();
     const listboxId = `${baseId}-listbox`;
     const titleId = `${baseId}-title`;
-    const optionId = (index: number) => `${baseId}-option-${index}`;
+    const panelId = `${baseId}-panel`;
+    // Option ids follow each tag's position in the unfiltered list, so an id always names the same tag.
+    const optionIndex = new Map(options.map((option, index) => [option.tag, index]));
+    const optionId = (tag: string) => `${baseId}-option-${optionIndex.get(tag)}`;
 
     const rootRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -43,6 +46,7 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     const closeRef = useRef<HTMLButtonElement>(null);
     const listboxRef = useRef<HTMLUListElement>(null);
+    const openRef = useRef(open);
 
     const matches = matchTags(options, query);
     const active = matches.length > 0 ? Math.min(activeIndex, matches.length - 1) : -1;
@@ -54,11 +58,11 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
         setOpen(true);
     }
 
-    function closePanel(returnFocus: boolean) {
+    const closePanel = useCallback((returnFocus: boolean) => {
         setOpen(false);
         setQuery("");
         if (returnFocus) triggerRef.current?.focus();
-    }
+    }, []);
 
     function choose(tag: string) {
         // Re-choosing the current tag adds no history entry.
@@ -68,35 +72,56 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
 
     // Focus moves into the search field whenever the panel opens.
     useEffect(() => {
+        openRef.current = open;
         if (open) inputRef.current?.focus();
     }, [open]);
 
-    // Crossing the breakpoint changes the panel's semantics, so close rather than morph.
+    // Crossing the breakpoint changes the panel's semantics, so close rather than morph. The previous
+    // layout's panel has already unmounted, so focus that was inside it is now on <body>: return it
+    // to the trigger.
     useEffect(() => {
-        setOpen(false);
-        setQuery("");
-    }, [isDesktop]);
+        if (!openRef.current) return;
+        const focused = document.activeElement;
+        const focusWasInPanel =
+            focused === null || focused === document.body || (panelRef.current?.contains(focused) ?? false);
+        closePanel(focusWasInPanel);
+    }, [isDesktop, closePanel]);
 
     // Desktop: a pointer press outside the picker closes it without changing the selection.
     useEffect(() => {
         if (!open || !isDesktop) return;
         function onPointerDown(event: PointerEvent) {
-            if (!rootRef.current?.contains(event.target as Node)) {
-                setOpen(false);
-                setQuery("");
-            }
+            if (!rootRef.current?.contains(event.target as Node)) closePanel(false);
         }
         document.addEventListener("pointerdown", onPointerDown);
         return () => document.removeEventListener("pointerdown", onPointerDown);
-    }, [open, isDesktop]);
+    }, [open, isDesktop, closePanel]);
 
-    // Mobile: the page behind the modal sheet does not scroll.
+    // Mobile: the page behind the modal sheet does not scroll. `overflow: hidden` alone does not stop
+    // touch scrolling in older iOS Safari, so pin the body in place and restore the exact scroll
+    // position when the lock ends (close, unmount or a breakpoint change).
     useEffect(() => {
         if (!open || isDesktop) return;
-        const previous = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
+        const { body } = document;
+        const scrollX = window.scrollX;
+        const scrollY = window.scrollY;
+        const previous = {
+            position: body.style.position,
+            top: body.style.top,
+            width: body.style.width,
+            overflow: body.style.overflow,
+        };
+        body.style.position = "fixed";
+        body.style.top = `-${scrollY}px`;
+        body.style.width = "100%";
+        body.style.overflow = "hidden";
         return () => {
-            document.body.style.overflow = previous;
+            body.style.position = previous.position;
+            body.style.top = previous.top;
+            body.style.width = previous.width;
+            body.style.overflow = previous.overflow;
+            // The site sets `scroll-behavior: smooth`; the restore must be instant.
+            window.scrollTo({ left: scrollX, top: scrollY, behavior: "instant" });
         };
     }, [open, isDesktop]);
 
@@ -152,8 +177,7 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
     function onPanelBlur(event: FocusEvent<HTMLDivElement>) {
         if (!isDesktop) return;
         if (panelRef.current?.contains(event.relatedTarget as Node | null)) return;
-        setOpen(false);
-        setQuery("");
+        closePanel(false);
     }
 
     // Presses on options or empty panel space must not pull focus out of the search field.
@@ -165,6 +189,8 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
         <div
             className={cn(
                 "flex h-11 items-center gap-2 border-2 border-line bg-paper px-3 focus-within:border-accent",
+                // A non-colour focus cue matching the site's outline, since the input itself has none.
+                "focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent",
                 isDesktop ? "m-2" : "mx-4 mb-3 mt-2"
             )}
         >
@@ -177,7 +203,7 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
                 aria-expanded="true"
                 aria-controls={listboxId}
                 aria-autocomplete="list"
-                aria-activedescendant={active >= 0 ? optionId(active) : undefined}
+                aria-activedescendant={active >= 0 ? optionId(matches[active].tag) : undefined}
                 autoComplete="off"
                 spellCheck={false}
                 placeholder="Search tags"
@@ -212,7 +238,7 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
                     return (
                         <li
                             key={option.tag}
-                            id={optionId(index)}
+                            id={optionId(option.tag)}
                             data-index={index}
                             role="option"
                             aria-selected={isSelected}
@@ -239,14 +265,17 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
         </>
     );
 
+    if (options.length === 0) return null;
+
     return (
         <div ref={rootRef} className="relative">
             <div className={cn("flex items-stretch bg-surface", selected === null ? "border border-line" : "border border-ink")}>
                 <button
                     ref={triggerRef}
                     type="button"
-                    aria-haspopup="listbox"
+                    aria-haspopup={isDesktop ? "listbox" : "dialog"}
                     aria-expanded={open}
+                    aria-controls={open ? panelId : undefined}
                     // While open, a press on the trigger must not blur the panel first and then reopen it.
                     onMouseDown={(event) => {
                         if (open) event.preventDefault();
@@ -288,6 +317,7 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
             {open && isDesktop && (
                 <div
                     ref={panelRef}
+                    id={panelId}
                     onKeyDown={onPanelKeyDown}
                     onBlur={onPanelBlur}
                     onMouseDown={keepSearchFocus}
@@ -303,6 +333,7 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
                     <div aria-hidden className="fixed inset-0 z-[60] bg-black/50" onClick={() => closePanel(true)} />
                     <div
                         ref={panelRef}
+                        id={panelId}
                         role="dialog"
                         aria-modal="true"
                         aria-labelledby={titleId}
