@@ -7,6 +7,13 @@ import { matchTags } from "../services/post-groups.mjs";
 import type { BlogTagCount } from "../types";
 import { cn } from "@/lib/utils";
 
+// Keys pressed while an input method (Zhuyin, Pinyin, Kana…) is composing belong to the IME:
+// Enter confirms a candidate and arrows move between candidates. Safari reports the
+// confirming keydown after compositionend, with isComposing false but keyCode 229.
+function isImeKey(event: KeyboardEvent) {
+    return event.nativeEvent.isComposing || event.keyCode === 229;
+}
+
 interface TagPickerProps {
     options: BlogTagCount[];
     selected: string | null;
@@ -132,6 +139,7 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
     }, [open, active]);
 
     function onInputKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+        if (isImeKey(event)) return;
         const last = matches.length - 1;
         switch (event.key) {
             case "ArrowDown":
@@ -159,6 +167,7 @@ export function TagPicker({ options, selected, onSelect }: TagPickerProps) {
     }
 
     function onPanelKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+        if (isImeKey(event)) return;
         if (event.key === "Escape") {
             event.preventDefault();
             event.stopPropagation();
