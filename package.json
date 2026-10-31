@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "sync:blog": "node scripts/sync-blog.mjs",
-    "test:blog": "node --test scripts/sync-blog.test.mjs"
+    "test:blog": "node --test scripts/sync-blog.test.mjs scripts/post-groups.test.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.0",
