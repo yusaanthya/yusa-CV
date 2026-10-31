@@ -36,9 +36,13 @@ the current snapshot also includes `harness-preface-zh`. Read
 [content synchronization](docs/blog/content-sync.md) for ownership, the inventory,
 local preview, and recovery.
 
-The [bilingual articles and filters specification](docs/blog/2026-10-31-bilingual-articles-and-filters-spec.md)
-is documentation only. Grouped articles, list filters, and language switching
-are not implemented yet.
+Bilingual articles and list filters are implemented, per the
+[specification](docs/blog/2026-10-31-bilingual-articles-and-filters-spec.md):
+versions sharing a `translationKey` form one article. The list has a
+display-language toggle that falls back to the available version and a
+single-tag picker; articles have a per-article language switch and localized
+metadata. Every snapshot article is currently Chinese-only, so no pair is
+live yet; each translation is published separately from `blog-post`.
 
 ## Deployment and documentation
 
