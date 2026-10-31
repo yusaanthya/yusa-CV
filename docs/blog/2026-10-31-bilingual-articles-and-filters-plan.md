@@ -211,9 +211,11 @@ The Phase 1 exit check is `npm run test:blog`, which must pass. Existing tests i
 
 #### Task 2.3 — Contract documentation
 
-- **Owns:** `docs/blog/content-sync.md` (article contract section), `.claude/skills/publish-post/SKILL.md` (frontmatter block and field notes), `reference/structure.md` and `README.md` (status lines that currently say the feature is unimplemented; update them only after Phase 3 passes).
+- **Owns:** `docs/blog/content-sync.md` (article contract section), `.claude/skills/publish-post/SKILL.md` (frontmatter block and field notes), `reference/structure.md` and `README.md` (status lines that currently say the feature is unimplemented).
 - **Must not touch:** code, the spec, generated content.
-- **Work:** Document optional `translationKey`: its format, that it requires `lang`, one published version per language, that it never changes a URL, and how to pair an existing article. State that publishing a translation remains a separate owner-approved action.
+- **Work, in two steps:**
+  1. *Parallel with Tasks 2.1 and 2.2:* document optional `translationKey` in `content-sync.md` and the publishing skill: its format, that it requires `lang`, one published version per language, that it never changes a URL, and how to pair an existing article. State that publishing a translation remains a separate owner-approved action.
+  2. *After Phase 3 passes:* update the completion-status lines in `README.md` and `reference/structure.md`, then recheck the final diff of the whole feature against these status claims.
 - **Acceptance criteria:** supports the spec's rollout step 2. No criterion maps directly.
 
 ### Phase 3 — Integration verification (single agent, owns no files permanently)
@@ -257,7 +259,9 @@ Run the generated-output checks and manual checks in the test plan below. All te
 
 ### Generated-output checks (Phase 3)
 
-`next build` cannot download Sora in this environment. Before building, apply two temporary edits:
+`next build` cannot download Sora in this environment. The stubbed builds below are isolated integration checks of routes, links and metadata; they do not build the exact shipped source. The real build and deploy evidence is an unmodified production build: run locally where network access permits, or else the Pages CI run on the final implementation commit.
+
+Before building, apply two temporary edits:
 
 1. In `app/layout.tsx`, replace the `next/font/google` import and the `Sora(...)` call with `const sans = { variable: "" };`.
 2. In `next.config.mjs`, add `basePath: '/yusa-CV'`. This stands in for what `configure-pages` injects in CI.
