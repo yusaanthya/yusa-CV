@@ -83,7 +83,7 @@ public CV constraints.
 
 ## Build and deployment
 
-The Node.js 20 workflow runs on pushes to `main` or manual dispatch, with a
+The Node.js 24 workflow runs on pushes to `main` or manual dispatch, with a
 `main` guard on the build job. It installs dependencies, builds the static
 `out/` export, uploads it, and deploys with `actions/deploy-pages@v4`. Pages
 configuration supplies the base path; `NEXT_PUBLIC_BASE_PATH` is passed to the
