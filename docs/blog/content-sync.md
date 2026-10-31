@@ -194,9 +194,11 @@ exports. Validate a static export with a nonempty Pages base path when changing
 renderer links or images. Confirm existing article routes and content remain
 present and private drafts/planning material are absent.
 
-Series navigation, language-switching UI, and RSS remain separate work. The
+Series navigation and RSS remain separate work. The
 [bilingual articles and filters specification](./2026-10-31-bilingual-articles-and-filters-spec.md)
-is documentation only; translation grouping and list filters are not implemented. General
+is implemented: translation grouping, a display-language toggle with fallback, a
+single-tag picker, a per-article language switch, and localized metadata. Each
+translation is still published separately from `blog-post`. General
 site links outside `/blog/` and reducing repeated per-post file reads are also
 deferred; they are not changed by this integration.
 See [the publishing skill](../../.claude/skills/publish-post/SKILL.md) for source

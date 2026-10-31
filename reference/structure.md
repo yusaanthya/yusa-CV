@@ -23,8 +23,8 @@ not a claim that each installed package is exactly its range's lower bound.
 | --- | --- |
 | `app/layout.tsx` | Sora, site metadata, header/footer, pre-paint appearance and session scripts |
 | `app/page.tsx` | Home hero, projects anchor, and earlier-work list |
-| `app/blog/page.tsx` | One list row per published post; no filters yet |
-| `app/blog/[slug]/page.tsx` | Static article routes and rendered Markdown |
+| `app/blog/page.tsx` | One card per article (translation versions grouped); display-language toggle and single-tag picker |
+| `app/blog/[slug]/page.tsx` | Static route per published version, rendered Markdown, per-version metadata, and language switch |
 | `app/cv/page.tsx`, `app/cv/print-button.tsx` | CV Markdown page and browser print action |
 | `app/globals.css`, `tailwind.config.ts` | Palette, typography, motion, accessibility preferences, and print rules |
 | `app/icon.svg`, `app/apple-icon.png` | Site icons |
@@ -33,7 +33,7 @@ not a claim that each installed package is exactly its range's lower bound.
 | `features/blog/schema.mjs`, `types.ts` | Runtime schemas and TypeScript post type |
 | `features/blog/services/post-files.mjs` | Validate/read snapshots, support legacy local posts, sort by date and slug |
 | `features/blog/services/post-service.ts` | Typed facade for blog pages |
-| `features/blog/components/post-card.tsx` | Blog list row |
+| `features/blog/components/` | List cards, client list state, language toggle, tag picker, and article language switch |
 | `features/projects/` | Project data, animated panels, and earlier-work list |
 | `features/ui/components/` | Container, header/footer, navigation, appearance toggle, hero name, scroll lag, social icons, and tags |
 | `features/ui/social-links.ts` | Shared social destinations and glyph data |
@@ -92,7 +92,8 @@ as a separate step. Run `npm run test:blog` when changing export/reader behavior
 
 The [content-sync contract](../docs/blog/content-sync.md) owns article publication
 and recovery. The [bilingual/filter spec](../docs/blog/2026-10-31-bilingual-articles-and-filters-spec.md)
-is documentation only: translation identity/grouping, filtering, and language
-switching are not yet implemented. Root metadata exists; the historical ideas
-for per-article metadata, generated sitemap/robots files, and RSS remain absent
-from the audited tree.
+is implemented: a display-language toggle with fallback, a single-tag picker,
+a per-article language switch, and localized per-article metadata (title,
+description, canonical and language alternates). Translations are published
+separately from `blog-post`. Generated sitemap/robots files and RSS remain
+absent.

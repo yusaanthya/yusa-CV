@@ -35,4 +35,4 @@ The renderer is implemented.
 
 Snapshot export and reading are implemented; see [content-sync.md](./content-sync.md).
 The [bilingual articles and filters specification](./2026-10-31-bilingual-articles-and-filters-spec.md)
-is separate, unimplemented work.
+is separate work and is implemented.
