@@ -1,84 +1,26 @@
-# UI Refinement — Tasks
+# Shared UI — Current Status and Superseded Tasks
 
-> **Proposal:** [proposal.md](./proposal.md)
-> **Page Structure:** [page-structure.md](./page-structure.md)
-> **Created:** 2026-04-15
+> Original plan: [proposal.md](./proposal.md) and [page-structure.md](./page-structure.md), created 2026-04-15.
+> Audited: 2026-10-31 at `d961784`.
 
-## Overview
+The April amber/`AnimateIn` plan is superseded by the October
+[site redesign](./site-redesign.md). Do not restore those components or tokens to
+clear the old checklist.
 
-| # | Task | File | Done |
-|---|------|------|------|
-| 1 | 加入 brand color token | `tailwind.config.ts`, `app/globals.css` | ☑ |
-| 2 | 建立 AnimateIn component | `features/ui/components/animate-in.tsx` | ☑ |
-| 3 | 套用動畫與 brand 顏色 — Home | `app/page.tsx` | ☑ |
-| 4 | 套用動畫 — Blog Listing | `app/blog/page.tsx` | ☑ |
-| 5 | 套用動畫 — Blog Post | `app/blog/[slug]/page.tsx` | ☑ |
-| 6 | 套用動畫 — CV | `app/cv/page.tsx` | ☑ |
-| 7 | 更新 Header nav hover 顏色 | `features/ui/components/header.tsx` | ☑ |
-| 8 | 驗證 build 正常 | — | ☑ |
+## Disposition of the original implementation tasks
 
----
+| April tasks | Status and current evidence |
+| --- | --- |
+| Add light/dark `--brand` values and a Tailwind `brand` token (3 items) | Superseded. `app/globals.css` and `tailwind.config.ts` define RGB `paper`, `surface`, `ink`, `mute`, `line`, `accent`, and `plum` tokens. |
+| Create the `AnimateIn` client wrapper with reduced-motion handling, variants, delay, and `whileInView` (5 items) | Superseded. That file is absent. `scroll-lag.tsx` and `project-panel.tsx` use Framer Motion and reduced-motion checks; `hero-name.tsx` and CSS implement the hero reveal. |
+| Wrap hero content in `AnimateIn` and add an amber hero CTA (2 items) | Superseded. `app/page.tsx` uses `HeroName`, `ScrollLag`, and CSS load fades; the documented redesign removes hero buttons. |
+| Add stagger wrappers to blog cards and fade wrappers to blog/CV articles (3 items) | Superseded. The current listing and article routes render without those wrappers. |
+| Change header hover to `hover:text-brand` (1 item) | Superseded. `nav-links.tsx` uses ink text and accent underlines, with `aria-current` for active routes. |
 
-## Detailed Tasks
+## Remaining checks
 
-### 1. 加入 brand color token
-
-- **Files:** `tailwind.config.ts`, `app/globals.css`
-- [ ] `globals.css` `:root` 加入 `--brand: 27 90% 37%;`
-- [ ] `globals.css` `.dark` 加入 `--brand: 32 90% 50%;`
-- [ ] `tailwind.config.ts` `extend.colors` 加入 `brand: { DEFAULT: 'hsl(var(--brand))' }`
-
----
-
-### 2. 建立 AnimateIn Component
-
-- **File:** `features/ui/components/animate-in.tsx`
-- [ ] `'use client'` directive
-- [ ] 使用 `useReducedMotion()` — 偵測到時直接顯示，不播動畫
-- [ ] `variant: 'fade-up' | 'fade-in'`，預設 `fade-up`
-- [ ] `delay` prop（秒），預設 0
-- [ ] `whileInView`, `viewport={{ once: true }}`, duration `0.5`s
-
----
-
-### 3. Home — 動畫 + brand 顏色
-
-- **File:** `app/page.tsx`
-- [ ] Hero 標題、副標題、CTA 依序加 `<AnimateIn>` with increasing delay
-- [ ] 主要 CTA 按鈕樣式加入 brand 顏色（border + text，hover 時填滿）
-
----
-
-### 4. Blog Listing — stagger 動畫
-
-- **File:** `app/blog/page.tsx`
-- [ ] 各 PostCard 包上 `<AnimateIn delay={index * 0.1}>`
-
----
-
-### 5. Blog Post — fade-in
-
-- **File:** `app/blog/[slug]/page.tsx`
-- [ ] `<article>` 包上 `<AnimateIn variant="fade-in">`
-
----
-
-### 6. CV — fade-in
-
-- **File:** `app/cv/page.tsx`
-- [ ] `<article>` 包上 `<AnimateIn variant="fade-in">`
-
----
-
-### 7. Header — nav hover brand 顏色
-
-- **File:** `features/ui/components/header.tsx`
-- [ ] Nav link class `hover:text-foreground` 改為 `hover:text-brand`
-
----
-
-### 8. 驗證 Build
-
-- [ ] `npm run build` 無 error
-- [ ] Dev server 確認動畫正常觸發
-- [ ] 確認 dark mode 下 brand 顏色對比度正常
+- [x] Build the current site successfully:
+  [Pages run 41187047616](https://github.com/yusaanthya/yusa-CV/actions/runs/41187047616).
+- [ ] Check current motion in a browser, including with reduced motion enabled.
+- [ ] Recheck light/dark readability and contrast for the current palette; the
+  [design notes](./site-redesign.md) hold the October measurements.

@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint .",
     "sync:blog": "node scripts/sync-blog.mjs",
     "test:blog": "node --test scripts/sync-blog.test.mjs"
   },

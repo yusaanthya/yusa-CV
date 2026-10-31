@@ -1,7 +1,12 @@
 # CV Page — Proposal
 
 > **Created:** 2026-04-15
-> **Status:** Draft
+> **Status:** Historical implementation proposal; CV page implemented.
+> **Current status:** See [tasks.md](./tasks.md), audited 2026-10-31. The original
+> scope and acceptance checklist below are retained as history. Current content
+> lives in `content/cv/yusa-liu.md`; the old reference file and employer
+> placeholder are not current inputs. The action now says "Print or save as PDF",
+> and navigation uses a "CV" link. Manual print verification remains outstanding.
 
 ## Goal
 

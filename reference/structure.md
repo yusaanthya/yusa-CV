@@ -1,120 +1,98 @@
 # Project Structure — yusa-CV
 
-> Blog data flow updated: 2026-10-28; other sections retain the original inventory.
+> Audited: 2026-10-31 at `d961784d5c73accbf0f022a109b8b97ee740f7d1`.
 
-## Tech Stack
+## Stack and hosting
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Next.js 14.2.14 (App Router) |
-| Language | TypeScript 5 |
-| Styling | Tailwind CSS 3.3 + @tailwindcss/typography |
-| Animation | Framer Motion 11 (installed, not yet used) |
-| Icons | Lucide React |
-| Content Parsing | gray-matter (Markdown + YAML frontmatter) |
-| Data Validation | Zod 3.22 |
-| Utilities | clsx, tailwind-merge, date-fns |
-| Deployment | Static export (`output: 'export'`) → GitHub Pages |
+| Layer | Current implementation |
+| --- | --- |
+| Framework | Next.js 14.2.14 App Router, React 18, TypeScript 5 |
+| Styling | Tailwind CSS 3.3 range, Typography plugin, site CSS tokens |
+| Typography | Sora via `next/font/google`; system CJK fallbacks |
+| Motion | Framer Motion 11 range, used by scroll lag and project parallax; CSS hero reveal/fades |
+| Icons | Lucide React plus shared social glyphs |
+| Content | gray-matter, Zod; unified/remark/rehype Markdown-to-HTML pipeline |
+| Hosting | Static export to GitHub Pages; no runtime application server |
 
----
+Versions other than the pinned Next.js version describe `package.json` ranges,
+not a claim that each installed package is exactly its range's lower bound.
 
-## Directory Tree
+## Source map
 
-```
-yusa-CV/
-├── .claude/
-│   └── skills/
-│       └── trd-writer/
-│           └── SKILL.md            # Claude skill: TRD writer for planning pages
-├── .github/
-│   └── workflows/
-│       └── deploy.yml              # CI/CD: build → GitHub Pages
-├── app/                            # Next.js App Router
-│   ├── layout.tsx                  # Root layout (Header + Footer)
-│   ├── page.tsx                    # Home page / hero section
-│   ├── globals.css                 # Tailwind base + CSS variables
-│   ├── favicon.ico
-│   └── blog/
-│       ├── page.tsx                # Blog listing page
-│       └── [slug]/
-│           └── page.tsx            # Blog post detail (SSG)
-├── content/
-│   └── synced-posts/              # Generated public snapshots + manifest
-├── features/                       # Feature-based modules
-│   ├── blog/
-│   │   ├── types.ts                # BlogPost type + Zod schema
-│   │   ├── services/
-│   │   │   ├── post-service.ts     # BlogService: getAllPosts, getPostBySlug
-│   │   │   └── post-files.mjs      # Snapshot validation and file reads
-│   │   └── components/
-│   │       └── post-card.tsx       # Blog post card UI
-│   └── ui/
-│       └── components/
-│           ├── header.tsx          # Sticky nav bar
-│           ├── footer.tsx          # Site footer
-│           └── container.tsx       # Max-width layout wrapper
-├── lib/
-│   ├── utils.ts                    # cn(), formatDate()
-│   └── markdown.ts                 # Markdown rendering
-├── public/                         # Static assets (SVGs)
-├── reference/                      # Local reference docs (not deployed)
-├── next.config.mjs                 # Static export config
-├── tailwind.config.ts              # Design tokens, dark mode
-├── tsconfig.json
-├── package.json
-└── eslint.config.mjs
-```
+| Path | Responsibility |
+| --- | --- |
+| `app/layout.tsx` | Sora, site metadata, header/footer, pre-paint appearance and session scripts |
+| `app/page.tsx` | Home hero, projects anchor, and earlier-work list |
+| `app/blog/page.tsx` | One list row per published post; no filters yet |
+| `app/blog/[slug]/page.tsx` | Static article routes and rendered Markdown |
+| `app/cv/page.tsx`, `app/cv/print-button.tsx` | CV Markdown page and browser print action |
+| `app/globals.css`, `tailwind.config.ts` | Palette, typography, motion, accessibility preferences, and print rules |
+| `app/icon.svg`, `app/apple-icon.png` | Site icons |
+| `content/cv/yusa-liu.md` | Curated public CV content |
+| `content/synced-posts/` | Generated public articles and manifest; not editable originals |
+| `features/blog/schema.mjs`, `types.ts` | Runtime schemas and TypeScript post type |
+| `features/blog/services/post-files.mjs` | Validate/read snapshots, support legacy local posts, sort by date and slug |
+| `features/blog/services/post-service.ts` | Typed facade for blog pages |
+| `features/blog/components/post-card.tsx` | Blog list row |
+| `features/projects/` | Project data, animated panels, and earlier-work list |
+| `features/ui/components/` | Container, header/footer, navigation, appearance toggle, hero name, scroll lag, social icons, and tags |
+| `features/ui/social-links.ts` | Shared social destinations and glyph data |
+| `lib/markdown.ts`, `lib/utils.ts` | Markdown conversion, heading IDs, supported Pages URL prefixes, and utilities |
+| `scripts/sync-blog.mjs`, `scripts/sync-blog.test.mjs` | Committed-source exporter and exporter/reader tests |
+| `public/images/` | Portrait, project art, and generated blog assets |
+| `.github/workflows/deploy.yml` | Public-only build and Pages deployment |
+| `.claude/skills/` | Publishing and planning instructions |
+| `docs/`, `reference/` | Design/status documents and historical planning records |
 
----
+There is no current `lib/content/reader.ts`, `animate-in.tsx`, or `app/portfolio/`.
+The legacy `content/posts/` reader remains supported, but that directory is absent
+from the audited tree after migration.
 
-## Architecture Patterns
+## Data flow and routes
 
-### Feature-Based Folder Structure
-Each domain lives under `features/<domain>/` with three layers:
-- `types.ts` — TypeScript types + Zod validation schema
-- `services/` — Data access layer (server-side, build-time)
-- `components/` — React UI components
+Blog pages call `BlogService`, which delegates to `post-files.mjs`. The reader
+validates `content/synced-posts/manifest.json` against the Markdown files and
+parses their metadata; missing/incomplete snapshots fail the build. The detail
+page converts its body with `lib/markdown.ts` and generates a static route per
+published slug. The CV reads its fixed Markdown file directly and reuses that
+renderer. Projects use `features/projects/projects.ts` rather than Markdown.
 
-### Content → Page Data Flow
-```
-content/synced-posts/<slug>.md + manifest.json
-  └─ features/blog/services/post-files.mjs (parse, validate, sort)
-       └─ features/blog/services/post-service.ts
-            └─ app/blog/page.tsx and app/blog/[slug]/page.tsx
-```
+| URL | Implementation |
+| --- | --- |
+| `/` | Home page |
+| `/#projects` | Home-page project showcase and navigation target |
+| `/cv` | CV with "Print or save as PDF" action |
+| `/blog` | Published-post list |
+| `/blog/[slug]` | Static article detail |
 
-### Build Strategy
-- All pages are statically generated at build time
-- `generateStaticParams` used on dynamic routes (e.g., `blog/[slug]`)
-- Output: `out/` directory → deployed to GitHub Pages
-- No runtime server — fully static
+There is no standalone `/portfolio` or `/about` route; current navigation does
+not link to those historical targets.
 
----
+## Design and appearance
 
-## Current Routes
+RGB CSS variables provide `paper`, `surface`, `ink`, `mute`, `line`, `accent`,
+`on-accent`, and `plum` colors. Appearance follows system preference until a
+visitor chooses a `data-theme` override stored in `localStorage`; it does not
+use a `.dark` class. Shared containers use `max-w-5xl mx-auto px-6 w-full`;
+article wrappers and prose set narrower reading measures. Markdown uses
+`prose prose-site`. Code blocks currently use the GitHub dark highlight theme
+in both appearances, by [decision](../docs/blog/tasks.md#decisions).
 
-| Route | Status | File |
-|-------|--------|------|
-| `/` | Done | `app/page.tsx` |
-| `/blog` | Done | `app/blog/page.tsx` |
-| `/blog/[slug]` | Done | `app/blog/[slug]/page.tsx` |
-| `/portfolio` | Not built | — |
-| `/cv` or `/about` | Not built | — |
+See [site-redesign.md](../docs/shared/site-redesign.md) for design decisions and
+public CV constraints.
 
----
+## Build and deployment
 
-## Design System
+The Node.js 20 workflow runs on pushes to `main` or manual dispatch, with a
+`main` guard on the build job. It installs dependencies, builds the static
+`out/` export, uploads it, and deploys with `actions/deploy-pages@v4`. Pages
+configuration supplies the base path; `NEXT_PUBLIC_BASE_PATH` is passed to the
+build. The workflow does not fetch private article sources or run `test:blog`
+as a separate step. Run `npm run test:blog` when changing export/reader behavior.
 
-- **Colors:** HSL CSS variables, semantic naming (primary, muted, accent, etc.)
-- **Dark mode:** Via `.dark` class on `<html>`, CSS variable swap
-- **Typography:** Inter (Google Fonts) + `@tailwindcss/typography` prose for markdown
-- **Layout:** Container (`max-w-4xl mx-auto px-6`) as standard wrapper
-
----
-
-## CI/CD
-
-- **Trigger:** Push to `main` or manual dispatch
-- **Build:** `next build` → `out/`
-- **Deploy:** `actions/deploy-pages@v4` → GitHub Pages
-- **Node version:** 20
+The [content-sync contract](../docs/blog/content-sync.md) owns article publication
+and recovery. The [bilingual/filter spec](../docs/blog/2026-10-31-bilingual-articles-and-filters-spec.md)
+is documentation only: translation identity/grouping, filtering, and language
+switching are not yet implemented. Root metadata exists; the historical ideas
+for per-article metadata, generated sitemap/robots files, and RSS remain absent
+from the audited tree.
