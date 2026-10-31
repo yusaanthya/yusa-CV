@@ -2,7 +2,7 @@
 
 > Created: 2026-10-31  
 > Revised: 2026-10-31 for the owner's language-toggle and tag-picker decisions  
-> Status: Approved and merged; this revision is documentation only  
+> Status: Original approved and merged (#24); this revision is proposed for owner review  
 > Code baseline: `fc3a9752a2ca78b5bb34c9ea6e2e1dd95ed83dcb`  
 > Scope: Article identity, language variants, list display-language toggle, tag picker
 
@@ -175,10 +175,12 @@ retain it. Generated copies in this repository are never hand-edited.
 - Every offered tag matches at least one listed article, and a stale tag in the
   URL falls back to all tags, so an empty result is unreachable. No empty-result
   message or `Clear filters` action is required.
-- Keyboard: the trigger opens and closes the panel with Enter or Space; arrow
-  keys move through the options; Enter selects; Esc closes the panel and returns
-  focus to the trigger, as does selecting a tag. On narrow mobile screens the
-  panel may present as a bottom sheet with the same behavior.
+- Keyboard: Enter or Space on the trigger opens the panel and moves focus to its
+  search field; arrow keys move through the options; Enter selects (and does
+  nothing when no option matches); Esc closes the panel and returns focus to the
+  trigger, as does selecting a tag. Tabbing out of the panel closes it without
+  changing the selection. On narrow mobile screens the panel may present as a
+  modal bottom sheet with the same behavior.
 - Multi-tag selection remains out of scope, but the picker's structure should
   not preclude adding it later.
 
@@ -189,7 +191,9 @@ retain it. Generated copies in this repository are never hand-edited.
   tags. For example, `/blog/?lang=en&tag=Harness` opens the English display
   filtered to `Harness`.
 - Toggling the display language writes `lang`, even when the choice equals the
-  browser default, so a copied URL reproduces the view. Choosing or clearing a
+  browser default, so a copied URL reproduces the view. Pressing the already
+  selected side changes nothing; with no `lang` in the URL, the browser default
+  stays implicit until the visitor toggles. Choosing or clearing a
   tag writes or removes `tag` and leaves `lang` as it was.
 - Each toggle or tag change creates a browser-history entry. Refreshing, opening
   a copied URL, and browser Back/Forward restore the toggle, tag, and results.
@@ -291,8 +295,8 @@ documentation PR. Bilingual and unpublished cases use synthetic fixtures until
 the owner independently approves real translation publication.
 
 1. **Backward compatibility:** The four current published variants produce four
-   cards, including all three Chinese-only articles, with their existing reading
-   URLs intact and no required metadata edits to those three articles.
+   cards, all four Chinese-only, with their existing reading URLs intact and no
+   required metadata edits to any of them.
 2. **One article per pair:** Adding an eligible English fixture paired with one
    of those articles produces five version routes and four logical cards. Each
    card language link and each article switch resolves to the correct version
@@ -337,7 +341,7 @@ the owner independently approves real translation publication.
    or inferred content language attribute.
 9. **Usable controls:** The language toggle has an accessible name and exposes
    its state without relying on color. The tag picker trigger opens and closes
-   with Enter or Space; typing in its search field narrows the tag list; arrow
+   with Enter or Space and focus moves to its search field; typing narrows the tag list; arrow
    keys move through options; Enter selects; Esc closes; selecting and Esc both
    return focus to the trigger; the clear control returns to all tags; the
    selected tag shows a check. Focus is visible throughout. These work at a
