@@ -8,6 +8,7 @@ import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
 import { BlogPostSchema, ImportedPostSchema } from '../features/blog/schema.mjs';
+import { assertValidPairing } from '../features/blog/services/post-groups.mjs';
 
 const articlePath = /^[^./][^/]*\/(zh|en)\/.+\.md$/;
 const imageExtension = /\.(png|jpe?g|gif|webp|avif|svg|ico)$/i;
@@ -101,6 +102,8 @@ export function syncBlog({ source, root = process.cwd() }) {
     const posts = new Map();
     const slugs = new Set();
     const publishedSlugs = new Set();
+    // The reader groups local and imported posts together, so pairing is validated on both.
+    const localMetadata = [];
     const local = path.join(root, 'content/posts');
     if (fs.existsSync(local)) {
         for (const file of fs.readdirSync(local).filter((file) => file.endsWith('.md'))) {
@@ -108,7 +111,7 @@ export function syncBlog({ source, root = process.cwd() }) {
             slugs.add(slug);
             const { data } = matter(fs.readFileSync(path.join(local, file), 'utf8'));
             if (data.published !== false) {
-                BlogPostSchema.parse({ ...data, slug });
+                localMetadata.push(BlogPostSchema.parse({ ...data, slug }));
                 publishedSlugs.add(slug);
             }
         }
@@ -129,6 +132,7 @@ export function syncBlog({ source, root = process.cwd() }) {
         if (!content.trim()) throw new Error(`Published article is empty: ${filename}`);
         posts.set(filename, { metadata, content });
     }
+    assertValidPairing([...localMetadata, ...[...posts.values()].map(({ metadata }) => metadata)]);
     const images = new Map();
     const rendered = new Map();
     for (const [filename, { metadata, content }] of posts) {
