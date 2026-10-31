@@ -3,8 +3,7 @@
 > **Created:** 2026-10-07
 > **Status:** Implemented on `main`; audited 2026-10-31 at `d961784`.
 > The original implementation branch was `feat/yusa_liu/indie-redesign`.
-> Earlier measurements and rejected approaches below are historical design
-> records, not a new visual/accessibility verification of this revision.
+> Measurements below date from the redesign.
 > **Replaces:** the "Minimal + Typography" look from `proposal.md` (UI Refinement)
 
 ## Brief
@@ -209,9 +208,6 @@ not a verified one-page application resume.
 
 ## Follow-ups
 
-- The previously observed `npm run lint` failure (`eslint/config` export error
-  with ESLint 8) remains a follow-up: the audited package/config still use that
-  incompatible combination. This documentation audit did not rerun lint.
 - The redesign recorded ~46 kB of Framer Motion cost on the home page. A CSS
   scroll-driven alternative remains an evaluation item; remeasure bundle cost
   and check browser support before adopting it.

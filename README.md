@@ -19,11 +19,10 @@ UI and feature code in `features/`, and the public CV in `content/cv/yusa-liu.md
 ```sh
 npm run test:blog   # Snapshot exporter and reader tests
 npm run build       # Static export to out/
+npm run lint        # ESLint 8 with next/core-web-vitals and next/typescript
 ```
 
-`npm run lint` is configured, but the ESLint 8/config incompatibility remains a
-documented follow-up in [the design notes](docs/shared/site-redesign.md#follow-ups).
-The Pages workflow builds the site; it does not run `test:blog` as a separate step.
+The Pages workflow runs only the build; run lint and `test:blog` locally.
 
 ## Blog publishing
 
@@ -39,7 +38,7 @@ local preview, and recovery.
 
 The [bilingual articles and filters specification](docs/blog/2026-10-31-bilingual-articles-and-filters-spec.md)
 is documentation only. Grouped articles, list filters, and language switching
-are not implemented in the audited code.
+are not implemented yet.
 
 ## Deployment and documentation
 

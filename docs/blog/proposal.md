@@ -5,7 +5,8 @@
 > **Current status:** See [tasks.md](./tasks.md), audited 2026-10-31. The original
 > requirements below are retained as history, not a current missing-feature list.
 > `lib/markdown.ts` now owns conversion; the old `lib/content/reader.ts` path is
-> gone. Separate light/dark syntax themes remain an unresolved acceptance item.
+> gone. Separate light/dark syntax themes were retired on 2026-10-31; see the
+> decision in tasks.md.
 
 ## Goal
 

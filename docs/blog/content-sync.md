@@ -3,9 +3,8 @@
 > Status checked against public `main` at `d961784` on 2026-10-31. Website
 > integration merged in [PR #22](https://github.com/yusaanthya/yusa-CV/pull/22);
 > a later [snapshot commit](https://github.com/yusaanthya/yusa-CV/commit/fdf4bb69274d43a2e9762875151ec800fd79ea3a)
-> adds the published harness preface. This public-repository audit does not
-> verify current private workflow settings or credential configuration. The
-> source-side rules below describe the publishing contract.
+> adds the published harness preface. Source-side settings and credentials live
+> in the private repository and are described here as the publishing contract.
 
 ## Ownership and requirements
 
@@ -104,15 +103,12 @@ The sign-key article retains its five existing external HackMD image links.
 They can return HTTP 403 to automated requests; the migration does not repair
 those external assets. Replacing them requires exported original images.
 The public manifest now also includes `harness-preface-zh`, for four published
-slugs in total. The earlier statement that all seven harness articles were
-unpublished is obsolete. The public snapshot does not establish how many
-private drafts currently exist or whether any remaining draft is ready.
+slugs in total. The remaining harness drafts are tracked in `blog-post`.
 
 ## Initial setup and ongoing publication
 
 The website integration and a subsequent snapshot update are already on `main`.
-Keep the following setup order for reference or reconfiguration; it is not a
-claim that activation is still pending or that credentials were checked here.
+The setup order below is kept for reference and reconfiguration.
 
 1. Merge website support before enabling the source workflow. This prerequisite
    is complete for the current integration; the tracked snapshot needs no source
@@ -129,9 +125,8 @@ claim that activation is still pending or that credentials were checked here.
    run and the destination Pages deployment when a new snapshot was pushed.
 
 The old public-pull/two-token proposal is superseded. Neither
-`BLOG_CONTENT_READ_TOKEN` nor `WEBSITE_DISPATCH_TOKEN` is needed. No credentials
-are created or configured by documentation changes, and documentation alone
-does not establish live publication status. The default source `GITHUB_TOKEN` cannot write the other repository;
+`BLOG_CONTENT_READ_TOKEN` nor `WEBSITE_DISPATCH_TOKEN` is needed, and this
+repository must not hold publishing credentials. The default source `GITHUB_TOKEN` cannot write the other repository;
 the source-side publishing credential supplies that narrowly scoped access.
 
 ## Local development and verification

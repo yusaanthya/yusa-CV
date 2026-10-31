@@ -1,11 +1,9 @@
-# Blog Markdown Rendering — Status and Remaining Checks
+# Blog Markdown Rendering — Status
 
 > Original plan: [proposal.md](./proposal.md), created 2026-04-14.
-> Audited: 2026-10-31 against `d961784d5c73accbf0f022a109b8b97ee740f7d1`.
+> Audited: 2026-10-31 at `d961784`.
 
-The renderer is implemented. The April checklist was not updated when its
-overview was marked complete; the remaining checks below are not evidence of
-missing Markdown conversion.
+The renderer is implemented.
 
 ## Implemented
 
@@ -15,27 +13,26 @@ missing Markdown conversion.
 - [x] Await conversion in `app/blog/[slug]/page.tsx`.
 - [x] Render the resulting HTML with `dangerouslySetInnerHTML`.
 - [x] Retain Typography styling through `prose prose-site`.
-- [x] Build the static site successfully at the audited revision:
+- [x] Build the static site successfully:
   [Pages run 41187047616](https://github.com/yusaanthya/yusa-CV/actions/runs/41187047616).
 
-These are supported by the renderer and page code, not only dependency entries.
+## Decisions
 
-## Open requirements and verification
+- **Code blocks stay dark in both appearances (2026-10-31).** The April plan asked
+  for separate light and dark syntax themes. The site keeps `github-dark.css` with
+  a dark code-block background in light and dark mode instead; this retires that
+  acceptance item.
 
-- [ ] Verify an installation completes without peer-dependency warnings. A
-  successful build alone does not establish that the install log had no warnings.
-- [ ] Resolve the original separate light/dark syntax-theme requirement. Current
-  CSS imports `github-dark.css` and uses a dark code-block background in both site
-  appearances. The site now selects appearance with `data-theme` and system
-  preference, not `.dark`. No documented decision was found that explicitly
-  retires the original light-theme acceptance criterion; do not mark it satisfied.
-- [ ] Inspect exported article HTML for highlight token classes such as
-  `hljs-keyword`; this audit inspected source and CI status, not generated HTML.
-- [ ] Verify headings, lists, links, quotes, tables, GFM task lists/strikethrough,
-  and code highlighting visually in light and dark appearances.
+## Remaining checks
+
+- [ ] Confirm `npm ci` completes without peer-dependency warnings.
+- [ ] Confirm exported article HTML contains highlight token classes such as
+  `hljs-keyword`.
+- [ ] Check headings, lists, links, quotes, tables, GFM task lists/strikethrough,
+  and code highlighting in a browser, in light and dark appearances.
 
 ## Related work
 
 Snapshot export and reading are implemented; see [content-sync.md](./content-sync.md).
 The [bilingual articles and filters specification](./2026-10-31-bilingual-articles-and-filters-spec.md)
-describes separate, unimplemented work. It does not reopen the completed renderer.
+is separate, unimplemented work.

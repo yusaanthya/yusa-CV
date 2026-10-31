@@ -76,7 +76,7 @@ visitor chooses a `data-theme` override stored in `localStorage`; it does not
 use a `.dark` class. Shared containers use `max-w-5xl mx-auto px-6 w-full`;
 article wrappers and prose set narrower reading measures. Markdown uses
 `prose prose-site`. Code blocks currently use the GitHub dark highlight theme
-in both appearances; see the [unresolved theme requirement](../docs/blog/tasks.md).
+in both appearances, by [decision](../docs/blog/tasks.md#decisions).
 
 See [site-redesign.md](../docs/shared/site-redesign.md) for design decisions and
 public CV constraints.
