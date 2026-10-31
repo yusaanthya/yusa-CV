@@ -22,7 +22,9 @@ npm run build       # Static export to out/
 npm run lint        # ESLint 8 with next/core-web-vitals and next/typescript
 ```
 
-The Pages workflow runs only the build; run lint and `test:blog` locally.
+[PR CI](.github/workflows/pr-ci.yml) runs these checks on every pull request to
+`main`: lint, the type check, `test:blog`, and builds at the site root and with
+the `/yusa-CV` Pages base path. The Pages workflow only builds and deploys.
 
 ## Blog publishing
 
