@@ -178,9 +178,13 @@ retain it. Generated copies in this repository are never hand-edited.
 - Keyboard: Enter or Space on the trigger opens the panel and moves focus to its
   search field; arrow keys move through the options; Enter selects (and does
   nothing when no option matches); Esc closes the panel and returns focus to the
-  trigger, as does selecting a tag. Tabbing out of the panel closes it without
-  changing the selection. On narrow mobile screens the panel may present as a
-  modal bottom sheet with the same behavior.
+  trigger, as does selecting a tag. On wider screens the panel is a non-modal
+  popover: tabbing out of it closes it without changing the selection. On narrow
+  mobile screens it may instead be a modal bottom sheet, following the WAI-ARIA
+  modal dialog pattern: Tab and Shift+Tab cycle among the sheet's own controls
+  (search field and a close button) and never leave it; Esc, a selection, the
+  close button, or pressing the backdrop closes it and returns focus to the
+  trigger.
 - Multi-tag selection remains out of scope, but the picker's structure should
   not preclude adding it later.
 
@@ -344,9 +348,12 @@ the owner independently approves real translation publication.
    with Enter or Space and focus moves to its search field; typing narrows the tag list; arrow
    keys move through options; Enter selects; Esc closes; selecting and Esc both
    return focus to the trigger; the clear control returns to all tags; the
-   selected tag shows a check. Focus is visible throughout. These work at a
-   375px viewport width (where the panel may be a bottom sheet) and in both
-   themes. Main card links do not intercept language links; a single-language
+   selected tag shows a check. Focus is visible throughout. As a desktop
+   popover, tabbing out closes the panel without changing the selection. At a
+   375px viewport width, where the panel may be a modal bottom sheet, Tab and
+   Shift+Tab stay inside the sheet, and Esc, selection, its close button, or the
+   backdrop closes it with focus returned to the trigger. All of this holds in
+   both themes. Main card links do not intercept language links; a single-language
    article has no broken translation action.
 10. **Static hosting:** Production static export succeeds with a nonempty
     `/yusa-CV` base path. Existing article links/assets and new toggle and tag
