@@ -4,9 +4,13 @@ const CONTEXT = 'Codex Review Gate';
 const trusted = (item) => item.user?.id === BOT_ID && item.user?.login === BOT_LOGIN;
 const result = (state, description) => ({ state, description });
 
+function titleOf(body) {
+  return (body || '').trim().split('\n')[0].replace(/<[^>]*>/g, '').replace(/^[\s#*_>-]+/, '').replace(/^\d+[.)]\s+/, '');
+}
+
 function priority(body) {
   // Only the finding title's explicit label is authoritative, never prose.
-  const title = (body || '').trim().split('\n')[0].replace(/<[^>]*>/g, '').replace(/^[\s#*_]+/, '');
+  const title = titleOf(body);
   const match = title.match(/^(?:\[P([0-3])\](?=\s|$)|!\[P([0-3]) Badge\]\([^)]*\))/);
   return match ? Number(match[1] ?? match[2]) : null;
 }
@@ -56,9 +60,14 @@ export async function run({ github, context, core }) {
       github.paginate(github.rest.pulls.listReviews, { ...repo, pull_number: number, per_page: 100 }),
     ]);
     const bodies = reviews.filter(r => trusted(r) && r.commit_id === sha && r.state !== 'PENDING');
-    const bodyFindings = bodies.flatMap(r => (r.body || '').split('\n')
-      .filter(line => priority(line) !== null)
-      .map(body => ({ ...r, body, original_commit_id: r.commit_id })));
+    const bodyFindings = bodies.flatMap(r => {
+      const body = (r.body || '').trim();
+      if (!body) return [];
+      // Keep unknown labels too: dropping them would turn ambiguity into approval.
+      const candidates = body.split('\n').filter(line => /^(?:!\[P|\[P)/.test(titleOf(line)));
+      const entries = candidates.length ? candidates : body.includes('<!-- codex-review-receipt:v1 -->') ? [] : [body];
+      return entries.map(body => ({ ...r, body, original_commit_id: r.commit_id }));
+    });
     let verdict = evaluate({ sha, comments, findings: [...findings, ...bodyFindings] });
     if (bodies.some(r => r.state === 'CHANGES_REQUESTED')) {
       verdict = result('failure', 'Codex requested changes on the latest commit');

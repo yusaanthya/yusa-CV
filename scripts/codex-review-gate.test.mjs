@@ -92,3 +92,21 @@ test('review-body prose does not override a P2 title', async () => {
   await run(h.args);
   assert.equal(h.published.at(-1).state, 'success');
 });
+
+test('advisory inline feedback cannot hide an unknown review-body finding', async () => {
+  for (const body of ['[P4] Unknown priority', 'Unclassified finding', '[P2] Advisory\n[P4] Unknown priority']) {
+    const h = harness({comments: [summary({has_any_findings: true})], findings: [finding('[P2] Advisory')], reviews: [{user, commit_id: sha, state: 'COMMENTED', body}]});
+    await run(h.args);
+    assert.equal(h.published.at(-1).state, 'error');
+  }
+});
+test('bulleted review-body P1 blocks even alongside an advisory inline finding', async () => {
+  const h = harness({comments: [summary({has_any_findings: true})], findings: [finding('[P2] Advisory')], reviews: [{user, commit_id: sha, state: 'COMMENTED', body: '- [P1] Blocking finding'}]});
+  await run(h.args);
+  assert.equal(h.published.at(-1).state, 'failure');
+});
+test('known receipt boilerplate is not treated as an unclassified finding', async () => {
+  const h = harness({reviews: [{user, commit_id: sha, state: 'COMMENTED', body: '<!-- codex-review-receipt:v1 -->\n### Codex Review\nReviewed commit: abc'}]});
+  await run(h.args);
+  assert.equal(h.published.at(-1).state, 'success');
+});
