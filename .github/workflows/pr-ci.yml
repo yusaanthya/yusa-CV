@@ -55,4 +55,3 @@ jobs:
           npm run build
           grep -q 'href="/yusa-CV/blog/' out/blog/index.html || { echo "Blog links lack the /yusa-CV prefix"; exit 1; }
           if grep -rq '/yusa-CV/yusa-CV' out; then echo "Doubled /yusa-CV prefix in out/"; exit 1; fi
-
