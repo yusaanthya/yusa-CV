@@ -4,6 +4,13 @@ const CONTEXT = 'Codex Review Gate';
 const trusted = (item) => item.user?.id === BOT_ID && item.user?.login === BOT_LOGIN;
 const result = (state, description) => ({ state, description });
 
+function priority(body) {
+  // Only the finding title's explicit label is authoritative, never prose.
+  const title = (body || '').trim().split('\n')[0].replace(/<[^>]*>/g, '').replace(/^[\s#*_]+/, '');
+  const match = title.match(/^(?:\[P([0-3])\](?=\s|$)|!\[P([0-3]) Badge\]\([^)]*\))/);
+  return match ? Number(match[1] ?? match[2]) : null;
+}
+
 export function evaluate({ sha, comments, findings }) {
   const summaries = comments.filter(c => trusted(c) && c.body?.includes('<!-- codex-pull-request-review-summary -->'));
   if (summaries.length === 0) return result('pending', 'Waiting for Codex review of the latest commit');
@@ -21,9 +28,9 @@ export function evaluate({ sha, comments, findings }) {
   }
   // Use the original review commit, not commit_id (which GitHub can remap after a push).
   const current = findings.filter(c => trusted(c) && !c.in_reply_to_id && c.original_commit_id === sha);
-  const priorities = current.map(c => [...c.body.matchAll(/\bP([0-3])\b/g)].map(m => Number(m[1])));
-  if (priorities.some(ps => ps.some(p => p <= 1))) return result('failure', 'Codex found P0/P1; fix and push a new commit for review');
-  if (priorities.some(ps => ps.length === 0)) return result('error', 'Unclassified Codex finding; inspect the review');
+  const priorities = current.map(c => priority(c.body));
+  if (priorities.some(p => p !== null && p <= 1)) return result('failure', 'Codex found P0/P1; fix and push a new commit for review');
+  if (priorities.some(p => p === null)) return result('error', 'Unclassified Codex finding; inspect the review');
   if (review.has_any_findings && current.length === 0) return result('error', 'Findings reported but severity could not be verified');
   return result('success', current.length ? 'Latest commit reviewed; P2/P3 findings are advisory' : 'Latest commit reviewed; no blocking findings');
 }
@@ -48,14 +55,11 @@ export async function run({ github, context, core }) {
       github.paginate(github.rest.pulls.listReviewComments, { ...repo, pull_number: number, per_page: 100 }),
       github.paginate(github.rest.pulls.listReviews, { ...repo, pull_number: number, per_page: 100 }),
     ]);
-    const bodyFindings = reviews.filter(r => trusted(r) && r.commit_id === sha && r.state !== 'PENDING' && /\bP[0-3]\b/.test(r.body || ''))
-      .map(r => ({ ...r, original_commit_id: r.commit_id }));
-    let verdict = evaluate({ sha, comments, findings: [...findings, ...bodyFindings] });
-    // A review body can carry findings too. Do not silently ignore a blocking priority.
     const bodies = reviews.filter(r => trusted(r) && r.commit_id === sha && r.state !== 'PENDING');
-    if (bodies.some(r => /\bP[01]\b/.test(r.body || ''))) {
-      verdict = result('failure', 'Codex reported P0/P1 in a review; fix and request review');
-    }
+    const bodyFindings = bodies.flatMap(r => (r.body || '').split('\n')
+      .filter(line => priority(line) !== null)
+      .map(body => ({ ...r, body, original_commit_id: r.commit_id })));
+    let verdict = evaluate({ sha, comments, findings: [...findings, ...bodyFindings] });
     if (bodies.some(r => r.state === 'CHANGES_REQUESTED')) {
       verdict = result('failure', 'Codex requested changes on the latest commit');
     }

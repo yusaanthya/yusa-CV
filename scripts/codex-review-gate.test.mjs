@@ -79,3 +79,16 @@ test('review-body P1 and changes-requested also block', async () => {
     assert.equal(h.published.at(-1).state, 'failure');
   }
 });
+
+test('priority comes from the title, not explanatory prose', () => {
+  const comments = [summary({has_any_findings: true, has_unresolved_findings: true})];
+  assert.equal(check(comments, [finding('**<sub><sub>![P2 Badge](https://example.test/P2)</sub></sub> Advisory**\n\nThis explains the P1 policy.')]), 'success');
+  assert.equal(check(comments, [finding('[P3] Advisory\nP0 is discussed here.')]), 'success');
+  assert.equal(check(comments, [finding('[P4] Unknown\nThis mentions P2.')]), 'error');
+  assert.equal(check(comments, [finding('Unclassified\n[P2] Quoted explanation')]), 'error');
+});
+test('review-body prose does not override a P2 title', async () => {
+  const h = harness({comments: [summary({has_any_findings: true, has_unresolved_findings: true})], reviews: [{user, commit_id: sha, state: 'COMMENTED', body: '[P2] Advisory\nThis discusses P1 blocking.'}]});
+  await run(h.args);
+  assert.equal(h.published.at(-1).state, 'success');
+});
