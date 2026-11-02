@@ -25,11 +25,15 @@ The renderer is implemented.
 
 ## Remaining checks
 
-- [ ] Confirm `npm ci` completes without peer-dependency warnings.
+- [x] Confirm `npm ci` completes without peer-dependency warnings (browser
+  re-verification on Next 16, 2026-11-02). npm reports none; its deprecated
+  `eslint@9` notice and 16 moderate audit findings are not peer warnings.
 - [x] Confirm exported article HTML contains highlight token classes such as
   `hljs-keyword` (both LeetCode articles, local static export, 2026-10-31).
-- [ ] Check headings, lists, links, quotes, tables, GFM task lists/strikethrough,
-  and code highlighting in a browser, in light and dark appearances.
+- [x] Check headings, lists, links, quotes, tables, GFM task lists/strikethrough,
+  and code highlighting in a browser, in light and dark appearances (browser
+  re-verification on Next 16, 2026-11-02, after fixing doubled task-list
+  markers and ignored table column alignment).
 
 ## Related work
 
