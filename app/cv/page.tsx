@@ -10,7 +10,7 @@ export default async function CVPage() {
     const htmlContent = await markdownToHtml(raw);
 
     return (
-        <Container className="py-10 sm:py-16">
+        <Container className="py-10 sm:py-16 print:py-0">
             <div className="mx-auto max-w-3xl">
                 <div className="mb-6 flex justify-end print:hidden">
                     <PrintButton />
