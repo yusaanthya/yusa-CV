@@ -33,6 +33,9 @@ when updating the curated public variant.
 
 ## Remaining checks
 
-- [ ] Check the rendered `/cv` page and print action in a browser.
-- [ ] Check print preview for readable typography, margins, and pagination, with
-  the header, footer, and print control hidden.
+- [x] Check the rendered `/cv` page and print action in a browser (browser
+  re-verification on Next 16, 2026-11-02).
+- [x] Check print preview for readable typography, margins, and pagination, with
+  the header, footer, and print control hidden (browser re-verification on
+  Next 16, 2026-11-02, after removing the blank A4 page and keeping headings
+  with their content).

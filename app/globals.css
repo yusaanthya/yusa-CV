@@ -369,6 +369,11 @@
     font-size: 0.6em;
   }
 
+  /* GFM task items already show a checkbox; a diamond beside it would double the marker. */
+  .prose-site li.task-list-item::marker {
+    content: none;
+  }
+
   .prose-site a {
     text-decoration-color: rgb(var(--accent));
     text-decoration-thickness: 1px;
@@ -396,6 +401,19 @@
   .prose-site pre code.hljs {
     background: transparent;
     padding: 0;
+  }
+
+  /* Typography sets text-align: start on cells, which hides GFM column alignment. */
+  .prose-site :where(th, td)[align="left"] {
+    text-align: left;
+  }
+
+  .prose-site :where(th, td)[align="center"] {
+    text-align: center;
+  }
+
+  .prose-site :where(th, td)[align="right"] {
+    text-align: right;
   }
 }
 
@@ -473,6 +491,15 @@
     --tw-prose-bold: black;
     --tw-prose-links: black;
     max-width: none;
+  }
+
+  /* Keep a heading, and the date line under it, on the same page as what follows. */
+  .prose-site :is(h1, h2, h3, h4) {
+    break-after: avoid;
+  }
+
+  .prose-site :is(h1, h2, h3, h4) + p {
+    break-after: avoid;
   }
 }
 

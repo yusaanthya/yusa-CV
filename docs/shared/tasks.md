@@ -21,6 +21,8 @@ clear the old checklist.
 
 - [x] Build the current site successfully:
   [Pages run 41187047616](https://github.com/yusaanthya/yusa-CV/actions/runs/41187047616).
-- [ ] Check current motion in a browser, including with reduced motion enabled.
-- [ ] Recheck light/dark readability and contrast for the current palette; the
-  [design notes](./site-redesign.md) hold the October measurements.
+- [x] Check current motion in a browser, including with reduced motion enabled
+  (browser re-verification on Next 16, 2026-11-02).
+- [x] Recheck light/dark readability and contrast for the current palette; the
+  [design notes](./site-redesign.md) hold the measurements (browser
+  re-verification on Next 16, 2026-11-02: no text pair below 4.5:1).

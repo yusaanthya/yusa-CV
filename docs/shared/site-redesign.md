@@ -28,8 +28,8 @@ Palette is sampled from the portrait (hair, skirt, shadow) and cooled down.
 | `accent` | `#C41E3A` | `#FF5F73` | primary button, current page, focus ring, bullets |
 | `plum` | `#6E2C55` | `#C98AB4` | primary button hover |
 
-All text pairs are ≥ 5.4:1. `line` (1.3:1) is never the only boundary of an
-interactive control; buttons use `ink` borders.
+All text pairs are ≥ 5.38:1. `line` (1.34–1.57:1) is never the only boundary
+of an interactive control; buttons use `ink` borders.
 
 Type: Sora for both headings (`font-display`: weight 500, tracking down to
 -0.045em on the hero) and body (17px base per HIG). Chosen from a side-by-side
