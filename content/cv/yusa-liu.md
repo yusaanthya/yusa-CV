@@ -14,13 +14,13 @@ Go backend engineer building transactional and event-driven services across fint
 
 Mar 2026 - Present | Taipei / Remote
 
-- Led delivery of the OTC manual-review workflow, clarifying requirements with product management and exposing infrastructure gaps through an architecture diagram; aligned scope and frontend/backend sequencing amid workloads spanning **4 release targets**, built the application-list API and outbox infrastructure, published the review API contract, and delegated review API implementation and self-testing; the workflow passed acceptance testing.
 - Led the backend security remediation workstream for a periodic source-code scan, triaging findings into severity-prioritized tickets and allocating work across a 7-person backend, operations, and QA team with execution instructions and acceptance criteria; High-priority work passed QA ahead of the policy deadline, and the remaining changes were implemented **2 sprints ahead of plan**.
+- Led delivery of the OTC manual-review workflow, clarifying requirements with product management and exposing infrastructure gaps through an architecture diagram; aligned scope and frontend/backend sequencing amid workloads spanning **4 release targets**, built the application-list API and outbox infrastructure, published the review API contract, and delegated review API implementation and self-testing; the workflow passed acceptance testing.
 - Drove requirements-to-QA practices: partnered with the engineering manager to adopt pre-refinement technical review and capacity planning across an **18-person engineering, QA, and product team**, surfacing blockers and deferring unresolved work before sprint commitments, and established structured backend-to-QA handoffs adopted through retrospectives.
 - Designed a fraud-return capability from the ground up, separating crypto liquidation from fiat settlement and defining idempotency, reconciliation, and manual-recovery boundaries; **adopted as the baseline for implementation planning**.
 - Delivered **2 concurrent security workstreams within 3 days**: strengthened user-level API authorization across 7 write endpoints and retired 27 route registrations while upgrading Go across 8 repositories, resolving CI, OpenTelemetry startup, and Cloud Run deployment compatibility issues.
-- Delivered **2 fiat-refund changes** covering audit timestamps and fee handling, reusing an existing review state; before production release, traced downstream reconciliation effects of the state reuse and refined the implementation scope with product and QA.
 - Built a **Go/Pub/Sub reminder pipeline reused by 2 campaigns**, combining cancellation-aware publisher rate limiting with a uniquely keyed send-history ledger to suppress retries of recorded deliveries.
+- Delivered **2 fiat-refund changes** covering audit timestamps and fee handling, reusing an existing review state; before production release, traced downstream reconciliation effects of the state reuse and refined the implementation scope with product and QA.
 
 ### Software Engineer - HTC VIVERSE
 
