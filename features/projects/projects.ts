@@ -18,10 +18,10 @@ export const PROJECTS: Project[] = [
     {
         slug: "zone-wallet",
         org: "ZONE WALLET",
-        title: "Exchange server backend",
+        title: "Backend engineering & delivery",
         summary:
-            "Go services behind a crypto exchange and wallet. I led delivery of an OTC manual-review workflow and a 7-person security remediation workstream, built a rate-limited Pub/Sub reminder pipeline reused by two campaigns, and designed the fraud-return capability the team adopted as its baseline.",
-        tags: ["Go", "GCP Pub/Sub", "PostgreSQL", "Transactional outbox"],
+            "Backend engineering for a crypto exchange and wallet. I led a security-remediation workstream across a 7-person team, setting priorities, assigning work, and defining acceptance criteria. I also built a reusable Go/Pub/Sub reminder pipeline supporting 2 production campaigns.",
+        tags: ["Go", "GCP Pub/Sub", "PostgreSQL", "Backend Security"],
         url: "https://www.zonewallet.io/",
         linkLabel: "zonewallet.io",
         image: assetPath("/images/projects/zone-wallet.webp"),
@@ -32,7 +32,7 @@ export const PROJECTS: Project[] = [
         org: "HTC VIVERSE",
         title: "Outfit Closet 2.0",
         summary:
-            "The avatar closet for HTC's VIVERSE platform, showcased at MWC 2024. I redefined the avatar, asset, and ownership boundaries so editor state, reusable assets, and inventory could evolve separately, and designed the accessory and animation APIs that let 7 internal contributors and 2 vendor developers build in parallel. The release shipped in 8 months against an original 2-year plan.",
+            "An avatar wardrobe for HTC VIVERSE, showcased at MWC 2024. I designed the backend domain model for this new feature and synchronized avatar state with an external vendor’s backend. Our team delivered Closet 2.0 in 8 months against an original 2-year plan.",
         tags: ["Go / Gin", "MySQL", "AWS SQS", "OpenAPI"],
         url: "https://avatar.viverse.com/zh-TW/avatar",
         linkLabel: "avatar.viverse.com",
@@ -61,7 +61,7 @@ export const OTHER_WORK: OtherWork[] = [
         kind: "Side project",
         title: "NiCE2 event navigation PWA",
         summary:
-            "Turned a community-built map for a 3,000-stall event into an installable, offline-first PWA on Cloudflare Pages, with hardened JSON import and a planned retirement after the event. Served 51.67k HTTP requests over four public days.",
+            "Turned a community-built map for a 3,000-stall event into an installable, offline-capable PWA on Cloudflare Pages, with hardened JSON import and managed cache expiry and retirement. Served 51.67k HTTP requests over 4 public days.",
     },
     {
         slug: "diablo-ii-resurrected",
