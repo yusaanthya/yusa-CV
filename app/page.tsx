@@ -74,12 +74,6 @@ export default function Home() {
             {/* No rule under the name: the typing caret is the hero's accent, and a second red
                 line beneath it read as a duplicate. Spacing alone separates name and intro. */}
             <p className="text-xl font-medium">Backend engineer, trained as a game designer.</p>
-            <p className="mt-3 max-w-[34rem] leading-relaxed text-mute">
-              I build event-driven backend systems for fintech and games, with
-              clear boundaries and failures you can see and recover from. Before
-              that, I studied game design in London and shipped an indie prototype
-              at EGX Rezzed.
-            </p>
             {/* Phones: the portrait is small and above the name, so the links follow the intro. */}
             <SocialIcons className="mt-6 md:hidden" />
           </ScrollLag>
