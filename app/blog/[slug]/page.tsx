@@ -7,7 +7,7 @@ import { Container } from "@/features/ui/components/container";
 import { TagList } from "@/features/ui/components/tag-list";
 import { formatDate } from "@/lib/utils";
 import { markdownToHtml } from "@/lib/markdown";
-import { articleUrl } from "@/lib/site";
+import { absoluteUrl, articleUrl } from "@/lib/site";
 
 interface Props {
     params: Promise<{
@@ -44,6 +44,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title: post.title,
         description: post.description,
         alternates,
+        // Link previews (LinkedIn etc.) need an explicit og:image; one site-wide card for now.
+        openGraph: {
+            type: "article",
+            title: post.title,
+            description: post.description,
+            url: articleUrl(post.slug),
+            publishedTime: post.date,
+            images: [
+                {
+                    url: absoluteUrl("/images/og-default.png"),
+                    width: 1200,
+                    height: 627,
+                    alt: "Yusa Liu: backend engineer, trained as a game designer",
+                },
+            ],
+        },
     };
 }
 
