@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 536" width="560" height="536" role="img" aria-labelledby="t">
+<title id="t">Workflow: Jira ticket opened, generate AC and rough design, settled in the meeting, generate spec and task plan, implementation, self-testing done and hand-off to QA</title>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker></defs>
+<rect x="0.5" y="0.5" width="559" height="535" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+<g font-family="'PingFang TC','Noto Sans TC','Microsoft JhengHei',system-ui,sans-serif">
+<rect x="40" y="28" width="480" height="64" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="280.0" y="66" text-anchor="middle" font-size="18" font-weight="600" fill="#0f172a">Jira ticket opened</text>
+<line x1="280.0" y1="94" x2="280.0" y2="129" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="40" y="132" width="480" height="64" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="280.0" y="159" text-anchor="middle" font-size="18" font-weight="600" fill="#0f172a">Generate AC and a rough design</text>
+<text x="280.0" y="181" text-anchor="middle" font-size="14" fill="#475569">to refine with the PM in the meeting</text>
+<line x1="280.0" y1="198" x2="280.0" y2="233" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="294.0" y="221.0" font-size="14" font-weight="600" fill="#2563eb">Settled in the meeting</text>
+<rect x="40" y="236" width="480" height="64" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="280.0" y="263" text-anchor="middle" font-size="18" font-weight="600" fill="#0f172a">Generate a spec and task plan</text>
+<text x="280.0" y="285" text-anchor="middle" font-size="14" fill="#475569">using Jira as the requirements source</text>
+<line x1="280.0" y1="302" x2="280.0" y2="337" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="40" y="340" width="480" height="64" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="280.0" y="378" text-anchor="middle" font-size="18" font-weight="600" fill="#0f172a">Implementation</text>
+<line x1="280.0" y1="406" x2="280.0" y2="441" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="40" y="444" width="480" height="64" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+<text x="280.0" y="482" text-anchor="middle" font-size="18" font-weight="600" fill="#0f172a">Self-testing done, hand-off to QA</text>
+</g></svg>
