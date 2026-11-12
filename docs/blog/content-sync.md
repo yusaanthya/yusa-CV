@@ -37,14 +37,19 @@ publication. Its operating document is `docs/website-publishing.md` in
 Changes to these can break publication from the other side:
 
 - It checks out this repository's `main`, runs `npm ci --ignore-scripts`, then
-  `npm run sync:blog -- --source <source checkout>`, under the Node version
-  that workflow sets. Keep the `sync:blog` script name, and keep the exporter
-  and its runtime dependencies working without install scripts.
+  `npm run sync:blog -- --source <source checkout>`, under the Node.js version
+  in this repository's `.nvmrc`. Keep the `sync:blog` script name, keep `.nvmrc`
+  at the repository root (publication stops at Setup Node without it), and keep
+  the exporter and its runtime dependencies working without install scripts.
 - It stages only `content/synced-posts/` and `public/images/synced-blog/`.
-- It force-pushes the `blog-sync` branch on every publication, so never commit
-  to that branch by hand. Auto-merge waits for the required checks on `main`
+- When the export differs from `main`, it force-pushes the `blog-sync` branch and
+  opens or updates a pull request; when the export matches, it pushes nothing
+  and closes a sync pull request left open by an earlier run. Never commit to
+  `blog-sync` by hand. Auto-merge waits for the required checks on `main`
   (`PR CI` and `Codex Review Gate`); see
   [the review gate](../codex-review-gate.md).
+- It needs these settings in this repository: auto-merge and squash merging
+  allowed, and force pushes to `blog-sync` not blocked.
 
 `--ignore-scripts` avoids dependency installation hooks but does not isolate
 private content: the exporter and its runtime dependencies still execute with
