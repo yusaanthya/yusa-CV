@@ -1,13 +1,10 @@
 import { z } from 'zod';
 import { BlogPostSchema } from './schema.mjs';
 
-export { BlogPostSchema };
-
 export type BlogLang = 'zh' | 'en';
 
 export type BlogPost = z.infer<typeof BlogPostSchema> & {
     content: string;
-    readingTime?: string;
 };
 
 /** One published version as sent to the browser. No body, no source path. */

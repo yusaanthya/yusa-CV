@@ -152,7 +152,7 @@ and run from the website checkout:
 
 ```sh
 npm run sync:blog -- --source /path/to/blog-post-checkout
-npm run test:blog
+npm test
 npm run build
 ```
 

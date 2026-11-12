@@ -68,7 +68,7 @@ link's run log. Do not change a failed status manually to success.
 
 ## Validation
 
-Run `node --test scripts/codex-review-gate.test.mjs` (also in PR CI).
+Run `npm test`, which includes `scripts/codex-review-gate.test.mjs` (also in PR CI).
 Fixtures cover P0/P1 blocking, P2/P3 advisory, spoofed/malformed/stale summaries,
 old remapped findings, API errors and a head change while checking. Hosted event
 and ruleset behavior must additionally be verified after merging and activation;
