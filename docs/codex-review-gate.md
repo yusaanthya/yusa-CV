@@ -32,12 +32,18 @@ adapter and fixtures. No findings and no summary are different states.
    for an already-reviewed PR without triggering another model review.
 3. In Settings > Rules > Rulesets > Protect main > Require status checks to pass,
    add **Codex Review Gate**, selecting GitHub Actions as the expected source
-   when offered. Preserve `PR CI`, strict/up-to-date checks and no bypass actors.
+   when offered. Preserve `PR CI` and no bypass actors.
    Require the emitted commit status, NOT the job named **Update review status**.
 4. Verify that a new head SHA is blocked until both required checks pass. Confirm
    a bot summary update automatically refreshes the gate. If pull_request_target
    events are blocked by repository Actions policy, enable this trusted workflow's
    event or use manual dispatch to diagnose; missing status must remain blocking.
+
+The ruleset's "require branches to be up to date" option was turned off on
+2026-11-13. With it on, the automated `blog-sync` pull request stalled whenever
+`main` advanced, with no notice. Both required checks still gate every merge;
+what is given up is a test of the pull request against the newest `main`, and a
+failed deploy keeps the previous site live.
 
 Before activation the code alone does not enforce merges. This document does
 not assert that the repository ruleset has already been changed.
