@@ -1,26 +1,21 @@
 ---
 name: publish-post
-description: Prepare or update articles for this site's blog, including imports from Markdown, HackMD, Medium, or another repo. Route new and migrated articles to blog-post; preserve explicitly unmigrated website articles until migration is requested.
+description: Prepare or update articles for this site's blog, including imports from Markdown, HackMD, Medium, or another repo. Articles are written in blog-post; the website only renders generated snapshots.
 ---
 
 # Publish Post — yusa-CV Blog
 
 Follow the article ownership rules in [AGENTS.md](../../../AGENTS.md).
-`blog-post` owns new and migrated articles, including imports from other sources.
+`blog-post` owns every article, including imports from other sources.
 Edit them there on a feature branch; never hand-edit a synchronized website copy
 or create a second editable original. Publication is a private-source export of
 committed `main` articles explicitly marked `published: true`. The public
 website must not receive a private-source read credential.
 
-Check [the migration inventory and implementation status](../../../docs/blog/content-sync.md)
-before editing. Unmigrated articles in `content/posts/` remain legacy originals
-until migration is requested. Do not infer migration from the presence of sync
-code. Check the publishing workflow and PR/merge status before claiming that
-automation is active.
-
-The site combines local and synchronized posts at build time through
-`features/blog/services/post-service.ts`; both list and direct-page access use
-the same publication rules.
+The website reads articles only from the generated snapshot; it has no local
+article directory. Read [the snapshot contract](../../../docs/blog/content-sync.md)
+before editing. Check the publishing run and the pull request's merge status
+before claiming that an article is live.
 
 ## 1. Identify the source
 
@@ -45,10 +40,9 @@ Read the whole source before writing anything.
 
 ## 3. Write the post
 
-For new or migrated articles, use `blog-post/<series>/<zh|en>/<filename>.md`.
-Choose a stable, flat kebab-case slug; during migration retain the existing URL
-slug even if the filename or directory changes. For an unmigrated legacy edit,
-retain its existing `content/posts/<slug>.md` until migration is authorized.
+Use `blog-post/<series>/<zh|en>/<filename>.md`. Choose a stable, flat
+kebab-case slug, and keep an existing article's slug even if its filename or
+directory changes.
 
 ```markdown
 ---
@@ -94,15 +88,11 @@ published: false
 ## 4. Images
 
 Do not hotlink images from HackMD or Medium: HackMD `_uploads` URLs can return 403 to
-non-browser requests and break later. The migrated `sign-key-disassemble` article
-retains its five existing HackMD links to preserve the original content; replacing
-those requires the original exported images and is a separate content change.
+non-browser requests and break later.
 
-- For source-owned articles, store images inside `blog-post` and use relative
-  links. The publication exporter owns conversion to website asset paths.
-- For unmigrated legacy articles, retain the local image layout under
-  `public/images/posts/<slug>/` with `/images/posts/<slug>/...` references.
-  Do not write the `/yusa-CV/` deployment prefix into source article paths.
+- Store images inside `blog-post` and use relative links. The publication
+  exporter owns conversion to website asset paths. Do not write the `/yusa-CV/`
+  deployment prefix into source article paths.
 - Keep alt text; if the source has none, describe the image briefly.
 - If an image cannot be downloaded, stop and ask the user to export it instead of
   linking the remote URL.
@@ -124,7 +114,6 @@ those requires the original exported images and is a separate content change.
 - Commit the post and its images together, in English.
 - Do not push, open a PR, or merge without the user's go-ahead.
 
-For a source-owned article, withdraw it in `blog-post` and regenerate the public
-snapshot; never patch only the website copy. For a legacy article, remove its
-local source and exclusively owned assets only when removal is requested.
+To withdraw an article, withdraw it in `blog-post` and regenerate the public
+snapshot; never patch only the website copy.
 Withdrawal removes the current page, not copies in public history or caches.
