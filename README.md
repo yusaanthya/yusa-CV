@@ -6,7 +6,7 @@ Tailwind CSS, Sora via `next/font`, and Framer Motion for home-page motion.
 
 ## Local development
 
-Use Node.js 24, matching the deployment workflow:
+Use the Node.js version in `.nvmrc`, which the workflows also read:
 
 ```sh
 npm ci
@@ -17,15 +17,14 @@ Open [http://localhost:3000](http://localhost:3000). Pages live in `app/`, share
 UI and feature code in `features/`, and the public CV in `content/cv/yusa-liu.md`.
 
 ```sh
-npm run test:blog   # Snapshot exporter and reader tests
+npm test            # Exporter, reader, and review-gate script tests
 npm run build       # Static export to out/
 npm run lint        # ESLint with next/core-web-vitals and next/typescript
 ```
 
 [PR CI](.github/workflows/pr-ci.yml) runs these checks on every pull request to
-`main`: lint, the type check, `test:blog`, the review-gate script test, and
-builds at the site root and with the `/yusa-CV` Pages base path. The Pages
-workflow only builds and deploys.
+`main`: lint, the type check, `npm test`, and builds at the site root and with
+the `/yusa-CV` Pages base path. The Pages workflow only builds and deploys.
 
 ## Routes and data flow
 
@@ -63,8 +62,7 @@ is the design record.
 ## Deployment and base path
 
 `next.config.mjs` enables static export. The
-[Pages workflow](.github/workflows/deploy.yml) uses Node.js 24, builds `out/`, and
-deploys to GitHub Pages on pushes to `main` or a manual run on `main`. No runtime
+[Pages workflow](.github/workflows/deploy.yml) builds `out/` and deploys to GitHub Pages on pushes to `main` or a manual run on `main`. No runtime
 application server is deployed.
 
 The site is served under `/yusa-CV`, and two separate settings carry that prefix:

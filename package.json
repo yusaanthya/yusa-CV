@@ -5,14 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
     "lint": "eslint .",
     "sync:blog": "node scripts/sync-blog.mjs",
-    "test:blog": "node --test scripts/sync-blog.test.mjs scripts/post-groups.test.mjs scripts/post-files.test.mjs"
+    "test": "node --test scripts/*.test.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.0",
-    "date-fns": "^3.0.0",
     "framer-motion": "^11.0.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^1.66.0",

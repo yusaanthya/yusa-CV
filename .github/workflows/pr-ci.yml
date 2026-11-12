@@ -24,14 +24,13 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version-file: .nvmrc
           cache: npm
 
       - run: npm ci
       - run: npm run lint
       - run: npx --no-install tsc --noEmit
-      - run: npm run test:blog
-      - run: node --test scripts/codex-review-gate.test.mjs
+      - run: npm test
 
       - name: Build at the site root
         run: npm run build
