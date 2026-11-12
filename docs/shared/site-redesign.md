@@ -4,7 +4,8 @@
 > **Status:** Implemented on `main`; audited 2026-10-31 at `d961784`.
 > The original implementation branch was `feat/yusa_liu/indie-redesign`.
 > Measurements below date from the redesign.
-> **Replaces:** the "Minimal + Typography" look from `proposal.md` (UI Refinement)
+> **Replaces:** the April "Minimal + Typography" look (amber accent, `AnimateIn`
+> entrance wrappers). Those components and tokens are retired; do not restore them.
 
 ## Brief
 
@@ -147,47 +148,29 @@ stored in `localStorage` and applied by an inline head script before first
 paint. Tokens are defined for `prefers-color-scheme: dark` (unless
 `data-theme="light"`) and for `data-theme="dark"`.
 
+Code blocks stay dark in both appearances (decided 2026-10-31): the site keeps
+`github-dark.css` with a dark code-block background in light and dark mode,
+instead of separate light and dark syntax themes.
+
 ## CV content
 
-`content/cv/yusa-liu.md` is a curated public variant derived from
-`career-prep/resume/cv/source/yusa-liu-cv.md` and its bullet bank, not a direct
-mirror. The October 31, 2026 refresh uses career-prep commit `c3aa90b`:
+`content/cv/yusa-liu.md` is a curated public variant, not a mirror of the
+canonical CV. [AGENTS.md](../../AGENTS.md#cv-ownership) says who owns its story
+selection, order, and wording; this document records none of them.
 
-- Bullets are ordered by the owner's role first, then impact: stories where
-  they led others' work, then stories they owned alone, then extensions of an
-  inherited system or architecture. Delivered or accepted results go first
-  within a tier.
-- ZONE WALLET order: ZW-18, ZW-15, combined ZW-02/05, ZW-01, ZW-19 (combined
-  with ZW-21), ZW-20, ZW-04. ZW-03 (an extension of the inherited outbox,
-  overlapping ZW-18) and ZW-17 (small scope) are dropped to keep 7 bullets.
-- HTC order: HTC-01, HTC-02, HTC-03, HTC-05, HTC-04. HTC-04 applied the
-  team's existing architecture, so it goes last but keeps the 100+
-  microservice context. MWC 2024 is grouped with Closet; the Diablo II
-  achievement is an earlier-career footer section.
-- The Summary positions the owner as a hands-on lead of scoped feature and
-  security workstreams (ZW-18, ZW-15), not a people manager or tech-lead title.
+Decisions that belong to the website:
+
 - The page is public and names a current employer, so it leaves out current
-  security status and incident detail that application PDFs may carry. ZW-15
-  omits the completed-ticket count, which implies open findings; ZW-19 omits
-  the abuse trigger and the per-repository vulnerability result, which implies
-  the other repositories. Reassess before adding either back.
-- Projects: PRJ-03 (AI harness), PRJ-02 (NiCE2), PRJ-01 (Go simulator).
-- PRJ-01 subsequently synced to the preferred refactor bullet in career-prep
-  commit `02994ea`, with its public GitHub repository linked. The original
-  December 2024–March 2026 study period and October 2026 refactor are labeled
-  separately. Raft refers to leader election, not a complete consensus system.
-- Phone and email remain omitted; LinkedIn and GitHub provide public contact
-  links. Skills are grouped by languages/APIs, cloud/data, and practices.
-- Preserve adopted-design status for ZW-01 and avoid claiming completed
-  remediation or production rollout for ZW-15. Do not infer exactly-once
-  delivery from ZW-04's send-history ledger.
-- ZW-07 (calendar fallback) is excluded at the owner's explicit request on
-  October 27, 2026: they described the work as unsuccessful. Do not restore it
-  from historical source material during a future sync without reassessment.
-
-This refresh changes only the website variant; career-prep sources and PDFs
-remain separately maintained. The existing print action prints the web CV,
-not a verified one-page application resume.
+  security status and incident detail. Reassess with the owner before adding
+  any back.
+- The Summary presents the owner as a hands-on lead of scoped feature and
+  security workstreams, not as a people manager or tech lead.
+- Phone and email are omitted; LinkedIn and GitHub are the public contact links.
+- Website-only content: the wording of the AI harness project, MWC 2024 grouped
+  with Closet, the earlier-career section, the Skills grouping, and bold
+  emphasis on results.
+- The print action prints the web CV, not a verified one-page application
+  resume.
 
 ## Human-factors fixes
 
@@ -211,10 +194,5 @@ not a verified one-page application resume.
 - The redesign recorded ~46 kB of Framer Motion cost on the home page. A CSS
   scroll-driven alternative remains an evaluation item; remeasure bundle cost
   and check browser support before adopting it.
-- The sign-key post retains five historical `hackmd.io/_uploads` hotlinks,
-  previously reported to return 403 to non-browser requests. Obtain the original
-  images and update this migrated article in `blog-post`; the exporter owns
-  generated assets under `public/images/synced-blog/`. Do not repair its website
-  snapshot by hand (see the `publish-post` skill).
 - Project key art is limited to 2000px wide; supply ~3200px+ originals for crisp
   retina rendering. Converting to SVG would not help: the art is raster.

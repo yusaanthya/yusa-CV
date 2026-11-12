@@ -1,11 +1,5 @@
 # Blog content synchronization
 
-> Status checked against public `main` at `d961784` on 2026-10-31. Website
-> integration merged in [PR #22](https://github.com/yusaanthya/yusa-CV/pull/22);
-> a later [snapshot commit](https://github.com/yusaanthya/yusa-CV/commit/fdf4bb69274d43a2e9762875151ec800fd79ea3a)
-> adds the published harness preface. Source-side settings and credentials live
-> in the private repository and are described here as the publishing contract.
-
 ## Ownership and requirements
 
 `blog-post` is the sole editable source for articles. This public repository owns
@@ -28,21 +22,38 @@ back into the source.
 flowchart LR
     A[Edit blog-post feature branch] --> B[Merge to private main]
     B --> C[Private workflow validates and exports]
-    C --> D[Commit public snapshot to yusa-CV main]
-    D --> E[Website builds and deploys to Pages]
+    C --> D[Force-push blog-sync and open or update a pull request here]
+    D --> E[PR CI and Codex Review Gate pass, then squash auto-merge]
+    E --> F[Website builds and deploys to Pages]
 ```
 
-The private workflow checks out public website tooling and executes
-`npm run sync:blog -- --source <source checkout>` there. The exporter reads one
-committed Git tree, never uncommitted edits. It stages only
-`content/synced-posts/` and `public/images/synced-blog/`, commits changed snapshots,
-and pushes normally. Identical exports produce no commit or rebuild. No private
-Git history is copied. The public manifest contains only published slugs.
+The private workflow owns this flow: its trigger, the publishing credential,
+the `blog-sync` branch, the pull request, and recovery from a failed or stalled
+publication. Its operating document is `docs/website-publishing.md` in
+`blog-post`. This repository does not repeat those steps.
 
-Both workflows accept manual runs only on `main`. Source publication is serialized.
-A failed push (for example, a concurrent website change) requires rerunning the
-source workflow; there is no force-push. Website builds require a valid snapshot
-manifest and do not contact the private source. Failed builds retain the prior
+### What the private workflow depends on here
+
+Changes to these can break publication from the other side:
+
+- It checks out this repository's `main`, runs `npm ci --ignore-scripts`, then
+  `npm run sync:blog -- --source <source checkout>`, under the Node version
+  that workflow sets. Keep the `sync:blog` script name, and keep the exporter
+  and its runtime dependencies working without install scripts.
+- It stages only `content/synced-posts/` and `public/images/synced-blog/`.
+- It force-pushes the `blog-sync` branch on every publication, so never commit
+  to that branch by hand. Auto-merge waits for the required checks on `main`
+  (`PR CI` and `Codex Review Gate`); see
+  [the review gate](../codex-review-gate.md).
+
+`--ignore-scripts` avoids dependency installation hooks but does not isolate
+private content: the exporter and its runtime dependencies still execute with
+access to the source checkout. Review changes to that code and to the lockfile.
+
+The exporter reads one committed Git tree, never uncommitted edits. Identical
+exports produce no change. No private Git history is copied, and the public
+manifest contains only published slugs. Website builds require a valid snapshot
+manifest and do not contact the private source; a failed build keeps the prior
 live deployment.
 
 ## Article contract
@@ -122,35 +133,9 @@ tags unchanged (website integration: PR #22). The website no longer reads
 | `leetcode-3sum` | `leetcode/zh/leetcode-3sum.md` |
 | `sign-key-disassemble` | `android/zh/sign-key-disassemble.md` |
 
-The sign-key article retains its five existing external HackMD image links.
-They can return HTTP 403 to automated requests; the migration does not repair
-those external assets. Replacing them requires exported original images.
-The public manifest now also includes `harness-preface-zh`, for four published
-slugs in total. The remaining harness drafts are tracked in `blog-post`.
-
-## Initial setup and ongoing publication
-
-The website integration and a subsequent snapshot update are already on `main`.
-The setup order below is kept for reference and reconfiguration.
-
-1. Merge website support before enabling the source workflow. This prerequisite
-   is complete for the current integration; the tracked snapshot needs no source
-   access at website build time.
-2. In **private `blog-post` only**, configure the Actions secret
-   `WEBSITE_PUBLISH_TOKEN`: a fine-grained token restricted to `yusaanthya/yusa-CV`
-   with Contents: write. Do not put token values in files, PRs, chat, or public
-   repository secrets. Ensure the publishing actor may update destination `main`
-   under its branch rules; do not bypass those rules automatically.
-3. Review and merge the source PR. Its workflow exports eligible content and
-   pushes only when the snapshot changes. No-op publication is a success.
-4. For later articles, review on a source feature branch, set the publication
-   fields when ready, and merge to source `main`. Check both the source publishing
-   run and the destination Pages deployment when a new snapshot was pushed.
-
-The old public-pull/two-token proposal is superseded. Neither
-`BLOG_CONTENT_READ_TOKEN` nor `WEBSITE_DISPATCH_TOKEN` is needed, and this
-repository must not hold publishing credentials. The default source `GITHUB_TOKEN` cannot write the other repository;
-the source-side publishing credential supplies that narrowly scoped access.
+The sign-key article's five images are committed source assets; it no longer
+depends on external HackMD image links. `content/synced-posts/manifest.json`
+lists the published slugs. Drafts are tracked in `blog-post`.
 
 ## Local development and verification
 
@@ -183,23 +168,15 @@ tracked snapshot/assets from Git; remove only preview-created untracked files
 under those managed directories. Restoring only the manifest is unsafe if the
 preview changed other generated files.
 
-Private source Actions installs exporter dependencies with `npm ci --ignore-scripts`
-to avoid dependency installation hooks. This does not isolate private content:
-the public exporter and its runtime dependencies still execute with access to
-the source checkout. Review changes to that code and its dependency lockfile.
-
 The test suite covers publication gating, committed-only reads, metadata and
 slug validation, image/article link rewriting, deletion/withdrawal, and failed
 exports. Validate a static export with a nonempty Pages base path when changing
 renderer links or images. Confirm existing article routes and content remain
 present and private drafts/planning material are absent.
 
-Series navigation and RSS remain separate work. The
-[bilingual articles and filters specification](./2026-10-31-bilingual-articles-and-filters-spec.md)
-is implemented: translation grouping, a display-language toggle with fallback, a
-single-tag picker, a per-article language switch, and localized metadata. Each
-translation is still published separately from `blog-post`. General
-site links outside `/blog/` and reducing repeated per-post file reads are also
-deferred; they are not changed by this integration.
+The [bilingual articles and filters specification](./2026-10-31-bilingual-articles-and-filters-spec.md)
+is the design record for translation grouping, the list's language toggle and
+tag picker, the article language switch, and localized metadata.
+
 See [the publishing skill](../../.claude/skills/publish-post/SKILL.md) for source
 preparation and review rules.
