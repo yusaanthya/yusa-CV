@@ -31,7 +31,7 @@ not a claim that each installed package is exactly its range's lower bound.
 | `content/cv/yusa-liu.md` | Curated public CV content |
 | `content/synced-posts/` | Generated public articles and manifest; not editable originals |
 | `features/blog/schema.mjs`, `types.ts` | Runtime schemas and TypeScript post type |
-| `features/blog/services/post-files.mjs` | Validate/read snapshots, support legacy local posts, sort by date and slug |
+| `features/blog/services/post-files.mjs` | Validate/read the snapshot, sort by date and slug |
 | `features/blog/services/post-service.ts` | Typed facade for blog pages |
 | `features/blog/components/` | List cards, client list state, language toggle, tag picker, and article language switch |
 | `features/projects/` | Project data, animated panels, and earlier-work list |
@@ -45,8 +45,7 @@ not a claim that each installed package is exactly its range's lower bound.
 | `docs/`, `reference/` | Design/status documents and historical planning records |
 
 There is no current `lib/content/reader.ts`, `animate-in.tsx`, or `app/portfolio/`.
-The legacy `content/posts/` reader remains supported, but that directory is absent
-from the audited tree after migration.
+Articles come only from the snapshot; there is no `content/posts/` reader.
 
 ## Data flow and routes
 

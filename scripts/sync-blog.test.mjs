@@ -16,7 +16,7 @@ function fixture(t) {
     const source = path.join(directory, 'source');
     const root = path.join(directory, 'site');
     fs.mkdirSync(source);
-    fs.mkdirSync(path.join(root, 'content/posts'), { recursive: true });
+    fs.mkdirSync(root);
     const git = (...args) => execFileSync('git', ['-C', source, ...args], { stdio: 'pipe' });
     git('init', '-b', 'main');
     git('config', 'user.email', 'test@example.com');
@@ -39,7 +39,7 @@ function article(slug = 'example-zh', extra = {}, body = '# Example\n\nOriginal 
     return matter.stringify(body, Object.fromEntries(Object.entries(metadata).filter(([, value]) => value !== undefined)));
 }
 
-test('only committed, explicitly published article paths are included; legacy posts coexist', (t) => {
+test('only committed, explicitly published article paths are included', (t) => {
     const f = fixture(t);
     f.write('harness/zh/00-example.md', article());
     f.write('harness/zh/draft.md', '---\npublished: false\n---\n# Private draft');
@@ -48,16 +48,14 @@ test('only committed, explicitly published article paths are included; legacy po
     f.write('README.md', article('readme-zh'));
     f.commit();
     f.write('harness/zh/00-example.md', article('uncommitted-zh'));
-    fs.writeFileSync(path.join(f.root, 'content/posts/legacy.md'), article('ignored-local-slug'));
-    fs.writeFileSync(path.join(f.root, 'content/posts/local-draft.md'), '---\npublished: false\n---\nPrivate');
     const manifest = f.sync();
     assert.deepEqual(manifest.slugs, ['example-zh']);
     assert.match(manifest.commit, /^[a-f0-9]{40}$/);
     assert.deepEqual(JSON.parse(fs.readFileSync(path.join(f.root, 'content/synced-posts/manifest.json'), 'utf8')), {
         slugs: ['example-zh'],
     });
-    assert.deepEqual(readBlogPosts(f.root).map((post) => post.slug), ['example-zh', 'legacy']);
-    assert.equal(readBlogPost('local-draft', f.root), null);
+    assert.deepEqual(readBlogPosts(f.root).map((post) => post.slug), ['example-zh']);
+    assert.equal(readBlogPost('draft', f.root), null);
     assert.equal(readBlogPost('uncommitted-zh', f.root), null);
     assert.equal(readBlogPost('../../README', f.root), null);
     assert.ok(!readBlogPost('example-zh', f.root).content.includes('# Example'));
@@ -66,7 +64,7 @@ test('only committed, explicitly published article paths are included; legacy po
 
 test('rewrites article and image destinations without changing prose or code', (t) => {
     const f = fixture(t);
-    f.write('harness/zh/first.md', article('first-zh', { coverImage: '../images/pic.png' }, '# Example\n\n[Next](second.md#section "Title")\n![Diagram](../images/pic.png)\n[Reference][next]\n![Image][pic]\n\n[next]: second.md\n[pic]: ../images/pic.png\n\n[External](https://example.com/a.md)\n\n```md\n[Untouched](second.md)\n```\n'));
+    f.write('harness/zh/first.md', article('first-zh', {}, '# Example\n\n[Next](second.md#section "Title")\n![Diagram](../images/pic.png)\n[Reference][next]\n![Image][pic]\n\n[next]: second.md\n[pic]: ../images/pic.png\n\n[External](https://example.com/a.md)\n\n```md\n[Untouched](second.md)\n```\n'));
     f.write('harness/zh/second.md', article('second-zh'));
     f.write('harness/images/pic.png', Buffer.from([137, 80, 78, 71]));
     f.commit();
@@ -78,8 +76,7 @@ test('rewrites article and image destinations without changing prose or code', (
     assert.ok(post.content.includes(`[pic]: ${imagePath}`));
     assert.match(post.content, /```md\n\[Untouched\]\(second.md\)\n```/);
     assert.match(post.content, /https:\/\/example.com\/a.md/);
-    assert.equal(post.coverImage, imagePath);
-    assert.deepEqual(fs.readFileSync(path.join(f.root, 'public', post.coverImage)), Buffer.from([137, 80, 78, 71]));
+    assert.deepEqual(fs.readFileSync(path.join(f.root, 'public', imagePath)), Buffer.from([137, 80, 78, 71]));
 });
 
 test('unpublishing and deletion remove old pages and copied assets', (t) => {
@@ -126,15 +123,11 @@ for (const [name, extra] of [
     });
 }
 
-test('rejects duplicate imported or local slugs', (t) => {
+test('rejects duplicate slugs', (t) => {
     const f = fixture(t);
     f.write('harness/zh/first.md', article());
     f.write('harness/zh/second.md', article());
     f.commit();
-    assert.throws(f.sync, /Duplicate blog slug/);
-    fs.unlinkSync(path.join(f.source, 'harness/zh/second.md'));
-    f.commit();
-    fs.writeFileSync(path.join(f.root, 'content/posts/example-zh.md'), article());
     assert.throws(f.sync, /Duplicate blog slug/);
 });
 
@@ -214,28 +207,24 @@ test('validates absolute published article links and preserves query, fragment a
     f.write('harness/zh/first.md', article('first-zh', {}, [
         '[Article](/blog/second-zh)',
         '[Query and fragment](/blog/second-zh/?view=full#details)',
-        '[Local](/blog/legacy#details)',
         '[Index](/blog/)',
         '[Index query](/blog/?lang=zh#posts)',
     ].join('\n\n')));
     f.write('harness/zh/second.md', article('second-zh'));
-    fs.writeFileSync(path.join(f.root, 'content/posts/legacy.md'), article('legacy'));
     f.commit();
     f.sync();
     const body = readBlogPost('first-zh', f.root).content;
     assert.ok(body.includes('[Article](/blog/second-zh/)'));
     assert.ok(body.includes('[Query and fragment](/blog/second-zh/?view=full#details)'));
-    assert.ok(body.includes('[Local](/blog/legacy/#details)'));
     assert.ok(body.includes('[Index](/blog/)'));
     assert.ok(body.includes('[Index query](/blog/?lang=zh#posts)'));
 });
 
-for (const target of ['missing', 'draft', 'local-draft', 'source-unmarked']) {
+for (const target of ['missing', 'draft', 'source-unmarked']) {
     test(`rejects absolute links to missing or unpublished articles: ${target}`, (t) => {
         const f = fixture(t);
         f.write('harness/zh/first.md', article('first-zh', {}, `[Other](/blog/${target}/?view=full#details)`));
         f.write('harness/zh/draft.md', article('draft', { published: false }));
-        fs.writeFileSync(path.join(f.root, 'content/posts/local-draft.md'), article('local-draft', { published: false }));
         f.write('harness/zh/source-unmarked.md', article('source-unmarked', { published: undefined }));
         f.commit();
         assert.throws(f.sync, /Article link targets missing or unpublished content/);
@@ -270,7 +259,7 @@ for (const alt of ['a `]` b', 'a `` `]` `` b', 'a ```]``b``` c', 'a [nested `]` 
 test('content hashes avoid same-name image collisions and disclose no source asset paths', (t) => {
     const f = fixture(t);
     const paths = ['../private-originals/a/diagram.PNG', '../private-originals/b/diagram.PNG'];
-    f.write('harness/zh/first.md', article('first-zh', { coverImage: paths[0] },
+    f.write('harness/zh/first.md', article('first-zh', {},
         `![First](${paths[0]})\n\n![Second][other]\n\n[other]: ${paths[1]}?size=2#preview`));
     f.write('harness/private-originals/a/diagram.PNG', 'first image');
     f.write('harness/private-originals/b/diagram.PNG', 'second image');
@@ -279,7 +268,7 @@ test('content hashes avoid same-name image collisions and disclose no source ass
     const first = createHash('sha256').update('first image').digest('hex');
     const second = createHash('sha256').update('second image').digest('hex');
     const post = readBlogPost('first-zh', f.root);
-    assert.equal(post.coverImage, `/images/synced-blog/first-zh/${first}.png`);
+    assert.ok(post.content.includes(`![First](/images/synced-blog/first-zh/${first}.png)`));
     assert.ok(post.content.includes(`[other]: /images/synced-blog/first-zh/${second}.png?size=2#preview`));
     assert.ok(!JSON.stringify(post).includes('private-originals'));
     assert.ok(!JSON.stringify(post).includes('diagram.PNG'));
@@ -289,16 +278,6 @@ test('content hashes avoid same-name image collisions and disclose no source ass
     assert.equal(fs.readFileSync(path.join(f.root, 'public/images/synced-blog/first-zh', `${second}.png`), 'utf8'), 'second image');
 });
 
-
-test('legacy articles default to published consistently in reader and absolute link validation', (t) => {
-    const f = fixture(t);
-    fs.writeFileSync(path.join(f.root, 'content/posts/legacy.md'), article('legacy', { published: undefined }));
-    f.write('harness/zh/first.md', article('first-zh', {}, '[Legacy](/blog/legacy/#details)'));
-    f.commit();
-    f.sync();
-    assert.equal(readBlogPost('legacy', f.root).published, true);
-    assert.ok(readBlogPost('first-zh', f.root).content.includes('[Legacy](/blog/legacy/#details)'));
-});
 
 for (const body of ['[Other](other%ZZ.md)', '![Image](pic%E0%A4.png)']) {
     test(`invalid URL encoding identifies source and destination: ${body}`, (t) => {
@@ -367,27 +346,6 @@ test('rejects two published versions with the same key and language, leaving no 
     });
     assert.ok(!manifestExists(f.root));
     assert.throws(() => readBlogPosts(f.root), /snapshot is incomplete or missing/);
-});
-
-test('rejects a keyed local legacy post without a language', (t) => {
-    const f = fixture(t);
-    f.write('harness/zh/a.md', article('example-zh'));
-    f.commit();
-    fs.writeFileSync(path.join(f.root, 'content/posts/legacy.md'), article('legacy', { lang: undefined, translationKey: 'legacy-key' }));
-    assert.throws(f.sync, /"legacy" has translationKey "legacy-key" but no lang/);
-    assert.ok(!manifestExists(f.root));
-});
-
-test('validates pairing across local legacy and exported posts together', (t) => {
-    const f = fixture(t);
-    f.write('harness/zh/a.md', article('example-zh', { translationKey: 'example' }));
-    f.commit();
-    fs.writeFileSync(path.join(f.root, 'content/posts/legacy.md'), article('legacy', { translationKey: 'example' }));
-    assert.throws(f.sync, /"legacy" and "example-zh" share translationKey "example" and lang "zh"/);
-    assert.ok(!manifestExists(f.root));
-    // An unpublished local draft is not admitted, so it cannot collide.
-    fs.writeFileSync(path.join(f.root, 'content/posts/legacy.md'), article('legacy', { translationKey: 'example', published: false }));
-    assert.deepEqual(f.sync().slugs, ['example-zh']);
 });
 
 for (const key of ['Bad_Key', '', 'example-', 'a/b']) {

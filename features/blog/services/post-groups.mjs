@@ -25,7 +25,7 @@ export const LANGUAGE_LABELS = { zh: '中文', en: 'EN' };
 export const CONTENT_LANGUAGE = { zh: 'zh-Hant', en: 'en' };
 
 /**
- * Throws if a keyed post has no `lang`, or if two posts share a key/lang pair.
+ * Throws if two posts share a key/lang pair.
  * @param {Pick<BlogPost, 'slug' | 'lang' | 'translationKey'>[]} posts
  * @returns {void}
  */
@@ -34,7 +34,6 @@ export function assertValidPairing(posts) {
     const seen = new Map();
     for (const { slug, lang, translationKey: key } of posts) {
         if (key === undefined) continue;
-        if (!lang) throw new Error(`Blog post "${slug}" has translationKey "${key}" but no lang`);
         const pair = `${key}\n${lang}`;
         const other = seen.get(pair);
         if (other !== undefined) {
@@ -57,16 +56,13 @@ export function groupBlogPosts(posts) {
         const id = post.translationKey === undefined ? `slug:${post.slug}` : `key:${post.translationKey}`;
         groups.set(id, [...(groups.get(id) ?? []), post]);
     }
-    /** @param {BlogPost} post */
-    const rank = (post) => (post.lang ? LANG_ORDER.indexOf(post.lang) : 0);
     return [...groups].map(([id, members]) => {
-        const ordered = [...members].sort((a, b) => rank(a) - rank(b));
+        const ordered = [...members].sort((a, b) => LANG_ORDER.indexOf(a.lang) - LANG_ORDER.indexOf(b.lang));
         return {
             id,
             date: ordered.map((post) => post.date).reduce((a, b) => (b < a ? b : a)),
             tags: [...new Set(ordered.flatMap((post) => post.tags))],
-            versions: ordered.map(({ slug, lang, title, description, date }) => (
-                lang ? { slug, lang, title, description, date } : { slug, title, description, date })),
+            versions: ordered.map(({ slug, lang, title, description, date }) => ({ slug, lang, title, description, date })),
         };
     }).sort((a, b) => b.date.localeCompare(a.date) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 }
@@ -95,16 +91,13 @@ export function detectPreferredLang(languages) {
 }
 
 /**
- * The version in `lang`, else the other language, else the only (unlabelled) version.
+ * The version in `lang`, else the article's only version, which is in the other language.
  * @param {BlogArticleSummary} article
  * @param {BlogDisplayLang} lang
  * @returns {BlogArticleVersion}
  */
 export function selectVersion(article, lang) {
-    const other = lang === 'zh' ? 'en' : 'zh';
-    return article.versions.find((version) => version.lang === lang)
-        ?? article.versions.find((version) => version.lang === other)
-        ?? article.versions[0];
+    return article.versions.find((version) => version.lang === lang) ?? article.versions[0];
 }
 
 /**

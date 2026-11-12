@@ -14,7 +14,7 @@ interface PostCardProps {
 }
 
 export function PostCard({ article, version, displayLang, selectedTag, className }: PostCardProps) {
-    const contentLang = version.lang ? CONTENT_LANGUAGE[version.lang] : undefined;
+    const contentLang = CONTENT_LANGUAGE[version.lang];
 
     return (
         <article
@@ -63,15 +63,13 @@ function LanguageMarker({
     version,
     displayLang,
 }: Pick<PostCardProps, "article" | "version" | "displayLang">) {
-    const labelled = article.versions.filter((v) => v.lang !== undefined);
-
     if (article.versions.length > 1) {
         // Siblings of the title, lifted above its stretched link so each stays clickable.
         return (
             <ul aria-label="Languages" className="relative z-10 flex items-baseline gap-1">
-                {labelled.map((v) => {
+                {article.versions.map((v) => {
                     const current = v.slug === version.slug;
-                    const lang = v.lang!;
+                    const lang = v.lang;
                     return (
                         <li key={v.slug}>
                             <Link
@@ -93,9 +91,6 @@ function LanguageMarker({
             </ul>
         );
     }
-
-    // An unlabelled legacy post claims no language.
-    if (!version.lang) return null;
 
     // A single version is always the one displayed; under the other display language it is a fallback.
     const fallback = displayLang !== undefined && displayLang !== version.lang;
