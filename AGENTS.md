@@ -45,3 +45,6 @@ credential change, or live publication beyond the user's request.
   [the design notes](docs/shared/site-redesign.md#cv-content).
 - When a figure quoted on the home page changes, update
   `features/projects/projects.ts` in the same pull request.
+- After changing the bank, the selection, or `content/cv/yusa-liu.md`, run the
+  drift check from `career-prep` (`npm --prefix resume/cv run check:website`).
+  Its `resume/cv/README.md` says what the check covers.
