@@ -4,7 +4,10 @@
 > Revised: 2026-10-31 for the owner's language-toggle and tag-picker decisions  
 > Status: Original approved and merged (#24); this revision is proposed for owner review  
 > Code baseline: `fc3a9752a2ca78b5bb34c9ea6e2e1dd95ed83dcb`  
-> Scope: Article identity, language variants, list display-language toggle, tag picker
+> Scope: Article identity, language variants, list display-language toggle, tag picker  
+> Status update 2026-11-12: the unlabelled legacy post behaviour described here (posts
+> without `lang`, read from `content/posts/`) is retired. Every article comes from the
+> snapshot and carries `lang`; [content-sync.md](./content-sync.md) owns the source contract.
 
 ## Intent and authority
 

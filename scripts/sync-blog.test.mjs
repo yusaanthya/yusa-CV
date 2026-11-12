@@ -114,6 +114,7 @@ for (const [name, extra] of [
     ['string publication flag', { published: 'true' }],
     ['unsafe slug', { slug: '../escape' }],
     ['language mismatch', { lang: 'en' }],
+    ['missing language', { lang: undefined }],
 ]) {
     test(`rejects published metadata: ${name}`, (t) => {
         const f = fixture(t);

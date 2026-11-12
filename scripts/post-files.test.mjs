@@ -102,6 +102,18 @@ test('a snapshot with two files sharing key and lang makes readBlogPosts throw',
     assert.throws(() => readBlogPost('example-zh', s.root), /share translationKey "example"/);
 });
 
+for (const [name, extra] of [
+    ['no lang', { lang: undefined }],
+    ['published: false', { published: false }],
+    ['no publication flag', { published: undefined }],
+]) {
+    test(`a snapshot file with ${name} fails loading`, (t) => {
+        const s = site(t);
+        s.snapshot([variant('example-zh', extra)]);
+        assert.throws(() => readBlogPosts(s.root), /lang|published/);
+    });
+}
+
 for (const key of ['Bad_Key', '']) {
     test(`an invalid translationKey in the snapshot fails loading: ${JSON.stringify(key)}`, (t) => {
         const s = site(t);
