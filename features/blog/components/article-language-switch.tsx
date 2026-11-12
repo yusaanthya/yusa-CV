@@ -12,14 +12,13 @@ interface ArticleLanguageSwitchProps {
 
 /** Links between published language versions of one article. Renders nothing for a single version. */
 export function ArticleLanguageSwitch({ versions, currentSlug, className }: ArticleLanguageSwitchProps) {
-    const labelled = versions.filter((version) => version.lang);
-    if (labelled.length < 2) return null;
+    if (versions.length < 2) return null;
 
     return (
         <nav aria-label="Article language" className={className}>
             <ul className="flex items-center divide-x divide-line text-sm">
-                {labelled.map((version) => {
-                    const lang = version.lang!;
+                {versions.map((version) => {
+                    const lang = version.lang;
                     const item = "inline-flex min-h-11 items-center underline-offset-[6px] decoration-accent decoration-2";
                     return (
                         <li key={version.slug} className="px-3 first:pl-0">

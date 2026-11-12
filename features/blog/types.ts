@@ -10,11 +10,10 @@ export type BlogPost = z.infer<typeof BlogPostSchema> & {
     readingTime?: string;
 };
 
-/** One published version as sent to the browser. No body, no source path, no coverImage. */
+/** One published version as sent to the browser. No body, no source path. */
 export interface BlogArticleVersion {
     slug: string;
-    /** Absent only for unlabelled legacy posts. */
-    lang?: BlogLang;
+    lang: BlogLang;
     title: string;
     description: string;
     /** The version's own YYYY-MM-DD. */
@@ -29,7 +28,7 @@ export interface BlogArticleSummary {
     date: string;
     /** Distinct union, first-seen order following `versions` order. */
     tags: string[];
-    /** Ordered zh, en; an unlabelled legacy post has exactly one. */
+    /** Ordered zh, en. */
     versions: BlogArticleVersion[];
 }
 

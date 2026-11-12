@@ -11,14 +11,8 @@ export const BlogPostSchema = z.object({
         return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
     }, 'Expected a valid calendar date'),
     tags: z.array(z.string()).default([]),
-    coverImage: z.string().optional(),
-    published: z.boolean().default(true),
-    lang: z.enum(['zh', 'en']).optional(),
-    // Must stay the last key: serialized snapshots follow shape order.
-    translationKey: z.string().regex(slugPattern).optional(),
-});
-
-export const ImportedPostSchema = BlogPostSchema.extend({
     published: z.literal(true),
     lang: z.enum(['zh', 'en']),
+    // Must stay the last key: serialized snapshots follow shape order.
+    translationKey: z.string().regex(slugPattern).optional(),
 });

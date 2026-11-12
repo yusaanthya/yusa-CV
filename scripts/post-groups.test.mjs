@@ -19,7 +19,7 @@ function post(slug, extra = {}) {
     };
 }
 
-// The four currently published snapshot variants (all zh, unkeyed).
+// Four unkeyed zh variants.
 const current = () => [
     post('harness-preface-zh', { date: '2026-10-31', tags: ['AI', 'Claude Code', 'Agentic Workflow', 'Harness'] }),
     post('leetcode-3sum', { date: '2026-04-15', tags: ['LeetCode', 'Arrays', 'Two Pointers', 'Hash Set'] }),
@@ -46,7 +46,7 @@ test('a keyed zh/en pair forms one article; findArticleVersions resolves either 
     assert.deepEqual(slugsOf(findArticleVersions(articles, 'example-en')), ['example-zh', 'example-en']);
     assert.deepEqual(slugsOf(findArticleVersions(articles, 'alpha')), ['alpha']);
     assert.deepEqual(findArticleVersions(articles, 'unknown'), []);
-    // Versions carry no body, source path, or coverImage.
+    // Versions carry no body or source path.
     assert.deepEqual(Object.keys(pair.versions[0]).sort(), ['date', 'description', 'lang', 'slug', 'title']);
 });
 
@@ -58,38 +58,25 @@ test('similar slugs and a slug equal to a key never merge', () => {
 });
 
 test('invalid pairings throw from assertValidPairing and groupBlogPosts; invalid keys fail the schema', () => {
-    const missingLang = [post('legacy', { lang: undefined, translationKey: 'example' })];
     const duplicate = [
         post('example-zh', { translationKey: 'example' }),
         post('example-again', { translationKey: 'example' }),
     ];
     for (const fn of [assertValidPairing, groupBlogPosts]) {
-        assert.throws(() => fn(missingLang), /"legacy".*"example"/);
         assert.throws(() => fn(duplicate), /"example-zh".*"example-again".*"example"/);
     }
     assert.doesNotThrow(() => assertValidPairing([
         post('example-zh', { translationKey: 'example' }),
         post('example-en', { lang: 'en', translationKey: 'example' }),
-        post('unkeyed-a'), post('unkeyed-b'), post('legacy', { lang: undefined }),
+        post('unkeyed-a'), post('unkeyed-b'),
     ]));
-    const valid = { slug: 'example-zh', title: 'T', description: 'D', date: '2026-01-15', lang: 'zh' };
+    const valid = { slug: 'example-zh', title: 'T', description: 'D', date: '2026-01-15', published: true, lang: 'zh' };
     for (const translationKey of ['Bad_Key', '']) {
         assert.throws(() => BlogPostSchema.parse({ ...valid, translationKey }));
     }
     assert.equal(BlogPostSchema.parse({ ...valid, translationKey: 'example' }).translationKey, 'example');
     assert.equal('translationKey' in BlogPostSchema.parse(valid), false);
     assert.equal(Object.keys(BlogPostSchema.shape).at(-1), 'translationKey');
-});
-
-test('an unlabelled legacy post is standalone and listed under both languages', () => {
-    const [article] = groupBlogPosts([post('legacy', { lang: undefined })]);
-    assert.equal(article.id, 'slug:legacy');
-    assert.equal(article.versions.length, 1);
-    assert.equal('lang' in article.versions[0], false);
-    assert.equal(selectVersion(article, 'zh').slug, 'legacy');
-    assert.equal(selectVersion(article, 'en').slug, 'legacy');
-    assert.equal(listArticles([article], 'zh', null).length, 1);
-    assert.equal(listArticles([article], 'en', null).length, 1);
 });
 
 test('detectPreferredLang uses the first zh or en primary subtag, else en', () => {

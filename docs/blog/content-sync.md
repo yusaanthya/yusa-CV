@@ -79,7 +79,7 @@ Keyed and unkeyed articles are separate namespaces, so a key equal to another
 article's slug does not join them, and nothing is inferred from slugs,
 filenames, or titles. Reuse the same tag spelling for the same topic.
 
-Pairing is validated over all published local and synchronized posts, by the
+Pairing is validated over all published posts, by the
 exporter before it writes the snapshot and again when the website loads it. An
 invalid key, a keyed post without `lang`, or two published posts sharing a key
 and `lang` fails the export or the build. Drafts take no part in pairing.
@@ -111,10 +111,10 @@ it cannot erase public Git history or caches.
 
 ## Migration inventory
 
-The three legacy articles below are present as generated snapshots on `main`;
-the website integration merged in PR #22. Their original public slugs remain
-unchanged, and `content/posts/` is absent from the audited tree. The migration
-record preserves their source bodies, titles, dates, descriptions, and tags.
+The three articles below were written in this repository and migrated to
+`blog-post` with their public slugs, bodies, titles, dates, descriptions, and
+tags unchanged (website integration: PR #22). The website no longer reads
+`content/posts/`; the snapshot is its only article source.
 
 | Public slug | Source location in blog-post |
 | --- | --- |

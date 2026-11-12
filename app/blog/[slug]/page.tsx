@@ -23,22 +23,20 @@ export async function generateStaticParams() {
     }));
 }
 
-// Each version carries its own title, description and canonical URL. Labelled versions also
-// list every published version of the article (itself included), so alternates are reciprocal.
+// Each version carries its own title, description and canonical URL, and lists every
+// published version of the article (itself included), so alternates are reciprocal.
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
     const post = await BlogService.getPostBySlug(slug);
     if (!post) return {};
 
-    const alternates: NonNullable<Metadata["alternates"]> = { canonical: articleUrl(post.slug) };
-    if (post.lang) {
-        const versions = await BlogService.getArticleVersions(post.slug);
-        alternates.languages = Object.fromEntries(
-            versions.flatMap((version) =>
-                version.lang ? [[CONTENT_LANGUAGE[version.lang], articleUrl(version.slug)]] : []
-            )
-        );
-    }
+    const versions = await BlogService.getArticleVersions(post.slug);
+    const alternates: NonNullable<Metadata["alternates"]> = {
+        canonical: articleUrl(post.slug),
+        languages: Object.fromEntries(
+            versions.map((version) => [CONTENT_LANGUAGE[version.lang], articleUrl(version.slug)])
+        ),
+    };
 
     return {
         title: post.title,
@@ -75,8 +73,7 @@ export default async function BlogPostPage({ params }: Props) {
         markdownToHtml(post.content),
         BlogService.getArticleVersions(post.slug),
     ]);
-    // Unlabelled legacy posts keep inheriting the document language.
-    const contentLang = post.lang ? CONTENT_LANGUAGE[post.lang] : undefined;
+    const contentLang = CONTENT_LANGUAGE[post.lang];
 
     return (
         <Container className="py-12 sm:py-16">

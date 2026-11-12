@@ -7,7 +7,7 @@ import matter from 'gray-matter';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
-import { BlogPostSchema, ImportedPostSchema } from '../features/blog/schema.mjs';
+import { BlogPostSchema } from '../features/blog/schema.mjs';
 import { assertValidPairing } from '../features/blog/services/post-groups.mjs';
 
 const articlePath = /^[^./][^/]*\/(zh|en)\/.+\.md$/;
@@ -101,21 +101,6 @@ export function syncBlog({ source, root = process.cwd() }) {
     };
     const posts = new Map();
     const slugs = new Set();
-    const publishedSlugs = new Set();
-    // The reader groups local and imported posts together, so pairing is validated on both.
-    const localMetadata = [];
-    const local = path.join(root, 'content/posts');
-    if (fs.existsSync(local)) {
-        for (const file of fs.readdirSync(local).filter((file) => file.endsWith('.md'))) {
-            const slug = file.slice(0, -3);
-            slugs.add(slug);
-            const { data } = matter(fs.readFileSync(path.join(local, file), 'utf8'));
-            if (data.published !== false) {
-                localMetadata.push(BlogPostSchema.parse({ ...data, slug }));
-                publishedSlugs.add(slug);
-            }
-        }
-    }
     for (const filename of entries.keys()) {
         const match = filename.match(articlePath);
         if (!match) continue;
@@ -124,15 +109,14 @@ export function syncBlog({ source, root = process.cwd() }) {
             throw new Error(`published must be a Boolean: ${filename}`);
         }
         if (data.published !== true) continue;
-        const metadata = ImportedPostSchema.parse(data);
+        const metadata = BlogPostSchema.parse(data);
         if (metadata.lang !== match[1]) throw new Error(`Language does not match directory: ${filename}`);
         if (slugs.has(metadata.slug)) throw new Error(`Duplicate blog slug: ${metadata.slug}`);
         slugs.add(metadata.slug);
-        publishedSlugs.add(metadata.slug);
         if (!content.trim()) throw new Error(`Published article is empty: ${filename}`);
         posts.set(filename, { metadata, content });
     }
-    assertValidPairing([...localMetadata, ...[...posts.values()].map(({ metadata }) => metadata)]);
+    assertValidPairing([...posts.values()].map(({ metadata }) => metadata));
     const images = new Map();
     const rendered = new Map();
     for (const [filename, { metadata, content }] of posts) {
@@ -158,7 +142,7 @@ export function syncBlog({ source, root = process.cwd() }) {
             if (target.startsWith('/blog/') && !image) {
                 if (target === '/blog/') return url;
                 const slug = target.match(/^\/blog\/([^/]+)\/?$/)?.[1];
-                if (!slug || !publishedSlugs.has(slug)) {
+                if (!slug || !slugs.has(slug)) {
                     throw new Error(`Article link targets missing or unpublished content: ${filename} -> ${target}`);
                 }
                 return `/blog/${slug}/${suffix}`;
@@ -199,7 +183,6 @@ export function syncBlog({ source, root = process.cwd() }) {
         let body = content;
         for (const [start, end, value] of edits.sort((a, b) => b[0] - a[0])) body = body.slice(0, start) + value + body.slice(end);
         if (!body.trim()) throw new Error(`Published article has no body after its title: ${filename}`);
-        if (metadata.coverImage) metadata.coverImage = rewrite(metadata.coverImage, true);
         rendered.set(metadata.slug, matter.stringify(body, metadata));
     }
     // These are exclusively generated directories; rebuild them so deleted/unpublished

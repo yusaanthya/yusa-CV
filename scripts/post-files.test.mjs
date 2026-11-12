@@ -9,13 +9,12 @@ import { groupBlogPosts, findArticleVersions } from '../features/blog/services/p
 
 /**
  * Hand-built site root under os.tmpdir(): a published snapshot (manifest plus
- * Markdown files) and optional local legacy posts. Never touches the repository.
+ * Markdown files). Never touches the repository.
  */
 function site(t) {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), 'blog-reader-test-'));
     t.after(() => fs.rmSync(root, { recursive: true, force: true }));
     const synced = path.join(root, 'content/synced-posts');
-    const local = path.join(root, 'content/posts');
     fs.mkdirSync(synced, { recursive: true });
     /** @param {Record<string, unknown>[]} posts metadata objects; each `slug` names its file */
     const snapshot = (posts) => {
@@ -25,12 +24,7 @@ function site(t) {
         fs.writeFileSync(path.join(synced, 'manifest.json'),
             `${JSON.stringify({ slugs: posts.map((metadata) => metadata.slug).sort() }, null, 2)}\n`);
     };
-    /** @param {Record<string, unknown>} metadata */
-    const legacy = (metadata) => {
-        fs.mkdirSync(local, { recursive: true });
-        fs.writeFileSync(path.join(local, `${metadata.slug}.md`), document(metadata));
-    };
-    return { root, snapshot, legacy };
+    return { root, snapshot };
 }
 
 /** @param {Record<string, unknown>} metadata */
@@ -47,7 +41,7 @@ function variant(slug, extra = {}) {
     };
 }
 
-// Mirrors the four currently published snapshot variants: all zh, none keyed.
+// Four unkeyed zh snapshot variants.
 const current = () => [
     variant('harness-preface-zh', { date: '2026-10-31', tags: ['AI', 'Claude Code', 'Agentic Workflow', 'Harness'] }),
     variant('leetcode-3sum', { date: '2026-04-15', tags: ['LeetCode', 'Arrays', 'Two Pointers', 'Hash Set'] }),
@@ -108,19 +102,17 @@ test('a snapshot with two files sharing key and lang makes readBlogPosts throw',
     assert.throws(() => readBlogPost('example-zh', s.root), /share translationKey "example"/);
 });
 
-test('pairing is validated across local legacy and imported posts together', (t) => {
-    const s = site(t);
-    s.snapshot([variant('example-zh', { translationKey: 'example' })]);
-    s.legacy(variant('legacy-example', { translationKey: 'example' }));
-    assert.throws(() => readBlogPosts(s.root), /share translationKey "example" and lang "zh"/);
-});
-
-test('a keyed local legacy post without lang makes readBlogPosts throw', (t) => {
-    const s = site(t);
-    s.snapshot(current());
-    s.legacy(variant('legacy-example', { lang: undefined, translationKey: 'example' }));
-    assert.throws(() => readBlogPosts(s.root), /"legacy-example" has translationKey "example" but no lang/);
-});
+for (const [name, extra] of [
+    ['no lang', { lang: undefined }],
+    ['published: false', { published: false }],
+    ['no publication flag', { published: undefined }],
+]) {
+    test(`a snapshot file with ${name} fails loading`, (t) => {
+        const s = site(t);
+        s.snapshot([variant('example-zh', extra)]);
+        assert.throws(() => readBlogPosts(s.root), /lang|published/);
+    });
+}
 
 for (const key of ['Bad_Key', '']) {
     test(`an invalid translationKey in the snapshot fails loading: ${JSON.stringify(key)}`, (t) => {
@@ -129,31 +121,3 @@ for (const key of ['Bad_Key', '']) {
         assert.throws(() => readBlogPosts(s.root), /translationKey/);
     });
 }
-
-test('an unlabelled unkeyed legacy post loads and stays a standalone article', (t) => {
-    const s = site(t);
-    s.snapshot(current());
-    s.legacy(variant('legacy-note', { lang: undefined, date: '2024-01-01' }));
-    const articles = groupBlogPosts(readBlogPosts(s.root));
-    assert.equal(articles.length, 5);
-    const legacy = articles.find((article) => article.id === 'slug:legacy-note');
-    assert.deepEqual(legacy.versions, [
-        { slug: 'legacy-note', title: 'Title legacy-note', description: 'About legacy-note', date: '2024-01-01' },
-    ]);
-});
-
-test('an unpublished local sibling contributes nothing and cannot cause a pairing conflict', (t) => {
-    const s = site(t);
-    s.snapshot([variant('example-zh', { translationKey: 'example', tags: ['Public'] })]);
-    s.legacy(variant('example-draft', {
-        translationKey: 'example', published: false, date: '2020-01-01', tags: ['PRIVATE-TAG'],
-    }));
-    const articles = groupBlogPosts(readBlogPosts(s.root));
-    assert.equal(articles.length, 1);
-    assert.deepEqual(articles[0], {
-        id: 'key:example', date: '2026-01-15', tags: ['Public'],
-        versions: [{ slug: 'example-zh', lang: 'zh', title: 'Title example-zh', description: 'About example-zh', date: '2026-01-15' }],
-    });
-    assert.ok(!JSON.stringify(articles).includes('PRIVATE-TAG'));
-    assert.equal(readBlogPost('example-draft', s.root), null);
-});

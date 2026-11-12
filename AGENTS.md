@@ -21,15 +21,10 @@ precedence; the repository rules below are additive.
   source, including in Actions secrets, or check out private source content in
   its workflows. Cross-repository publishing credentials belong in the private
   source repository and should be scoped to the public destination.
-- Legacy local articles remain exceptions until explicitly migrated. Check the
-  migration inventory in [docs/blog/content-sync.md](docs/blog/content-sync.md)
-  and actual files before editing; do not assume a local article is generated
-  or already migrated. Do not migrate or delete legacy content as a side effect
-  of another task.
-- During an authorized migration, preserve public slugs, original publication
-  dates, prose, and working assets/links, and verify the generated replacement
-  before retiring its legacy source. Avoid duplicate routes and two editable
-  versions.
+- The website reads articles only from the generated snapshot. The legacy
+  `content/posts/` reader was retired on 2026-11-12 after all local articles
+  were migrated; do not add local articles here. See
+  [docs/blog/content-sync.md](docs/blog/content-sync.md).
 
 Read [the publishing skill](.claude/skills/publish-post/SKILL.md) for article
 preparation, and the content-sync document for the current implementation status.
