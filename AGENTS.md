@@ -47,5 +47,4 @@ credential change, or live publication beyond the user's request.
   `features/projects/projects.ts` in the same pull request.
 - After changing the bank, the selection, or `content/cv/yusa-liu.md`, run the
   drift check from `career-prep` (`npm --prefix resume/cv run check:website`).
-  It compares the Experience and Projects bullets here with the selected bank
-  bullets; it does not check other text on the page.
+  Its `resume/cv/README.md` says what the check covers.
