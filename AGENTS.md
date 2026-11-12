@@ -27,7 +27,21 @@ precedence; the repository rules below are additive.
   [docs/blog/content-sync.md](docs/blog/content-sync.md).
 
 Read [the publishing skill](.claude/skills/publish-post/SKILL.md) for article
-preparation, and the content-sync document for the current implementation status.
+preparation, and the content-sync document for the snapshot contract.
 Written ownership rules do not imply the automation has been implemented or
 activated; verify that separately. These rules do not authorize a push, merge,
 credential change, or live publication beyond the user's request.
+
+## CV ownership
+
+- `career-prep` owns the CV's story selection, order, and wording. The website
+  CV follows the "Public website" row and "Output boundaries" of its
+  `resume/selection.md`: each story's default bullet in `resume/bullet-bank.md`
+  unless that row names an alternative. Never use a private-submission version
+  on this public site.
+- Change selection, order, or wording in `career-prep` first, then copy the
+  result into `content/cv/yusa-liu.md`. This repository owns presentation and
+  the website-only content listed in
+  [the design notes](docs/shared/site-redesign.md#cv-content).
+- When a figure quoted on the home page changes, update
+  `features/projects/projects.ts` in the same pull request.

@@ -4,7 +4,8 @@
 > **Status:** Implemented on `main`; audited 2026-10-31 at `d961784`.
 > The original implementation branch was `feat/yusa_liu/indie-redesign`.
 > Measurements below date from the redesign.
-> **Replaces:** the "Minimal + Typography" look from `proposal.md` (UI Refinement)
+> **Replaces:** the April "Minimal + Typography" look (amber accent, `AnimateIn`
+> entrance wrappers). Those components and tokens are retired; do not restore them.
 
 ## Brief
 
@@ -147,25 +148,27 @@ stored in `localStorage` and applied by an inline head script before first
 paint. Tokens are defined for `prefers-color-scheme: dark` (unless
 `data-theme="light"`) and for `data-theme="dark"`.
 
+Code blocks stay dark in both appearances (decided 2026-10-31): the site keeps
+`github-dark.css` with a dark code-block background in light and dark mode,
+instead of separate light and dark syntax themes.
+
 ## CV content
 
 `content/cv/yusa-liu.md` is a curated public variant, not a mirror of the
-canonical CV. `career-prep` owns its story selection, order, and wording:
-`resume/selection.md` (the "Public website" row and "Output boundaries") and
-the default bullets in `resume/bullet-bank.md`. This document records no
-selection, order, or source revision; read them there.
+canonical CV. [AGENTS.md](../../AGENTS.md#cv-ownership) says who owns its story
+selection, order, and wording; this document records none of them.
 
-A CV update changes `content/cv/yusa-liu.md`, and
-`features/projects/projects.ts` when a figure the home page quotes changes.
+Decisions that belong to the website:
 
-Rules that belong to the website:
-
-- The page is public and names a current employer. Use only the bank's default
-  bullets, never private-submission versions, and leave out current security
-  status and incident detail. Reassess with the owner before adding any back.
+- The page is public and names a current employer, so it leaves out current
+  security status and incident detail. Reassess with the owner before adding
+  any back.
+- The Summary presents the owner as a hands-on lead of scoped feature and
+  security workstreams, not as a people manager or tech lead.
 - Phone and email are omitted; LinkedIn and GitHub are the public contact links.
-- Website-only content: the AI harness project, MWC 2024 grouped with Closet,
-  the earlier-career section, the Skills grouping, and bold emphasis on results.
+- Website-only content: the wording of the AI harness project, MWC 2024 grouped
+  with Closet, the earlier-career section, the Skills grouping, and bold
+  emphasis on results.
 - The print action prints the web CV, not a verified one-page application
   resume.
 
@@ -191,10 +194,5 @@ Rules that belong to the website:
 - The redesign recorded ~46 kB of Framer Motion cost on the home page. A CSS
   scroll-driven alternative remains an evaluation item; remeasure bundle cost
   and check browser support before adopting it.
-- The sign-key post retains five historical `hackmd.io/_uploads` hotlinks,
-  previously reported to return 403 to non-browser requests. Obtain the original
-  images and update this migrated article in `blog-post`; the exporter owns
-  generated assets under `public/images/synced-blog/`. Do not repair its website
-  snapshot by hand (see the `publish-post` skill).
 - Project key art is limited to 2000px wide; supply ~3200px+ originals for crisp
   retina rendering. Converting to SVG would not help: the art is raster.
