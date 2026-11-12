@@ -149,45 +149,25 @@ paint. Tokens are defined for `prefers-color-scheme: dark` (unless
 
 ## CV content
 
-`content/cv/yusa-liu.md` is a curated public variant derived from
-`career-prep/resume/cv/source/yusa-liu-cv.md` and its bullet bank, not a direct
-mirror. The October 31, 2026 refresh uses career-prep commit `c3aa90b`:
+`content/cv/yusa-liu.md` is a curated public variant, not a mirror of the
+canonical CV. `career-prep` owns its story selection, order, and wording:
+`resume/selection.md` (the "Public website" row and "Output boundaries") and
+the default bullets in `resume/bullet-bank.md`. This document records no
+selection, order, or source revision; read them there.
 
-- Bullets are ordered by the owner's role first, then impact: stories where
-  they led others' work, then stories they owned alone, then extensions of an
-  inherited system or architecture. Delivered or accepted results go first
-  within a tier.
-- ZONE WALLET order: ZW-18, ZW-15, combined ZW-02/05, ZW-01, ZW-19 (combined
-  with ZW-21), ZW-20, ZW-04. ZW-03 (an extension of the inherited outbox,
-  overlapping ZW-18) and ZW-17 (small scope) are dropped to keep 7 bullets.
-- HTC order: HTC-01, HTC-02, HTC-03, HTC-05, HTC-04. HTC-04 applied the
-  team's existing architecture, so it goes last but keeps the 100+
-  microservice context. MWC 2024 is grouped with Closet; the Diablo II
-  achievement is an earlier-career footer section.
-- The Summary positions the owner as a hands-on lead of scoped feature and
-  security workstreams (ZW-18, ZW-15), not a people manager or tech-lead title.
-- The page is public and names a current employer, so it leaves out current
-  security status and incident detail that application PDFs may carry. ZW-15
-  omits the completed-ticket count, which implies open findings; ZW-19 omits
-  the abuse trigger and the per-repository vulnerability result, which implies
-  the other repositories. Reassess before adding either back.
-- Projects: PRJ-03 (AI harness), PRJ-02 (NiCE2), PRJ-01 (Go simulator).
-- PRJ-01 subsequently synced to the preferred refactor bullet in career-prep
-  commit `02994ea`, with its public GitHub repository linked. The original
-  December 2024–March 2026 study period and October 2026 refactor are labeled
-  separately. Raft refers to leader election, not a complete consensus system.
-- Phone and email remain omitted; LinkedIn and GitHub provide public contact
-  links. Skills are grouped by languages/APIs, cloud/data, and practices.
-- Preserve adopted-design status for ZW-01 and avoid claiming completed
-  remediation or production rollout for ZW-15. Do not infer exactly-once
-  delivery from ZW-04's send-history ledger.
-- ZW-07 (calendar fallback) is excluded at the owner's explicit request on
-  October 27, 2026: they described the work as unsuccessful. Do not restore it
-  from historical source material during a future sync without reassessment.
+A CV update changes `content/cv/yusa-liu.md`, and
+`features/projects/projects.ts` when a figure the home page quotes changes.
 
-This refresh changes only the website variant; career-prep sources and PDFs
-remain separately maintained. The existing print action prints the web CV,
-not a verified one-page application resume.
+Rules that belong to the website:
+
+- The page is public and names a current employer. Use only the bank's default
+  bullets, never private-submission versions, and leave out current security
+  status and incident detail. Reassess with the owner before adding any back.
+- Phone and email are omitted; LinkedIn and GitHub are the public contact links.
+- Website-only content: the AI harness project, MWC 2024 grouped with Closet,
+  the earlier-career section, the Skills grouping, and bold emphasis on results.
+- The print action prints the web CV, not a verified one-page application
+  resume.
 
 ## Human-factors fixes
 

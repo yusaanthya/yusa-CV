@@ -6,16 +6,15 @@
 
 | Layer | Current implementation |
 | --- | --- |
-| Framework | Next.js 14.2.14 App Router, React 18, TypeScript 5 |
-| Styling | Tailwind CSS 3.3 range, Typography plugin, site CSS tokens |
+| Framework | Next.js App Router, React, TypeScript |
+| Styling | Tailwind CSS, Typography plugin, site CSS tokens |
 | Typography | Sora via `next/font/google`; system CJK fallbacks |
-| Motion | Framer Motion 11 range, used by scroll lag and project parallax; CSS hero reveal/fades |
+| Motion | Framer Motion, used by scroll lag and project parallax; CSS hero reveal/fades |
 | Icons | Lucide React plus shared social glyphs |
 | Content | gray-matter, Zod; unified/remark/rehype Markdown-to-HTML pipeline |
 | Hosting | Static export to GitHub Pages; no runtime application server |
 
-Versions other than the pinned Next.js version describe `package.json` ranges,
-not a claim that each installed package is exactly its range's lower bound.
+Versions are recorded in `package.json` only.
 
 ## Source map
 

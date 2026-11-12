@@ -122,11 +122,9 @@ tags unchanged (website integration: PR #22). The website no longer reads
 | `leetcode-3sum` | `leetcode/zh/leetcode-3sum.md` |
 | `sign-key-disassemble` | `android/zh/sign-key-disassemble.md` |
 
-The sign-key article retains its five existing external HackMD image links.
-They can return HTTP 403 to automated requests; the migration does not repair
-those external assets. Replacing them requires exported original images.
-The public manifest now also includes `harness-preface-zh`, for four published
-slugs in total. The remaining harness drafts are tracked in `blog-post`.
+The sign-key article's five images are committed source assets; it no longer
+depends on external HackMD image links. `content/synced-posts/manifest.json`
+lists the published slugs. Drafts are tracked in `blog-post`.
 
 ## Initial setup and ongoing publication
 

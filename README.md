@@ -1,6 +1,6 @@
 # Yusa Liu — portfolio, CV, and blog
 
-A Next.js 14 App Router site with a project showcase on the home page, a
+A Next.js App Router site with a project showcase on the home page, a
 Markdown CV at `/cv`, and published articles at `/blog`. It uses TypeScript,
 Tailwind CSS, Sora via `next/font`, and Framer Motion for home-page motion.
 
@@ -19,12 +19,13 @@ UI and feature code in `features/`, and the public CV in `content/cv/yusa-liu.md
 ```sh
 npm run test:blog   # Snapshot exporter and reader tests
 npm run build       # Static export to out/
-npm run lint        # ESLint 8 with next/core-web-vitals and next/typescript
+npm run lint        # ESLint with next/core-web-vitals and next/typescript
 ```
 
 [PR CI](.github/workflows/pr-ci.yml) runs these checks on every pull request to
-`main`: lint, the type check, `test:blog`, and builds at the site root and with
-the `/yusa-CV` Pages base path. The Pages workflow only builds and deploys.
+`main`: lint, the type check, `test:blog`, the review-gate script test, and
+builds at the site root and with the `/yusa-CV` Pages base path. The Pages
+workflow only builds and deploys.
 
 ## Blog publishing
 
@@ -34,7 +35,7 @@ here. The site builds without private-source access. Do not hand-edit
 `content/synced-posts/` or `public/images/synced-blog/`.
 
 The three original articles have been migrated with their public slugs preserved;
-the current snapshot also includes `harness-preface-zh`. Read
+`content/synced-posts/manifest.json` lists the published slugs. Read
 [content synchronization](docs/blog/content-sync.md) for ownership, the inventory,
 local preview, and recovery.
 
@@ -43,8 +44,7 @@ Bilingual articles and list filters are implemented, per the
 versions sharing a `translationKey` form one article. The list has a
 display-language toggle that falls back to the available version and a
 single-tag picker; articles have a per-article language switch and localized
-metadata. Every snapshot article is currently Chinese-only, so no pair is
-live yet; each translation is published separately from `blog-post`.
+metadata. Each translation is published separately from `blog-post`.
 
 ## Deployment and documentation
 
