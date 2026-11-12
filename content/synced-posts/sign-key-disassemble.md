@@ -4,7 +4,7 @@ title: Sign Key & disassemble tips
 description: Sign key and disassemble tips for mock test android data
 date: '2026-04-15'
 tags:
-  - Next.js
+  - Android
   - SDET
 published: true
 lang: zh
@@ -27,9 +27,9 @@ lang: zh
     ```bash=
     export JAVA_8_HOME=$(/usr/libexec/java_home -v1.8)
     alias java8='export JAVA_HOME=$JAVA_8_HOME'
-    default to java 8
+    # default to java 8
     java8
-    # 編輯結束後先按 ESC ，再 Shift+: ，輸入 :w (write & quite) 結束
+    # 編輯結束後先按 ESC ，再 Shift+: ，輸入 :wq (write & quit) 結束
     ```
     3. 過環境
     ```bash=
@@ -40,18 +40,18 @@ lang: zh
 3. 環境處理完後開始使用 SignApk Tool 的流程會是這樣:
 
  - 基本上我會先把需要重新 Sign Key 的 APK 檔丟進 Tool 資料夾裡(如圖)
-    ![](https://hackmd.io/_uploads/SySJSgnO3.png)
+    ![SignApk 資料夾內容：signapk.jar、certificate.pem、key.pk8、README 與要 sign 的 APK](/images/synced-blog/sign-key-disassemble/c62c3594275d8fdd7f67a19238b0ff824a06a7c805c557006f8dfa1f65f8135f.png)
 
  - 使用任何 IDE(VSCode/IntelliJ/Sublime etc.) 打開 README 檔案
 
-    ![](https://hackmd.io/_uploads/Bkf5ren_2.png)
+    ![README 中的 signapk 指令，標示各參數用途](/images/synced-blog/sign-key-disassemble/f5c85e09c1fa4d2666b61e820e6452c69dec50b2796b2c3c7b207bd046858bc8.png)
     
     以上圖來說，就會是：
-    com_cardboard_wave.apk → 被丟進資料夾裡，需要 sign key 的 source apk
-    com_cardboardwithfusesfeature_app.apk → sign 完之後的檔名
+    source_app.apk → 被丟進資料夾裡，需要 sign key 的 source apk
+    signed_app.apk → sign 完之後的檔名
 - 接下來打開 terminal ， cd 進 SignApk 資料夾路徑，並執行 README 檔裡改完的指令：
     ```bash=
-    $ java -jar signapk.jar certificate.pem key.pk8 com_cardboard_wave.apk  com_cardboardwithfusesfeature_app.apk
+    $ java -jar signapk.jar certificate.pem key.pk8 source_app.apk  signed_app.apk
     ```
     
 - 接下來就能在同個資料夾裡看到 Sign 完 Key 的 APK 了
@@ -59,7 +59,7 @@ lang: zh
 
 ## 組譯 & 反組譯
 
-正規上在 build APK 時，在最後一部會把包含 APKManifest.xml 的專案檔案包成一個 APK 檔，這個行為就叫做 組譯 (assemble) ，反之，把已經包好的 apk 拆開成原本的專案 project folder 的一系列步驟就叫做 反組譯 (disassemble) 。
+正規上在 build APK 時，在最後一部會把包含 AndroidManifest.xml 的專案檔案包成一個 APK 檔，這個行為就叫做 組譯 (assemble) ，反之，把已經包好的 apk 拆開成原本的專案 project folder 的一系列步驟就叫做 反組譯 (disassemble) 。
 
 以這次的例子來說，因為需要弄出比較極端情況的測資，在只考慮到片面欄位的情況下，用 tool 直接改宣告內容再包回去會比較快。但一般情況的話，因為這樣包出來的 apk 在執行上一定會有問題，所以要改宣告還是要走正規流程 build APK。
 
@@ -72,13 +72,13 @@ MacOS可以直接使用 brew 安裝
 ```bash=
 $ brew install apktool
 ```
-![](https://hackmd.io/_uploads/BkuWve2On.png)
+![brew install apktool 跑完後的輸出](/images/synced-blog/sign-key-disassemble/65dfd08977b97b715d0827918f299e945d727bd3bd3110c54e3cc893c01a5b8f.png)
 
 看到這樣的畫面就代表跑完了
 
 跑完以後，建立一個 folder 用來放預計要拆開的 apk ，以下圖來說的話，就是在Downloads路徑裡開了一個 apkPlayGround
 
-![](https://hackmd.io/_uploads/SJlLcln_h.png)
+![Downloads 中的 apkPlayGround 與 SignApk 資料夾（部分檔名已遮蔽）](/images/synced-blog/sign-key-disassemble/b0114a32899302ee6cd008c934d192f90a1838d5daed617d604740db99b1f64b.png)
 
 這邊處理完之後一樣開 terminal 進入下 command 流程:
 
@@ -93,11 +93,11 @@ $ brew install apktool
     ~ apktool d -f <the_apk_file_name>
     ```
 3. 拆開以後即可使用 Android Studio 打開被拆回 repo 型態的 apk 檔
-    ![](https://hackmd.io/_uploads/B1QElZhO3.png)
+    ![apktool 拆開後的專案結構：AndroidManifest.xml、smali、res 等](/images/synced-blog/sign-key-disassemble/4d5d7b078b094b5822b68207c7294d82cf42e12977cc8bfe34529333f72e16f7.png)
     這邊主要就是進AndroidManifest.xml檔，把需要測到的內容改成符合的測資 ex:
-    ```kotlin=
+    ```xml=
    <uses-feature android:name="featureName" android:required="false" />
-    // etc...
+    <!-- etc... -->
     ```
 4. 改完以後再下指令把 apk 包回去：
     ```bash=
