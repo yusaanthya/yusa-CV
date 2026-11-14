@@ -31,7 +31,7 @@ Nov 2022 - Dec 2024 | Taipei
 - Delivered the backend changes that let the Closet 2.0 beta meet a 1-month launch deadline while vendor APIs were still pending: integrated the internal point service, redesigned the frontend-initiated request sequence, and agreed with product on a manual point-restoration fallback, a capped exposure on free beta points.
 - Proposed and designed an event-driven AWS SNS/SQS/Lambda fan-out for a regional partner's account-deletion requirement, **adopted after design review**: defined the contract for the deletion events the account service publishes, delivered the avatar-side deletion, and built a Lambda handler that a feature team reused by subscribing to the same topic.
 - Designed an asynchronous texture-conversion pipeline, since launched to production, that raised avatar texture support from **512×512 to 2K**, with AWS SQS feeding on-demand Kubernetes Jobs off the API request path; built the Node.js proof of concept and part of the Three.js/KTX2 conversion before a documented handover to the engineer who completed it.
-- Developed and maintained the Go/Gin and MySQL avatar service as its primary backend engineer, serving REST APIs to internal and vendor backend-for-frontend (BFF) services in a **100+ microservice ecosystem**; applied TDD with mockable repository interfaces and kept changes backward compatible through OpenAPI contracts and semantic versioning.
+- Developed and maintained the Go/Gin and MySQL avatar service as its primary backend engineer, serving REST APIs to internal backend-for-frontend (BFF) services in a **100+ microservice ecosystem**; applied TDD with mockable repository interfaces and kept changes backward compatible through OpenAPI contracts and semantic versioning.
 
 ## Projects
 
