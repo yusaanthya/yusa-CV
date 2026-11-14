@@ -32,10 +32,10 @@ export const PROJECTS: Project[] = [
         org: "HTC VIVERSE",
         title: "Outfit Closet 2.0",
         summary:
-            "An avatar wardrobe for HTC VIVERSE, showcased at MWC 2024. I designed the backend domain model for this new feature and synchronized avatar state with an external vendor’s backend. Our team delivered Closet 2.0 in 8 months against an original 2-year plan.",
+            "An avatar wardrobe for HTC VIVERSE, launched publicly as the VIVERSE Avatar Outfit Creator in September 2024. I designed the backend domain model for this new feature and synchronized avatar state with an external vendor’s backend. Our team shipped the Closet 2.0 beta in 8 months against an original 2-year plan.",
         tags: ["Go / Gin", "MySQL", "AWS SQS", "OpenAPI"],
-        url: "https://avatar.viverse.com/zh-TW/avatar",
-        linkLabel: "avatar.viverse.com",
+        url: "https://news.viverse.com/post/create-unique-outfits-for-your-avatar-with-the-viverse-avatar-outfit-creator",
+        linkLabel: "news.viverse.com",
         image: assetPath("/images/projects/viverse-closet.webp"),
         imagePosition: "center",
     },
