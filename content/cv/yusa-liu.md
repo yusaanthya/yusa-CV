@@ -6,7 +6,7 @@ Taiwan / Global Remote | [LinkedIn](https://www.linkedin.com/in/yusa-liu-7847491
 
 ## Summary
 
-Go (Golang) backend engineer building new features, REST APIs, and event-driven integrations across fintech and metaverse platforms. Uses test-driven development (TDD) and leads cross-functional delivery, with experience maintaining an avatar service in a 100+ microservice ecosystem.
+Go (Golang) backend engineer building new features, REST APIs, and event-driven integrations across fintech and metaverse platforms. Uses test-driven development (TDD) and leads cross-functional delivery, with experience as primary backend engineer for an avatar service in a 100+ microservice ecosystem.
 
 ## Experience
 
@@ -26,11 +26,12 @@ Mar 2026 - Present | Taipei / Remote
 
 Nov 2022 - Dec 2024 | Taipei
 
-- Designed new avatar outfit and animation-library backend capabilities from the ground up, defining schemas, resource lifecycles, and API contracts for parallel work across **7 internal contributors and 2 vendor developers**; integrated avatar/outfit state synchronization with the vendor's backend using AWS SQS and state-based idempotency guards.
-- Led backend domain design for the new Closet 2.0 feature, separating mutable avatar state from reusable assets and inventory ownership; helped the team deliver Closet 2.0 in **8 months against an original 2-year plan**. Showcased at MWC 2024.
-- Integrated an AWS SNS/SQS/Lambda event flow and built a reusable Lambda handler; the integration approach and handler were adopted by **2 engineering teams: platform and feature**.
-- Built a Node.js texture-conversion job for a new avatar feature, started as a Kubernetes Job only on API request so compute-intensive processing runs on demand; used Three.js to extract and repackage GLB textures with Basis Universal UASTC encoding in KTX2, expanding supported resolution from **512×512 to 2K**.
-- Developed and maintained the Go/Gin avatar service in a **100+ microservice ecosystem** using test-driven development (TDD) and mockable repository interfaces; preserved backward compatibility through OpenAPI contracts and semantic versioning.
+- Designed avatar outfit and animation-library backend features from the ground up, defining database schemas, resource lifecycles, and API contracts that let **7 internal contributors and 2 vendor developers** work in parallel; synchronized avatar/outfit state with the vendor's backend over AWS SQS with state-based idempotency guards.
+- Led backend domain modeling for the new Closet 2.0 feature, applying domain-driven design (DDD) to promote Asset from an avatar attribute to a standalone entity with normalized ownership records, separating mutable avatar state from inventory ownership; helped the team deliver Closet 2.0 in **8 months against an original 2-year plan**. Showcased at MWC 2024.
+- Delivered the backend changes that let the Closet 2.0 beta meet a 1-month launch deadline while vendor APIs were still pending: integrated the internal point service, redesigned the frontend-initiated request sequence, and, with product, prioritized asset-data integrity over deduction timing, accepting a bounded manual-refund path for the free-credit beta.
+- Proposed and designed an event-driven AWS SNS/SQS/Lambda fan-out for a regional partner's account-deletion requirement, **adopted by both owning teams** after design review: defined the deletion-event contract the account service publishes, delivered the avatar-side deletion, and built a Lambda handler that the feature team reused by subscribing to the same topic.
+- Designed an asynchronous texture-conversion pipeline to raise avatar texture support from **512×512 to 2K**, with AWS SQS feeding on-demand Kubernetes Jobs off the API request path; built the Node.js proof of concept, implemented part of the Three.js/KTX2 conversion, and handed it over through documentation and a knowledge-transfer session.
+- Developed and maintained the Go/Gin and MySQL avatar service as its primary backend engineer, serving REST APIs to internal and vendor backend-for-frontend (BFF) services in a **100+ microservice ecosystem**; applied TDD with mockable repository interfaces and kept changes backward compatible through OpenAPI contracts and semantic versioning.
 
 ## Projects
 
