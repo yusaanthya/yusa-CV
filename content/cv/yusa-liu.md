@@ -6,7 +6,7 @@ Taiwan / Global Remote | [LinkedIn](https://www.linkedin.com/in/yusa-liu-7847491
 
 ## Summary
 
-Go (Golang) backend engineer building new features, REST APIs, and event-driven integrations across fintech and metaverse platforms. Uses test-driven development (TDD) and leads cross-functional delivery, with experience as primary backend engineer for an avatar service in a 100+ microservice ecosystem.
+Go (Golang) backend engineer who leads cross-functional delivery and security remediation in fintech, and served as primary backend engineer for an avatar service in a 100+ microservice ecosystem. Builds REST APIs and event-driven integrations with test-driven development (TDD).
 
 ## Experience
 
