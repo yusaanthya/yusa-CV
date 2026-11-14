@@ -166,8 +166,8 @@ Decisions that belong to the website:
 - The Summary presents the owner as a hands-on lead of scoped feature and
   security workstreams, not as a people manager or tech lead.
 - Phone and email are omitted; LinkedIn and GitHub are the public contact links.
-- Website-only content: the wording of the AI harness project, MWC 2024 grouped
-  with Closet, the earlier-career section, the Skills grouping, and bold
+- Website-only content: the wording of the AI harness project, the
+  earlier-career section, the Skills grouping, and bold
   emphasis on results.
 - The print action prints the web CV, not a verified one-page application
   resume.
