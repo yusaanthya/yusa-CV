@@ -17,10 +17,10 @@ Mar 2026 - Present | Taipei / Remote
 - Led a backend vulnerability-remediation workstream across a 7-person backend, operations, and QA team, triaging source-scan findings into prioritized tickets with assignments and acceptance criteria; high-priority tickets passed QA ahead of the policy deadline, and the team implemented the remaining changes **2 sprints ahead of plan**.
 - Led delivery of the manual-review stage of an OTC workflow: mapped system dependencies to **expose missing event infrastructure**, re-scoped delivery with product, built the Go list API and user-account domain outbox/subscriber on the existing relay framework, and delegated the review API via published contracts to enable parallel delivery.
 - Drove requirements-to-QA practices: partnered with the engineering manager to adopt pre-refinement technical review and capacity planning across an **18-person engineering, QA, and product team**, surfacing blockers and deferring unresolved work before sprint commitments, and established structured backend-to-QA handoffs adopted through retrospectives.
-- Built a reusable Go reminder pipeline on Google Cloud Pub/Sub and PostgreSQL, supporting **2 production campaigns** with cancellation-aware rate limiting and a uniquely keyed send-history ledger for idempotent send checks that prevent duplicate notifications across retries.
+- Built a reusable Go reminder pipeline on Google Cloud Pub/Sub and PostgreSQL, supporting **2 production campaigns** with cancellation-aware rate limiting and a uniquely keyed send-history ledger for idempotent send checks that deduplicate retries against recorded sends.
 - Executed **2 parallel security workstreams within 3 days**: hardened user-level API authorization across 7 write endpoints and retired 27 route registrations while upgrading Go microservices and internal tools across 8 repositories, resolving CI, OpenTelemetry, and Cloud Run compatibility issues.
-- Designed a fraud-return capability from the ground up, separating crypto liquidation from fiat settlement and defining idempotency, reconciliation, and manual-recovery boundaries; **adopted as the baseline for implementation planning**.
-- Delivered **2 fiat-refund changes** for audit timestamps and fee handling by reusing an existing review state; traced downstream reconciliation side effects prior to production release and aligned scope adjustments with product and QA to protect reconciliation consistency.
+- Designed a cross-system fraud-return capability from the ground up, decoupling crypto liquidation from fiat settlement and defining idempotency, reconciliation, and manual-recovery boundaries; **adopted as the implementation baseline**.
+- Delivered **2 fiat-refund changes**: failed-refund audit timestamps and fee handling via an existing review state; traced the reuse's downstream reconciliation side effects pre-release and aligned scope with product and QA to preserve reconciliation consistency.
 
 ### Software Engineer - HTC VIVERSE
 
@@ -28,7 +28,7 @@ Nov 2022 - Dec 2024 | Taipei
 
 - Designed avatar outfit and animation-library backend features from the ground up, defining database schemas, resource lifecycles, and API contracts that let **7 internal contributors and 2 vendor developers** work in parallel; synchronized avatar/outfit state with the vendor's backend over AWS SQS with state-based idempotency guards.
 - Led backend domain modeling for the new Closet 2.0 feature, applying domain-driven design (DDD) to promote Asset from an avatar attribute to a standalone entity with normalized ownership records; helped the team ship the beta in **8 months against an original 2-year plan**. The feature later launched publicly as the VIVERSE Avatar Outfit Creator (September 2024).
-- Delivered the backend changes that let the Closet 2.0 beta meet a 1-month launch deadline while vendor APIs were still pending: integrated the internal point service, redesigned the frontend-initiated request sequence, and agreed with product on a manual point-restoration fallback, a capped exposure on free beta points.
+- Delivered backend changes that let the Closet 2.0 beta meet a 1-month launch deadline while vendor APIs were still pending: integrated the internal point service, redesigned the frontend-initiated request sequence, and co-decided with product on a manual point-restoration fallback, a capped exposure on free beta points.
 - Proposed and designed an event-driven AWS SNS/SQS/Lambda fan-out for a regional partner's account-deletion requirement, **adopted after design review**: defined the contract for the deletion events the account service publishes, delivered the avatar-side deletion, and built a Lambda handler that a feature team reused by subscribing to the same topic.
 - Designed an asynchronous texture-conversion pipeline (launched to production) that raised avatar texture support from **512×512 to 2K** via AWS SQS and on-demand Kubernetes Jobs off the API request path; built the Node.js PoC and part of the Three.js/KTX2 conversion before a documented handover.
 - Developed and maintained the Go/Gin and MySQL avatar service as its primary backend engineer, serving REST APIs to internal backend-for-frontend (BFF) services in a **100+ microservice ecosystem**; applied TDD with mockable repository interfaces and kept changes backward compatible through OpenAPI contracts and semantic versioning.
@@ -49,7 +49,7 @@ Aug 2026
 
 Dec 2024 - Mar 2026; refactored Oct 2026 | [GitHub repository](https://github.com/yusaanthya/quorum-election-simulator)
 
-- Refactored a Go (Golang) leader-election simulator by **separating Raft state transitions from goroutines, timers, and messaging**, enabling deterministic unit tests and fixing same-term double voting and concurrent state-access races.
+- Refactored a Go (Golang) Raft leader-election simulator, **decoupling pure state transitions from goroutines, timers, and channels**, enabling deterministic unit tests and fixing same-term double voting and state-access data races.
 
 ## Skills
 
