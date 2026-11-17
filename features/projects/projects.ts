@@ -20,7 +20,7 @@ export const PROJECTS: Project[] = [
         org: "ZONE WALLET",
         title: "Backend engineering & delivery",
         summary:
-            "Backend engineering for a crypto exchange and wallet. I led a security-remediation workstream across a 7-person team, setting priorities, assigning work, and defining acceptance criteria. I also built a reusable Go/Pub/Sub reminder pipeline supporting 2 production campaigns.",
+            "Backend engineering for a crypto exchange and wallet. I led a security-remediation workstream across a 7-person team; high-priority tickets passed QA ahead of the policy deadline, and the team implemented the remaining changes 2 sprints ahead of plan. I also built a reusable Go/Pub/Sub reminder pipeline supporting 2 production campaigns with cancellation-aware rate limiting and idempotent send checks.",
         tags: ["Go", "GCP Pub/Sub", "PostgreSQL", "Backend Security"],
         url: "https://www.zonewallet.io/",
         linkLabel: "zonewallet.io",

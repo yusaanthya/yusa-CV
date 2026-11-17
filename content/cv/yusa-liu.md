@@ -55,7 +55,7 @@ Dec 2024 - Mar 2026; refactored Oct 2026 | [GitHub repository](https://github.co
 
 - **Languages & APIs:** Go (Golang), Gin, Java/Scala, Node.js, Python, REST APIs, gRPC, OpenAPI
 - **Cloud & Data:** SQL, PostgreSQL, MySQL, MongoDB, Redis, GCP Pub/Sub, Cloud Scheduler, Cloud Run, AWS SNS/SQS/Lambda, Docker, Kubernetes
-- **Engineering Practices:** Event-driven architecture, Idempotency, API compatibility, Claude Code and Codex workflows
+- **Engineering Practices:** Event-driven architecture, domain modeling, microservices, idempotency, API compatibility, Claude Code and Codex workflows
 - **Testing:** Test-driven development (TDD), behavior-driven development (BDD), scenario-based feature testing, change-impact analysis, unit and integration testing, mocking
 - **3D Processing & Rendering:** Three.js, GLB, KTX2 / Basis Universal, 3D model and texture rendering fundamentals
 - **Domain Experience:** VR / metaverse platforms
