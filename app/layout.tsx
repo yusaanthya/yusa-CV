@@ -11,7 +11,8 @@ const sans = Sora({
 
 export const metadata: Metadata = {
   title: "Yusa Liu | Backend Engineer",
-  description: "Portfolio and Blog of Yusa Liu",
+  description:
+    "Go backend engineer building REST APIs, distributed workflows, and event-driven integrations. Portfolio, CV, and blog of Yusa Liu.",
 };
 
 // Runs before first paint: a saved appearance never flashes the other theme, and the hero
