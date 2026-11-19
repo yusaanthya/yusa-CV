@@ -24,9 +24,9 @@ translationKey: modern-cpp-raii-determinism
 
 ### 與 Managed Language（Go/Java）的本質差異
 
-- **Managed Languages（Go/Java）：** 帶有較厚重的 Runtime 與 **GC（垃圾回收機制）**。GC 屬於**「集權式、非確定性（Non-deterministic）」**的記憶體管理：物件什麼時候被回收由 GC 決定，而不是由程式碼的結構決定。GC 運作時可能帶來 **Stop-The-World (STW)** 暫停（雖然像 Go 這類現代 GC 大部分工作已與程式並行、STW 階段很短，但回收時機依然不由程式碼決定）。在對尾延遲（tail latency）極度敏感的場景（例如高頻交易），這類延遲抖動（Jitter）可能是無法接受的。
+- **Managed Languages（Go/Java）：** 帶有較厚重的 Runtime 與 **GC（垃圾回收機制）**。GC 屬於「**集權式、非確定性（Non-deterministic）**」的記憶體管理：物件什麼時候被回收由 GC 決定，而不是由程式碼的結構決定。GC 運作時可能帶來 **Stop-The-World (STW)** 暫停（雖然像 Go 這類現代 GC 大部分工作已與程式並行、STW 階段很短，但回收時機依然不由程式碼決定）。在對尾延遲（tail latency）極度敏感的場景（例如高頻交易），這類延遲抖動（Jitter）可能是無法接受的。
 
-- **現代 C++：** 沒有 GC，奉行 **Zero-overhead 原則**（不用的功能不付成本，用到的功能也很難手寫得更好）。它推崇 **RAII（資源獲取即初始化）**，走的是**「分散式、確定性（Deterministic）」**的資源管理。
+- **現代 C++：** 沒有 GC，奉行 **Zero-overhead 原則**（不用的功能不付成本，用到的功能也很難手寫得更好）。它推崇 **RAII（資源獲取即初始化）**，走的是「**分散式、確定性（Deterministic）**」的資源管理。
 
 ### RAII 運作原理
 
