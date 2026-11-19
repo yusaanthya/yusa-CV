@@ -4,6 +4,8 @@
     "harness-preface-zh",
     "leetcode-3sum",
     "leetcode-container-with-max-water",
+    "modern-cpp-raii-determinism-en",
+    "modern-cpp-raii-determinism-zh",
     "sign-key-disassemble"
   ]
 }
