@@ -17,7 +17,7 @@ lang: en
 translationKey: modern-cpp-raii-determinism
 ---
 
-> These notes come from a HackMD note I wrote around June 2026. I compiled them from learning conversations with an AI, reviewed and revised the material myself, and de-identified it before republishing here.
+> These notes come from a HackMD note I wrote around January or February 2026. I compiled them from learning conversations with an AI, reviewed and revised the material myself, and de-identified it before republishing here.
 
 I put these notes together while looking at modern C++ from a background in managed languages like Go/Java. They cover, in order: C++'s deterministic resource management (RAII), mutexes and thread safety, a few operating-system concepts that are easy to mix up, and finally OOP modeling and design methodologies.
 
