@@ -16,7 +16,7 @@ lang: zh
 translationKey: modern-cpp-raii-determinism
 ---
 
-> 本文整理自我約 2026 年 6 月寫在 HackMD 上的筆記。內容整理自與 AI 的學習對話，經我確認與修訂，並去識別化後重新發布。
+> 本文整理自我約 2026 年 1、2 月寫在 HackMD 上的筆記。內容整理自與 AI 的學習對話，經我確認與修訂，並去識別化後重新發布。
 
 這篇是我從 Go/Java 這類 managed language 的背景來看現代 C++ 時整理的筆記，依序聊聊：C++ 的確定性資源管理（RAII）、mutex 與 thread-safety、幾個容易混淆的作業系統概念，最後是 OOP 建模與設計方法論。
 
