@@ -82,3 +82,5 @@ inconsistent URLs; PR CI sets both for its `/yusa-CV` build.
 - [Site design and content decisions](docs/shared/site-redesign.md)
 - [Blog content synchronization](docs/blog/content-sync.md)
 - [Codex review merge gate](docs/codex-review-gate.md)
+
+<!-- policy check: temporary line, PR will be closed unmerged -->
